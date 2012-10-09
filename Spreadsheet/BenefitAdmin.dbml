@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BenefitAdminDB" Class="BenefitAdminDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=(local);Initial Catalog=BenefitAdminDB;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="BenefitAdminDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Ministry" Member="Ministries">
+    <Type Name="Ministry">
+      <Column Name="MinistryCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MinistryName" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Association Name="Ministry_Organization" Member="Organizations" ThisKey="MinistryCode" OtherKey="MinistryCode" Type="Organization" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Provider" Member="Providers">
+    <Type Name="Provider">
+      <Column Name="ProviderCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProviderName" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="OrgCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Association Name="Organization_Provider" Member="Organization" ThisKey="OrgCode" OtherKey="OrgCode" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Organization" Member="Organizations">
+    <Type Name="Organization">
+      <Column Name="OrgCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="OrgName" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="MinistryCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Association Name="Organization_Provider" Member="Providers" ThisKey="OrgCode" OtherKey="OrgCode" Type="Provider" />
+      <Association Name="Ministry_Organization" Member="Ministry" ThisKey="MinistryCode" OtherKey="MinistryCode" Type="Ministry" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Activity" Member="Activities">
+    <Type Name="Activity">
+      <Column Name="ACTCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ACTDesc" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="SVCCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Association Name="Activity_SubActivity" Member="SubActivities" ThisKey="ACTCode" OtherKey="ACTCode" Type="SubActivity" />
+      <Association Name="Service_Activity" Member="Service" ThisKey="SVCCode" OtherKey="SVCCode" Type="Service" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Service" Member="Services">
+    <Type Name="Service">
+      <Column Name="SVCCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SVCName" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="SVCDesc" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="HostCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="StaffRole" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="SVCType" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="SVCObjective" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="SVCSupport" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="SVCCoverage" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="SVCStart" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="SVCEnd" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Association Name="Service_Activity" Member="Activities" ThisKey="SVCCode" OtherKey="SVCCode" Type="Activity" />
+      <Association Name="Service_Material" Member="Materials" ThisKey="SVCCode" OtherKey="SVCCode" Type="Material" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SubActivity" Member="SubActivities">
+    <Type Name="SubActivity">
+      <Column Name="SACTCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SACTDesc" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="ACTCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Association Name="Activity_SubActivity" Member="Activity" ThisKey="ACTCode" OtherKey="ACTCode" Type="Activity" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Material" Member="Materials">
+    <Type Name="Material">
+      <Column Name="MaterialCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MaterialDesc" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="Unit" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="EstimatedPrice" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="RealPrice" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="SVCCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="Note" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Association Name="Service_Material" Member="Service" ThisKey="SVCCode" OtherKey="SVCCode" Type="Service" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ActivityCost" Member="ActivityCosts">
+    <Type Name="ActivityCost">
+      <Column Name="ACTCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ACTName" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="Unit" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="LabourCost" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="MaterialCost" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="CC_Equipment" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="CC_Building" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="IndirectCost" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="ProposedCost" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="CurrentCost" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="UnitCost" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="ReferencedCostOrg" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>
