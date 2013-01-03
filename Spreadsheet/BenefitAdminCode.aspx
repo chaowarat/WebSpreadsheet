@@ -5,6 +5,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head id="Head1"  runat="server">
         <title>Benefit Admin Spreadsheet</title>
+
+        <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+        <META HTTP-EQUIV="EXPIRES" CONTENT="0">
+
         <!--Required-->
         <link rel="stylesheet" type="text/css" href="css/page-style.css" />
         <link rel="stylesheet" type="text/css" href="css/jquery.sheet.css" />

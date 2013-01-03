@@ -22,20 +22,22 @@ namespace Spreadsheet
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!Request.IsAuthenticated || !User.Identity.Name.Equals("code"))
-            //{
-            //    Response.Redirect("Main.aspx");
-            //}
-            //else
-            //{
+            if (!Request.IsAuthenticated || !User.Identity.Name.Equals("BenefitAdmin"))
+            {
+                Response.Redirect("Casemanager.aspx");
+            }
+            else
+            {
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 HtmlManager.createHtml(fileName);
-                Label_user.Text = "Welcome " + Session["user"];
-            //}
+                //Label_user.Text = "Welcome " + Session["user"];
+            }
         }
         
         [System.Web.Services.WebMethod]
         public static void SaveData(string data)
         {
+            data = data.Replace("&", "%26");
             HtmlManager.saveHtml(data, staticXmlFileName);
             BenefitAdminDataContext bfAdmin = new BenefitAdminDataContext();
             var allInSvr = from c in bfAdmin.Services select c;
@@ -144,7 +146,7 @@ namespace Spreadsheet
                                 {
                                     bfAdmin.SubmitChanges();
                                 }
-                                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                                catch (Exception) { bfAdmin = new CaseManagerDBDataContext(); }
                             }
                         }
                     }
@@ -184,7 +186,7 @@ namespace Spreadsheet
                                 {
                                     bfAdmin.SubmitChanges();
                                 }
-                                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                                catch (Exception) { bfAdmin = new CaseManagerDBDataContext(); }
                             }
                         }
                     }
@@ -224,7 +226,7 @@ namespace Spreadsheet
                                 {
                                     bfAdmin.SubmitChanges();
                                 }
-                                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                                catch (Exception) { bfAdmin = new CaseManagerDBDataContext(); }
                             }
                         }
                     }
@@ -280,7 +282,7 @@ namespace Spreadsheet
                                 {
                                     bfAdmin.SubmitChanges();
                                 }
-                                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                                catch (Exception) { bfAdmin = new CaseManagerDBDataContext(); }
                             }
                         }
                     }
@@ -362,7 +364,7 @@ namespace Spreadsheet
                     {
                         bfAdmin.SubmitChanges();
                     }
-                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                    catch (Exception) { bfAdmin = new CaseManagerDBDataContext(); }
                 }
                 else if (DropDownListTo.SelectedIndex == 1)
                 {
@@ -372,7 +374,7 @@ namespace Spreadsheet
                     {
                         bfAdmin.SubmitChanges();
                     }
-                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                    catch (Exception) { bfAdmin = new CaseManagerDBDataContext(); }
                 }
                 else if (DropDownListTo.SelectedIndex == 2)
                 {
@@ -382,7 +384,7 @@ namespace Spreadsheet
                     {
                         bfAdmin.SubmitChanges();
                     }
-                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                    catch (Exception) { bfAdmin = new CaseManagerDBDataContext(); }
                 }
                 else
                 {
@@ -392,7 +394,7 @@ namespace Spreadsheet
                     {
                         bfAdmin.SubmitChanges();
                     }
-                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                    catch (Exception) { bfAdmin = new CaseManagerDBDataContext(); }
                 }
             }
                 #endregion
@@ -515,7 +517,7 @@ namespace Spreadsheet
         protected void LinkButton_signOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
-            Response.Redirect("Main.aspx");
+            Response.Redirect("Casemanager.aspx");
         }
 
         protected void ButtonOK_Click(object sender, EventArgs e)
@@ -571,7 +573,7 @@ namespace Spreadsheet
             finally
             {
                 con.Close();
-                //System.IO.File.Delete(fileLocation);
+                System.IO.File.Delete(fileLocation);
             }
         }
 

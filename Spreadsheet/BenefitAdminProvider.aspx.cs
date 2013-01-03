@@ -14,7 +14,7 @@ using System.Data;
 
 namespace Spreadsheet
 {
-    public partial class _Default : System.Web.UI.Page
+    public partial class BenefitAdminProvider : System.Web.UI.Page
     {
         string fileName = "provider.html";
         private static string staticXmlFileName = "provider.xml";
@@ -22,15 +22,15 @@ namespace Spreadsheet
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!User.Identity.IsAuthenticated || !User.Identity.Name.Equals("provider"))
-            //{
-            //    Response.Redirect("Main.aspx");
-            //}
-            //else
-            //{
+            if (!User.Identity.IsAuthenticated || !User.Identity.Name.Equals("ProviderAdmin"))
+            {
+                Response.Redirect("Casemanager.aspx");
+            }
+            else
+            {
                 HtmlManager.createHtml(fileName);
                 Label_user.Text = "Welcome " + Session["user"];
-            //}
+            }
         }
 
         [System.Web.Services.WebMethod]
@@ -43,7 +43,7 @@ namespace Spreadsheet
         protected void LinkButton_signOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
-            Response.Redirect("Main.aspx");
+            Response.Redirect("Casemanager.aspx");
         }
 
     }

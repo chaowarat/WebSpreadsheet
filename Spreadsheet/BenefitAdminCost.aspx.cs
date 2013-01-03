@@ -22,24 +22,34 @@ namespace Spreadsheet
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!Request.IsAuthenticated || !User.Identity.Name.Equals("cost"))
+            //if (!Request.IsAuthenticated || !User.Identity.Name.Equals("CostAdmin"))
             //{
-            //    Response.Redirect("Main.aspx");
+            //    Response.Redirect("Casemanager.aspx");
             //}
             //else
             //{
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 HtmlManager.createHtml(fileName);
-                Label_user.Text = "Welcome " + Session["user"];
+                //Label_user.Text = "Welcome " + Session["user"];
             //}
         }
 
         [System.Web.Services.WebMethod]
         public static void SaveData(string data)
         {
+            data = data.Replace("&", "%26");
             HtmlManager.saveHtml(data, staticXmlFileName);
             BenefitAdminDataContext bfAdmin = new BenefitAdminDataContext();
             var allInAcost = from c in bfAdmin.ActivityCosts select c;
             bfAdmin.ActivityCosts.DeleteAllOnSubmit(allInAcost);
+            try
+            {
+                bfAdmin.SubmitChanges();
+            }
+            catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+
+            var allInAnno = from c in bfAdmin.Annotations select c;
+            bfAdmin.Annotations.DeleteAllOnSubmit(allInAnno);
             try
             {
                 bfAdmin.SubmitChanges();
@@ -53,10 +63,54 @@ namespace Spreadsheet
             while (allDocs.MoveNext())
             {
                 string title = allDocs.Current.GetAttribute("title", "");
-                if (title.Equals("ActivityCost"))
+                if (title.Equals("Annotation"))
                 {
-                    string col0 = "", col1 = "", col2 = "", col3 = "", col4 = "";
-                    string col5 = "", col6 = "", col7 = "", col8 = "", col9 = "", col10 = "", col11 = "";
+                    #region
+                    string col0 = "", col1 = "", col2 = "", col3 = "";
+                    XPathNodeIterator countRowString = allDocs.Current.Select("METADATA/ROWS");
+                    countRowString.MoveNext();
+                    int countRow = Convert.ToInt32(countRowString.Current.Value);
+
+                    XPathNodeIterator rows = allDocs.Current.Select("DATA");
+                    while (rows.MoveNext())
+                    {
+                        for (int i = 1; i < countRow; i++)
+                        {
+                            XPathNodeIterator getCol0 = rows.Current.Select("R" + i + "/C0");
+                            getCol0.MoveNext();
+                            col0 = getCol0.Current.Value;
+                            XPathNodeIterator getCol1 = rows.Current.Select("R" + i + "/C1");
+                            getCol1.MoveNext();
+                            col1 = getCol1.Current.Value;
+                            XPathNodeIterator getCol2 = rows.Current.Select("R" + i + "/C2");
+                            getCol2.MoveNext();
+                            col2 = getCol2.Current.Value;
+                            XPathNodeIterator getCol3 = rows.Current.Select("R" + i + "/C3");
+                            getCol3.MoveNext();
+                            col3 = getCol3.Current.Value;
+                            //insert to DB
+                            if (!col0.Equals(""))
+                            {
+                                Annotation anno = new Annotation();
+                                anno.AID = col0;
+                                anno.AText = col1;
+                                anno.AnnotationID = col2;
+                                anno.Reference = col3;
+
+                                bfAdmin.Annotations.InsertOnSubmit(anno);
+                                try
+                                {
+                                    bfAdmin.SubmitChanges();
+                                }
+                                catch (Exception) { bfAdmin = new CaseManagerDBDataContext(); }
+                            }
+                        }
+                    }
+                    #endregion
+                }
+                else if (title.Equals("ActivityCost"))
+                {
+                    string col0 = "", col1 = "", col2 = "", col3 = "", col4 = "", col5 = "", col6 = "", col7 = "", col8 = "", col9 = "";
                     XPathNodeIterator countRowString = allDocs.Current.Select("METADATA/ROWS");
                     countRowString.MoveNext();
                     int countRow = Convert.ToInt32(countRowString.Current.Value);
@@ -96,28 +150,20 @@ namespace Spreadsheet
                             XPathNodeIterator getCol9 = rows.Current.Select("R" + i + "/C9");
                             getCol9.MoveNext();
                             col9 = getCol9.Current.Value;
-                            XPathNodeIterator getCol10 = rows.Current.Select("R" + i + "/C10");
-                            getCol10.MoveNext();
-                            col10 = getCol10.Current.Value;
-                            XPathNodeIterator getCol11 = rows.Current.Select("R" + i + "/C11");
-                            getCol11.MoveNext();
-                            col11 = getCol11.Current.Value;
                             //insert to DB
                             if (!col0.Equals(""))
                             {
                                 ActivityCost acost = new ActivityCost();
                                 acost.ACTCode = col0;
-                                acost.ACTName = col1;
-                                acost.Unit = col2;
-                                acost.LabourCost = col3;
-                                acost.MaterialCost = col4;
-                                acost.CC_Equipment = col5;
-                                acost.CC_Building = col6;
-                                acost.IndirectCost = col7;
-                                acost.ProposedCost = col8;
-                                acost.CurrentCost = col9;
-                                acost.UnitCost = col10;
-                                acost.ReferencedCostOrg = col11;
+                                acost.Unit = col1;
+                                acost.LabourCost = col2;
+                                acost.MaterialCost = col3;
+                                acost.CC_Equipment = col4;
+                                acost.CC_Building = col5;
+                                acost.IndirectCost = col6;
+                                acost.ProposedCost = col7;
+                                acost.CurrentCost = col8;
+                                acost.ReferencedCostOrg = col9;
                                 bfAdmin.ActivityCosts.InsertOnSubmit(acost);
                                 try
                                 {
@@ -195,43 +241,82 @@ namespace Spreadsheet
             //remove data if radio selected 1
             if (RadioButtonList_type.SelectedIndex == 1) //selecte create new sheet
             {
-                var allInAcost = from c in bfAdmin.ActivityCosts select c;
-                bfAdmin.ActivityCosts.DeleteAllOnSubmit(allInAcost);
-                try
+                if (DropDownListTo.SelectedIndex == 0)
                 {
-                    bfAdmin.SubmitChanges();
+                    var allInAnno = from c in bfAdmin.Annotations select c;
+                    bfAdmin.Annotations.DeleteAllOnSubmit(allInAnno);
+                    try
+                    {
+                        bfAdmin.SubmitChanges();
+                    }
+                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
                 }
-                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                else if (DropDownListTo.SelectedIndex == 1)
+                {
+                    var allInAcost = from c in bfAdmin.ActivityCosts select c;
+                    bfAdmin.ActivityCosts.DeleteAllOnSubmit(allInAcost);
+                    try
+                    {
+                        bfAdmin.SubmitChanges();
+                    }
+                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                } 
             }
-            foreach (DataRow row in data.Rows)
+            if (DropDownListTo.SelectedIndex == 0)
             {
-                ActivityCost act = new ActivityCost();
-                act.ACTCode = row[0].ToString();
-                act.ACTName = row[1].ToString();
-                act.Unit = row[2].ToString();
-                act.LabourCost = row[3].ToString();
-                act.MaterialCost = row[4].ToString();
-                act.CC_Equipment = row[5].ToString();
-                act.CC_Building = row[6].ToString();
-                act.IndirectCost = row[7].ToString();
-                act.ProposedCost = row[8].ToString();
-                act.CurrentCost = row[9].ToString();
-                act.UnitCost = row[10].ToString();
-                act.ReferencedCostOrg = row[11].ToString();
+                foreach (DataRow row in data.Rows)
+                {
+                    Annotation annot = new Annotation();
+                    annot.AID = row[0].ToString();
+                    annot.AText = row[1].ToString();
+                    annot.AnnotationID = row[2].ToString();
+                    annot.Reference = row[3].ToString();
 
-                var Acost = from c in bfAdmin.ActivityCosts where c.ACTCode.ToString().Trim().Equals(row[0].ToString().Trim()) select c;
-                bfAdmin.ActivityCosts.DeleteAllOnSubmit(Acost);
-                try
-                {
-                    bfAdmin.SubmitChanges();
+                    var Annot = from c in bfAdmin.Annotations where c.AID.ToString().Trim().Equals(row[0].ToString().Trim()) select c;
+                    bfAdmin.Annotations.DeleteAllOnSubmit(Annot);
+                    try
+                    {
+                        bfAdmin.SubmitChanges();
+                    }
+                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                    bfAdmin.Annotations.InsertOnSubmit(annot);
+                    try
+                    {
+                        bfAdmin.SubmitChanges();
+                    }
+                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
                 }
-                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
-                bfAdmin.ActivityCosts.InsertOnSubmit(act);
-                try
+            }
+            else if (DropDownListTo.SelectedIndex == 1)
+            {
+                foreach (DataRow row in data.Rows)
                 {
-                    bfAdmin.SubmitChanges();
+                    ActivityCost act = new ActivityCost();
+                    act.ACTCode = row[0].ToString();
+                    act.Unit = row[1].ToString();
+                    act.LabourCost = row[2].ToString();
+                    act.MaterialCost = row[3].ToString();
+                    act.CC_Equipment = row[4].ToString();
+                    act.CC_Building = row[5].ToString();
+                    act.IndirectCost = row[6].ToString();
+                    act.ProposedCost = row[7].ToString();
+                    act.CurrentCost = row[8].ToString();
+                    act.ReferencedCostOrg = row[9].ToString();
+
+                    var Acost = from c in bfAdmin.ActivityCosts where c.ACTCode.ToString().Trim().Equals(row[0].ToString().Trim()) select c;
+                    bfAdmin.ActivityCosts.DeleteAllOnSubmit(Acost);
+                    try
+                    {
+                        bfAdmin.SubmitChanges();
+                    }
+                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                    bfAdmin.ActivityCosts.InsertOnSubmit(act);
+                    try
+                    {
+                        bfAdmin.SubmitChanges();
+                    }
+                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
                 }
-                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
             }
             //refresh page
             Response.Redirect(Request.RawUrl);
@@ -240,7 +325,7 @@ namespace Spreadsheet
         protected void LinkButton_signOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
-            Response.Redirect("Main.aspx");
+            Response.Redirect("Casemanager.aspx");
         }
 
         protected void ButtonOK_Click(object sender, EventArgs e)
@@ -293,6 +378,7 @@ namespace Spreadsheet
             finally
             {
                 con.Close();
+                System.IO.File.Delete(fileLocation);
             }
         }
 

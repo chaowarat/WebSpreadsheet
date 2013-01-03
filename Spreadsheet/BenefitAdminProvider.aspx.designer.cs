@@ -10,7 +10,7 @@
 namespace Spreadsheet {
     
     
-    public partial class _Default {
+    public partial class BenefitAdminProvider {
         
         /// <summary>
         /// Head1 control.

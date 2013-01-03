@@ -51,6 +51,7 @@ namespace Spreadsheet
                 }
                 else if (fileName.Equals("cost.html"))
                 {
+                    h.Write(createAnnotationFromDB());
                     h.Write(createActivityCostFromDB());
                 }
                 else if (fileName.Equals("code.html"))
@@ -70,280 +71,427 @@ namespace Spreadsheet
         {
             FileStream fs = new FileStream(pathSheets + @"/" + fileName, FileMode.Create);
             StreamWriter writer = new StreamWriter(fs, System.Text.Encoding.UTF8);
-            XmlDocument xmlDoc = new XmlDocument();
-            StringReader rdr = new StringReader(data);
-            XPathDocument document = new XPathDocument(rdr);
-            Utf8StringWriter sw = new Utf8StringWriter();
-
-            if (fileName.Equals("cost.xml"))
+            if (fileName.Split('.')[1].Equals("xml"))
             {
-                #region
-                XPathNavigator navigator = document.CreateNavigator();
-                XPathNodeIterator allDocs = navigator.Select("DOCUMENTS/DOCUMENT/DATA");
-                XPathNodeIterator row = navigator.Select("DOCUMENTS/DOCUMENT/METADATA/ROWS");
-                row.MoveNext();
-                int countRow = Convert.ToInt32(row.Current.Value);
-                xmlDoc = new XmlDocument();
-                XmlElement root = xmlDoc.CreateElement("ActivityCost");
-                xmlDoc.AppendChild(root);
+                XmlDocument xmlDoc = new XmlDocument();
+                StringReader rdr = new StringReader(data);
+                XPathDocument document = new XPathDocument(rdr);
+                Utf8StringWriter sw = new Utf8StringWriter();
 
-                while (allDocs.MoveNext())
-                {   
-                    for (int i = 1; i < countRow; i++)
-                    {
-                        XmlElement list = xmlDoc.CreateElement("DATA");
-                        root.AppendChild(list);
-
-                        XPathNodeIterator getCol0 = allDocs.Current.Select("R" + i + "/C0");
-                        getCol0.MoveNext();
-                        XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
-                        ACTCode.InnerText = getCol0.Current.Value.Trim();
-                        list.AppendChild(ACTCode);
-
-                        XPathNodeIterator getCol1 = allDocs.Current.Select("R" + i + "/C1");
-                        getCol1.MoveNext();
-                        XmlElement ACTName = xmlDoc.CreateElement("ACTName");
-                        ACTName.InnerText = getCol1.Current.Value.Trim();
-                        list.AppendChild(ACTName);
-
-                        XPathNodeIterator getCol2 = allDocs.Current.Select("R" + i + "/C2");
-                        getCol2.MoveNext();
-                        XmlElement Unit = xmlDoc.CreateElement("Unit");
-                        Unit.InnerText = getCol2.Current.Value.Trim();
-                        list.AppendChild(Unit);
-
-                        XPathNodeIterator getCol3 = allDocs.Current.Select("R" + i + "/C3");
-                        getCol3.MoveNext();
-                        XmlElement LabourCost = xmlDoc.CreateElement("LabourCost");
-                        LabourCost.InnerText = getCol3.Current.Value.Trim();
-                        list.AppendChild(LabourCost);
-
-                        XPathNodeIterator getCol4 = allDocs.Current.Select("R" + i + "/C4");
-                        getCol4.MoveNext();
-                        XmlElement MaterialCost = xmlDoc.CreateElement("MaterialCost");
-                        MaterialCost.InnerText = getCol4.Current.Value.Trim();
-                        list.AppendChild(MaterialCost);
-
-                        XPathNodeIterator getCol5 = allDocs.Current.Select("R" + i + "/C5");
-                        getCol5.MoveNext();
-                        XmlElement CC_Equipment = xmlDoc.CreateElement("CC_Equipment");
-                        CC_Equipment.InnerText = getCol5.Current.Value.Trim();
-                        list.AppendChild(CC_Equipment);
-
-                        XPathNodeIterator getCol6 = allDocs.Current.Select("R" + i + "/C6");
-                        getCol6.MoveNext();
-                        XmlElement CC_Building = xmlDoc.CreateElement("CC_Building");
-                        CC_Building.InnerText = getCol6.Current.Value.Trim();
-                        list.AppendChild(CC_Building);
-
-                        XPathNodeIterator getCol7 = allDocs.Current.Select("R" + i + "/C7");
-                        getCol7.MoveNext();
-                        XmlElement IndirectCost = xmlDoc.CreateElement("IndirectCost");
-                        IndirectCost.InnerText = getCol7.Current.Value.Trim();
-                        list.AppendChild(IndirectCost);
-
-                        XPathNodeIterator getCol8 = allDocs.Current.Select("R" + i + "/C8");
-                        getCol8.MoveNext();
-                        XmlElement ProposedCost = xmlDoc.CreateElement("ProposedCost");
-                        ProposedCost.InnerText = getCol8.Current.Value.Trim();
-                        list.AppendChild(ProposedCost);
-
-                        XPathNodeIterator getCol9 = allDocs.Current.Select("R" + i + "/C9");
-                        getCol9.MoveNext();
-                        XmlElement CurrentCost = xmlDoc.CreateElement("CurrentCost");
-                        CurrentCost.InnerText = getCol9.Current.Value.Trim();
-                        list.AppendChild(CurrentCost);
-
-                        XPathNodeIterator getCol10 = allDocs.Current.Select("R" + i + "/C10");
-                        getCol10.MoveNext();
-                        XmlElement UnitCost = xmlDoc.CreateElement("UnitCost");
-                        UnitCost.InnerText = getCol10.Current.Value.Trim();
-                        list.AppendChild(UnitCost);
-
-                        XPathNodeIterator getCol11 = allDocs.Current.Select("R" + i + "/C11");
-                        getCol11.MoveNext();
-                        XmlElement ReferencedCostOrg = xmlDoc.CreateElement("ReferencedCostOrg");
-                        ReferencedCostOrg.InnerText = getCol11.Current.Value.Trim();
-                        list.AppendChild(ReferencedCostOrg);
-                    }
-                }
-                #endregion
-            }
-            else if (fileName.Equals("code.xml"))
-            {
-                XPathNavigator navigator = document.CreateNavigator();
-                XPathNodeIterator allDocs = navigator.Select("DOCUMENTS/DOCUMENT");
-                XmlElement root = xmlDoc.CreateElement("CODE");
-                xmlDoc.AppendChild(root);
-                while (allDocs.MoveNext())
+                try
                 {
-                    string table = allDocs.Current.GetAttribute("title", "");
-                    if (table.Equals("Service"))
+                    if (fileName.Equals("cost.xml"))
                     {
                         #region
-                        XPathNodeIterator row = navigator.Select("DOCUMENTS/DOCUMENT[@title='Service']/METADATA/ROWS");
-                        row.MoveNext();
-                        int countRow = Convert.ToInt32(row.Current.Value);
-                        //xmlDoc = new XmlDocument();
-                        XmlElement root2 = xmlDoc.CreateElement("Service");
-                        root.AppendChild(root2);
-                        XPathNodeIterator inDocs = navigator.Select("DOCUMENTS/DOCUMENT[@title='Service']/DATA");
-                        while (inDocs.MoveNext())
+                        XPathNavigator navigator = document.CreateNavigator();
+                        XPathNodeIterator allDocs = navigator.Select("DOCUMENTS/DOCUMENT");
+                        XmlElement root = xmlDoc.CreateElement("COST");
+                        xmlDoc.AppendChild(root);
+                        while (allDocs.MoveNext())
                         {
-                            for (int i = 1; i < countRow; i++)
+                            string table = allDocs.Current.GetAttribute("title", "");
+                            if (table.Equals("Annotation"))
                             {
-                                XmlElement list = xmlDoc.CreateElement("DATA");
-                                root2.AppendChild(list);
+                                #region
+                                XPathNodeIterator row = navigator.Select("DOCUMENTS/DOCUMENT[@title='Annotation']/METADATA/ROWS");
+                                row.MoveNext();
+                                int countRow = Convert.ToInt32(row.Current.Value);
+                                XmlElement root2 = xmlDoc.CreateElement("Annotation");
+                                root.AppendChild(root2);
+                                XPathNodeIterator inDocs = navigator.Select("DOCUMENTS/DOCUMENT[@title='Annotation']/DATA");
+                                while (inDocs.MoveNext())
+                                {
+                                    for (int i = 1; i < countRow; i++)
+                                    {
+                                        XmlElement list = xmlDoc.CreateElement("DATA");
+                                        root2.AppendChild(list);
 
-                                XPathNodeIterator getCol0 = inDocs.Current.Select("R" + i + "/C0");
-                                getCol0.MoveNext();
-                                XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
-                                SVCCode.InnerText = getCol0.Current.Value.Trim();
-                                list.AppendChild(SVCCode);
+                                        XPathNodeIterator getCol0 = inDocs.Current.Select("R" + i + "/C0");
+                                        getCol0.MoveNext();
+                                        XmlElement AID = xmlDoc.CreateElement("AID");
+                                        AID.InnerText = getCol0.Current.Value.Trim();
+                                        list.AppendChild(AID);
 
-                                XPathNodeIterator getCol1 = inDocs.Current.Select("R" + i + "/C1");
-                                getCol1.MoveNext();
-                                XmlElement SVCName = xmlDoc.CreateElement("SVCName");
-                                SVCName.InnerText = getCol1.Current.Value.Trim();
-                                list.AppendChild(SVCName);
+                                        XPathNodeIterator getCol1 = inDocs.Current.Select("R" + i + "/C1");
+                                        getCol1.MoveNext();
+                                        XmlElement AText = xmlDoc.CreateElement("AText");
+                                        AText.InnerText = getCol1.Current.Value.Trim();
+                                        list.AppendChild(AText);
 
-                                XPathNodeIterator getCol2 = inDocs.Current.Select("R" + i + "/C2");
-                                getCol2.MoveNext();
-                                XmlElement SVCDesc = xmlDoc.CreateElement("SVCDesc");
-                                SVCDesc.InnerText = getCol2.Current.Value.Trim();
-                                list.AppendChild(SVCDesc);
+                                        XPathNodeIterator getCol2 = inDocs.Current.Select("R" + i + "/C2");
+                                        getCol2.MoveNext();
+                                        XmlElement AnnotationID = xmlDoc.CreateElement("AnnotationID");
+                                        AnnotationID.InnerText = getCol2.Current.Value.Trim();
+                                        list.AppendChild(AnnotationID);
 
-                                XPathNodeIterator getCol3 = inDocs.Current.Select("R" + i + "/C3");
-                                getCol3.MoveNext();
-                                XmlElement HostCode = xmlDoc.CreateElement("HostCode");
-                                HostCode.InnerText = getCol3.Current.Value.Trim();
-                                list.AppendChild(HostCode);
+                                        XPathNodeIterator getCol3 = inDocs.Current.Select("R" + i + "/C3");
+                                        getCol3.MoveNext();
+                                        XmlElement Reference = xmlDoc.CreateElement("Reference");
+                                        Reference.InnerText = getCol3.Current.Value.Trim();
+                                        list.AppendChild(Reference);
+                                    }
+                                }
+                                #endregion
+                            }
+                            else if (table.Equals("ActivityCost"))
+                            {
+                                #region
+                                XPathNodeIterator row = navigator.Select("DOCUMENTS/DOCUMENT[@title='ActivityCost']/METADATA/ROWS");
+                                row.MoveNext();
+                                int countRow = Convert.ToInt32(row.Current.Value);
+                                XmlElement root2 = xmlDoc.CreateElement("ActivityCost");
+                                root.AppendChild(root2);
+                                XPathNodeIterator inDocs = navigator.Select("DOCUMENTS/DOCUMENT[@title='ActivityCost']/DATA");
+                                while (inDocs.MoveNext())
+                                {
+                                    for (int i = 1; i < countRow; i++)
+                                    {
+                                        XmlElement list = xmlDoc.CreateElement("DATA");
+                                        root2.AppendChild(list);
 
-                                XPathNodeIterator getCol4 = inDocs.Current.Select("R" + i + "/C4");
-                                getCol4.MoveNext();
-                                XmlElement StaffRole = xmlDoc.CreateElement("StaffRole");
-                                StaffRole.InnerText = getCol4.Current.Value.Trim();
-                                list.AppendChild(StaffRole);
+                                        XPathNodeIterator getCol0 = inDocs.Current.Select("R" + i + "/C0");
+                                        getCol0.MoveNext();
+                                        XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
+                                        ACTCode.InnerText = getCol0.Current.Value.Trim();
+                                        list.AppendChild(ACTCode);
 
-                                XPathNodeIterator getCol5 = inDocs.Current.Select("R" + i + "/C5");
-                                getCol5.MoveNext();
-                                XmlElement SVCType = xmlDoc.CreateElement("SVCType");
-                                SVCType.InnerText = getCol5.Current.Value.Trim();
-                                list.AppendChild(SVCType);
+                                        XPathNodeIterator getCol1 = inDocs.Current.Select("R" + i + "/C1");
+                                        getCol1.MoveNext();
+                                        XmlElement Unit = xmlDoc.CreateElement("Unit");
+                                        Unit.InnerText = getCol1.Current.Value.Trim();
+                                        list.AppendChild(Unit);
 
-                                XPathNodeIterator getCol6 = inDocs.Current.Select("R" + i + "/C6");
-                                getCol6.MoveNext();
-                                XmlElement SVCObjective = xmlDoc.CreateElement("SVCObjective");
-                                SVCObjective.InnerText = getCol6.Current.Value.Trim();
-                                list.AppendChild(SVCObjective);
+                                        XPathNodeIterator getCol2 = inDocs.Current.Select("R" + i + "/C2");
+                                        getCol2.MoveNext();
+                                        XmlElement LabourCost = xmlDoc.CreateElement("LabourCost");
+                                        LabourCost.InnerText = getCol2.Current.Value.Trim();
+                                        list.AppendChild(LabourCost);
 
-                                XPathNodeIterator getCol7 = inDocs.Current.Select("R" + i + "/C7");
-                                getCol7.MoveNext();
-                                XmlElement SVCSupport = xmlDoc.CreateElement("SVCSupport");
-                                SVCSupport.InnerText = getCol7.Current.Value.Trim();
-                                list.AppendChild(SVCSupport);
+                                        XPathNodeIterator getCol3 = inDocs.Current.Select("R" + i + "/C3");
+                                        getCol3.MoveNext();
+                                        XmlElement MaterialCost = xmlDoc.CreateElement("MaterialCost");
+                                        MaterialCost.InnerText = getCol3.Current.Value.Trim();
+                                        list.AppendChild(MaterialCost);
 
-                                XPathNodeIterator getCol8 = inDocs.Current.Select("R" + i + "/C8");
-                                getCol8.MoveNext();
-                                XmlElement SVCCoverage = xmlDoc.CreateElement("SVCCoverage");
-                                SVCCoverage.InnerText = getCol8.Current.Value.Trim();
-                                list.AppendChild(SVCCoverage);
+                                        XPathNodeIterator getCol4 = inDocs.Current.Select("R" + i + "/C4");
+                                        getCol4.MoveNext();
+                                        XmlElement CC_Equipment = xmlDoc.CreateElement("CC_Equipment");
+                                        CC_Equipment.InnerText = getCol4.Current.Value.Trim();
+                                        list.AppendChild(CC_Equipment);
 
-                                XPathNodeIterator getCol9 = inDocs.Current.Select("R" + i + "/C9");
-                                getCol9.MoveNext();
-                                XmlElement SVCStart = xmlDoc.CreateElement("SVCStart");
-                                SVCStart.InnerText = getCol9.Current.Value.Trim();
-                                list.AppendChild(SVCStart);
+                                        XPathNodeIterator getCol5 = inDocs.Current.Select("R" + i + "/C5");
+                                        getCol5.MoveNext();
+                                        XmlElement CC_Building = xmlDoc.CreateElement("CC_Building");
+                                        CC_Building.InnerText = getCol5.Current.Value.Trim();
+                                        list.AppendChild(CC_Building);
 
-                                XPathNodeIterator getCol10 = inDocs.Current.Select("R" + i + "/C10");
-                                getCol10.MoveNext();
-                                XmlElement SVCEnd = xmlDoc.CreateElement("SVCEnd");
-                                SVCEnd.InnerText = getCol10.Current.Value.Trim();
-                                list.AppendChild(SVCEnd);
+                                        XPathNodeIterator getCol6 = inDocs.Current.Select("R" + i + "/C6");
+                                        getCol6.MoveNext();
+                                        XmlElement IndirectCost = xmlDoc.CreateElement("IndirectCost");
+                                        IndirectCost.InnerText = getCol6.Current.Value.Trim();
+                                        list.AppendChild(IndirectCost);
+
+                                        XPathNodeIterator getCol7 = inDocs.Current.Select("R" + i + "/C7");
+                                        getCol7.MoveNext();
+                                        XmlElement ProposedCost = xmlDoc.CreateElement("ProposedCost");
+                                        ProposedCost.InnerText = getCol7.Current.Value.Trim();
+                                        list.AppendChild(ProposedCost);
+
+                                        XPathNodeIterator getCol8 = inDocs.Current.Select("R" + i + "/C8");
+                                        getCol8.MoveNext();
+                                        XmlElement CurrentCost = xmlDoc.CreateElement("CurrentCost");
+                                        CurrentCost.InnerText = getCol8.Current.Value.Trim();
+                                        list.AppendChild(CurrentCost);
+
+                                        XPathNodeIterator getCol9 = inDocs.Current.Select("R" + i + "/C9");
+                                        getCol9.MoveNext();
+                                        XmlElement UnitCost = xmlDoc.CreateElement("UnitCost");
+                                        UnitCost.InnerText = getCol9.Current.Value.Trim();
+                                        list.AppendChild(UnitCost);
+
+                                        XPathNodeIterator getCol10 = inDocs.Current.Select("R" + i + "/C10");
+                                        getCol10.MoveNext();
+                                        XmlElement ReferencedCostOrg = xmlDoc.CreateElement("ReferencedCostOrg");
+                                        ReferencedCostOrg.InnerText = getCol10.Current.Value.Trim();
+                                        list.AppendChild(ReferencedCostOrg);
+
+                                        XPathNodeIterator getCol11 = inDocs.Current.Select("R" + i + "/C11");
+                                        getCol11.MoveNext();
+                                        XmlElement TimsStamp = xmlDoc.CreateElement("TimsStamp");
+                                        TimsStamp.InnerText = getCol11.Current.Value.Trim();
+                                        list.AppendChild(TimsStamp);
+
+                                        XPathNodeIterator getCol12 = inDocs.Current.Select("R" + i + "/C12");
+                                        getCol12.MoveNext();
+                                        XmlElement AID = xmlDoc.CreateElement("AID");
+                                        AID.InnerText = getCol12.Current.Value.Trim();
+                                        list.AppendChild(AID);
+                                    }
+                                }
+                                #endregion
                             }
                         }
                         #endregion
                     }
-                    else if (table.Equals("Activity"))
+                    else if (fileName.Equals("code.xml"))
                     {
                         #region
-                        XPathNodeIterator row = navigator.Select("DOCUMENTS/DOCUMENT[@title='Activity']/METADATA/ROWS");
-                        row.MoveNext();
-                        int countRow = Convert.ToInt32(row.Current.Value);
-                        XmlElement root2 = xmlDoc.CreateElement("Activity");
-                        root.AppendChild(root2);
-                        XPathNodeIterator inDocs = navigator.Select("DOCUMENTS/DOCUMENT[@title='Activity']/DATA");
-                        while (inDocs.MoveNext())
+                        XPathNavigator navigator = document.CreateNavigator();
+                        XPathNodeIterator allDocs = navigator.Select("DOCUMENTS/DOCUMENT");
+                        XmlElement root = xmlDoc.CreateElement("CODE");
+                        xmlDoc.AppendChild(root);
+                        while (allDocs.MoveNext())
                         {
-                            for (int i = 1; i < countRow; i++)
+                            string table = allDocs.Current.GetAttribute("title", "");
+                            if (table.Equals("Service"))
                             {
-                                XmlElement list = xmlDoc.CreateElement("DATA");
-                                root2.AppendChild(list);
+                                #region
+                                XPathNodeIterator row = navigator.Select("DOCUMENTS/DOCUMENT[@title='Service']/METADATA/ROWS");
+                                row.MoveNext();
+                                int countRow = Convert.ToInt32(row.Current.Value);
+                                //xmlDoc = new XmlDocument();
+                                XmlElement root2 = xmlDoc.CreateElement("Service");
+                                root.AppendChild(root2);
+                                XPathNodeIterator inDocs = navigator.Select("DOCUMENTS/DOCUMENT[@title='Service']/DATA");
+                                while (inDocs.MoveNext())
+                                {
+                                    for (int i = 1; i < countRow; i++)
+                                    {
+                                        XmlElement list = xmlDoc.CreateElement("DATA");
+                                        root2.AppendChild(list);
 
-                                XPathNodeIterator getCol0 = inDocs.Current.Select("R" + i + "/C0");
-                                getCol0.MoveNext();
-                                XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
-                                ACTCode.InnerText = getCol0.Current.Value.Trim();
-                                list.AppendChild(ACTCode);
+                                        XPathNodeIterator getCol0 = inDocs.Current.Select("R" + i + "/C0");
+                                        getCol0.MoveNext();
+                                        XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
+                                        SVCCode.InnerText = getCol0.Current.Value.Trim();
+                                        list.AppendChild(SVCCode);
 
-                                XPathNodeIterator getCol1 = inDocs.Current.Select("R" + i + "/C1");
-                                getCol1.MoveNext();
-                                XmlElement ACTDes = xmlDoc.CreateElement("ACTDest");
-                                ACTDes.InnerText = getCol1.Current.Value.Trim();
-                                list.AppendChild(ACTDes);
+                                        XPathNodeIterator getCol1 = inDocs.Current.Select("R" + i + "/C1");
+                                        getCol1.MoveNext();
+                                        XmlElement SVCName = xmlDoc.CreateElement("SVCName");
+                                        SVCName.InnerText = getCol1.Current.Value.Trim();
+                                        list.AppendChild(SVCName);
 
-                                XPathNodeIterator getCol2 = inDocs.Current.Select("R" + i + "/C2");
-                                getCol2.MoveNext();
-                                XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
-                                SVCCode.InnerText = getCol2.Current.Value.Trim();
-                                list.AppendChild(SVCCode);
+                                        XPathNodeIterator getCol2 = inDocs.Current.Select("R" + i + "/C2");
+                                        getCol2.MoveNext();
+                                        XmlElement SVCDesc = xmlDoc.CreateElement("SVCDesc");
+                                        SVCDesc.InnerText = getCol2.Current.Value.Trim();
+                                        list.AppendChild(SVCDesc);
+
+                                        XPathNodeIterator getCol3 = inDocs.Current.Select("R" + i + "/C3");
+                                        getCol3.MoveNext();
+                                        XmlElement HostCode = xmlDoc.CreateElement("HostCode");
+                                        HostCode.InnerText = getCol3.Current.Value.Trim();
+                                        list.AppendChild(HostCode);
+
+                                        XPathNodeIterator getCol4 = inDocs.Current.Select("R" + i + "/C4");
+                                        getCol4.MoveNext();
+                                        XmlElement StaffRole = xmlDoc.CreateElement("StaffRole");
+                                        StaffRole.InnerText = getCol4.Current.Value.Trim();
+                                        list.AppendChild(StaffRole);
+
+                                        XPathNodeIterator getCol5 = inDocs.Current.Select("R" + i + "/C5");
+                                        getCol5.MoveNext();
+                                        XmlElement SVCType = xmlDoc.CreateElement("SVCType");
+                                        SVCType.InnerText = getCol5.Current.Value.Trim();
+                                        list.AppendChild(SVCType);
+
+                                        XPathNodeIterator getCol6 = inDocs.Current.Select("R" + i + "/C6");
+                                        getCol6.MoveNext();
+                                        XmlElement SVCObjective = xmlDoc.CreateElement("SVCObjective");
+                                        SVCObjective.InnerText = getCol6.Current.Value.Trim();
+                                        list.AppendChild(SVCObjective);
+
+                                        XPathNodeIterator getCol7 = inDocs.Current.Select("R" + i + "/C7");
+                                        getCol7.MoveNext();
+                                        XmlElement SVCSupport = xmlDoc.CreateElement("SVCSupport");
+                                        SVCSupport.InnerText = getCol7.Current.Value.Trim();
+                                        list.AppendChild(SVCSupport);
+
+                                        XPathNodeIterator getCol8 = inDocs.Current.Select("R" + i + "/C8");
+                                        getCol8.MoveNext();
+                                        XmlElement SVCCoverage = xmlDoc.CreateElement("SVCCoverage");
+                                        SVCCoverage.InnerText = getCol8.Current.Value.Trim();
+                                        list.AppendChild(SVCCoverage);
+
+                                        XPathNodeIterator getCol9 = inDocs.Current.Select("R" + i + "/C9");
+                                        getCol9.MoveNext();
+                                        XmlElement SVCStart = xmlDoc.CreateElement("SVCStart");
+                                        SVCStart.InnerText = getCol9.Current.Value.Trim();
+                                        list.AppendChild(SVCStart);
+
+                                        XPathNodeIterator getCol10 = inDocs.Current.Select("R" + i + "/C10");
+                                        getCol10.MoveNext();
+                                        XmlElement SVCEnd = xmlDoc.CreateElement("SVCEnd");
+                                        SVCEnd.InnerText = getCol10.Current.Value.Trim();
+                                        list.AppendChild(SVCEnd);
+                                    }
+                                }
+                                #endregion
+                            }
+                            else if (table.Equals("Activity"))
+                            {
+                                #region
+                                XPathNodeIterator row = navigator.Select("DOCUMENTS/DOCUMENT[@title='Activity']/METADATA/ROWS");
+                                row.MoveNext();
+                                int countRow = Convert.ToInt32(row.Current.Value);
+                                XmlElement root2 = xmlDoc.CreateElement("Activity");
+                                root.AppendChild(root2);
+                                XPathNodeIterator inDocs = navigator.Select("DOCUMENTS/DOCUMENT[@title='Activity']/DATA");
+                                while (inDocs.MoveNext())
+                                {
+                                    for (int i = 1; i < countRow; i++)
+                                    {
+                                        XmlElement list = xmlDoc.CreateElement("DATA");
+                                        root2.AppendChild(list);
+
+                                        XPathNodeIterator getCol0 = inDocs.Current.Select("R" + i + "/C0");
+                                        getCol0.MoveNext();
+                                        XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
+                                        ACTCode.InnerText = getCol0.Current.Value.Trim();
+                                        list.AppendChild(ACTCode);
+
+                                        XPathNodeIterator getCol1 = inDocs.Current.Select("R" + i + "/C1");
+                                        getCol1.MoveNext();
+                                        XmlElement ACTDes = xmlDoc.CreateElement("ACTDest");
+                                        ACTDes.InnerText = getCol1.Current.Value.Trim();
+                                        list.AppendChild(ACTDes);
+
+                                        XPathNodeIterator getCol2 = inDocs.Current.Select("R" + i + "/C2");
+                                        getCol2.MoveNext();
+                                        XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
+                                        SVCCode.InnerText = getCol2.Current.Value.Trim();
+                                        list.AppendChild(SVCCode);
+                                    }
+                                }
+                                #endregion
+                            }
+                            else if (table.Equals("SubActivity"))
+                            {
+                                #region
+                                XPathNodeIterator row = navigator.Select("DOCUMENTS/DOCUMENT[@title='SubActivity']/METADATA/ROWS");
+                                row.MoveNext();
+                                int countRow = Convert.ToInt32(row.Current.Value);
+                                XmlElement root2 = xmlDoc.CreateElement("SubActivity");
+                                root.AppendChild(root2);
+                                XPathNodeIterator inDocs = navigator.Select("DOCUMENTS/DOCUMENT[@title='SubActivity']/DATA");
+                                while (inDocs.MoveNext())
+                                {
+                                    for (int i = 1; i < countRow; i++)
+                                    {
+                                        XmlElement list = xmlDoc.CreateElement("DATA");
+                                        root2.AppendChild(list);
+
+                                        XPathNodeIterator getCol0 = inDocs.Current.Select("R" + i + "/C0");
+                                        getCol0.MoveNext();
+                                        XmlElement SACTCode = xmlDoc.CreateElement("SACTCode");
+                                        SACTCode.InnerText = getCol0.Current.Value.Trim();
+                                        list.AppendChild(SACTCode);
+
+                                        XPathNodeIterator getCol1 = inDocs.Current.Select("R" + i + "/C1");
+                                        getCol1.MoveNext();
+                                        XmlElement SACTDes = xmlDoc.CreateElement("SACTDest");
+                                        SACTDes.InnerText = getCol1.Current.Value.Trim();
+                                        list.AppendChild(SACTDes);
+
+                                        XPathNodeIterator getCol2 = inDocs.Current.Select("R" + i + "/C2");
+                                        getCol2.MoveNext();
+                                        XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
+                                        ACTCode.InnerText = getCol2.Current.Value.Trim();
+                                        list.AppendChild(ACTCode);
+                                    }
+                                }
+                                #endregion
+                            }
+                            else if (table.Equals("Material"))
+                            {
+                                #region
+                                XPathNodeIterator row = navigator.Select("DOCUMENTS/DOCUMENT[@title='Material']/METADATA/ROWS");
+                                row.MoveNext();
+                                int countRow = Convert.ToInt32(row.Current.Value);
+                                XmlElement root2 = xmlDoc.CreateElement("Material");
+                                root.AppendChild(root2);
+                                XPathNodeIterator inDocs = navigator.Select("DOCUMENTS/DOCUMENT[@title='Material']/DATA");
+                                while (inDocs.MoveNext())
+                                {
+                                    for (int i = 1; i < countRow; i++)
+                                    {
+                                        XmlElement list = xmlDoc.CreateElement("DATA");
+                                        root2.AppendChild(list);
+
+                                        XPathNodeIterator getCol0 = inDocs.Current.Select("R" + i + "/C0");
+                                        getCol0.MoveNext();
+                                        XmlElement MaterialCode = xmlDoc.CreateElement("MaterialCode");
+                                        MaterialCode.InnerText = getCol0.Current.Value.Trim();
+                                        list.AppendChild(MaterialCode);
+
+                                        XPathNodeIterator getCol1 = inDocs.Current.Select("R" + i + "/C1");
+                                        getCol1.MoveNext();
+                                        XmlElement MaterialDesc = xmlDoc.CreateElement("MaterialDesc");
+                                        MaterialDesc.InnerText = getCol1.Current.Value.Trim();
+                                        list.AppendChild(MaterialDesc);
+
+                                        XPathNodeIterator getCol2 = inDocs.Current.Select("R" + i + "/C2");
+                                        getCol2.MoveNext();
+                                        XmlElement Unit = xmlDoc.CreateElement("Unit");
+                                        Unit.InnerText = getCol2.Current.Value.Trim();
+                                        list.AppendChild(Unit);
+
+                                        XPathNodeIterator getCol3 = inDocs.Current.Select("R" + i + "/C3");
+                                        getCol3.MoveNext();
+                                        XmlElement EstimatedPrice = xmlDoc.CreateElement("EstimatedPrice");
+                                        EstimatedPrice.InnerText = getCol3.Current.Value.Trim();
+                                        list.AppendChild(EstimatedPrice);
+
+                                        XPathNodeIterator getCol4 = inDocs.Current.Select("R" + i + "/C4");
+                                        getCol4.MoveNext();
+                                        XmlElement RealPrice = xmlDoc.CreateElement("RealPrice");
+                                        RealPrice.InnerText = getCol4.Current.Value.Trim();
+                                        list.AppendChild(RealPrice);
+
+                                        XPathNodeIterator getCol5 = inDocs.Current.Select("R" + i + "/C5");
+                                        getCol5.MoveNext();
+                                        XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
+                                        SVCCode.InnerText = getCol5.Current.Value.Trim();
+                                        list.AppendChild(SVCCode);
+
+                                        XPathNodeIterator getCol6 = inDocs.Current.Select("R" + i + "/C6");
+                                        getCol6.MoveNext();
+                                        XmlElement Note = xmlDoc.CreateElement("Note");
+                                        Note.InnerText = getCol6.Current.Value.Trim();
+                                        list.AppendChild(Note);
+                                    }
+                                }
+                                #endregion
                             }
                         }
                         #endregion
                     }
-                    else if (table.Equals("SubActivity"))
-                    {
-                        #region
-                        XPathNodeIterator row = navigator.Select("DOCUMENTS/DOCUMENT[@title='SubActivity']/METADATA/ROWS");
-                        row.MoveNext();
-                        int countRow = Convert.ToInt32(row.Current.Value);
-                        XmlElement root2 = xmlDoc.CreateElement("SubActivity");
-                        root.AppendChild(root2);
-                        XPathNodeIterator inDocs = navigator.Select("DOCUMENTS/DOCUMENT[@title='SubActivity']/DATA");
-                        while (inDocs.MoveNext())
-                        {
-                            for (int i = 1; i < countRow; i++)
-                            {
-                                XmlElement list = xmlDoc.CreateElement("DATA");
-                                root2.AppendChild(list);
-
-                                XPathNodeIterator getCol0 = inDocs.Current.Select("R" + i + "/C0");
-                                getCol0.MoveNext();
-                                XmlElement SACTCode = xmlDoc.CreateElement("SACTCode");
-                                SACTCode.InnerText = getCol0.Current.Value.Trim();
-                                list.AppendChild(SACTCode);
-
-                                XPathNodeIterator getCol1 = inDocs.Current.Select("R" + i + "/C1");
-                                getCol1.MoveNext();
-                                XmlElement SACTDes = xmlDoc.CreateElement("SACTDest");
-                                SACTDes.InnerText = getCol1.Current.Value.Trim();
-                                list.AppendChild(SACTDes);
-
-                                XPathNodeIterator getCol2 = inDocs.Current.Select("R" + i + "/C2");
-                                getCol2.MoveNext();
-                                XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
-                                ACTCode.InnerText = getCol2.Current.Value.Trim();
-                                list.AppendChild(ACTCode);
-                            }
-                        }
-                        #endregion
-                    }
+                    xmlDoc.Save(sw);
+                    writer.Write(sw);
+                    writer.Close();
+                    fs.Close();
+                }
+                catch (Exception)
+                {
+                    writer.Close();
+                    fs.Close();
                 }
             }
-            xmlDoc.Save(sw);
-            writer.Write(sw);
-            writer.Close();
-            fs.Close();
+            else
+            {
+                try
+                {
+                    writer.Write(data);
+                    writer.Close();
+                    fs.Close();
+                }
+                catch (Exception)
+                {
+                    writer.Close();
+                    fs.Close();
+                }
+            }
         }
 
         private static void initFile()
@@ -503,7 +651,7 @@ namespace Spreadsheet
 
         private static XElement createActivityCostFromDB()
         {
-            countCol = 12;
+            countCol = 13;
             var acost = from m in bfAdmin.ActivityCosts select m;
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
@@ -528,10 +676,6 @@ namespace Spreadsheet
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
                               "ACTCode"),
-                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
-                              new XAttribute("class", "styleBold styleCenter"),
-                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "ACTName"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
@@ -564,31 +708,96 @@ namespace Spreadsheet
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
                               "CurrentCost"),
-                         new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
-                              new XAttribute("class", "styleBold styleCenter"),
-                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "UnitCost"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "ReferencedCostOrg"));
+                              "UnitCost"),
+                         new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "ReferencedCostOrg"),
+                         new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "TimsStamp"),
+                         new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "AID"));
             #endregion
             TBody.Add(td);
             foreach (var a in acost)
             {
                 td = new XElement("TR", new XAttribute("style", "height: 25px;"),
                      new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count), a.ACTCode),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + count), a.ACTName),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), a.Unit),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), a.LabourCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c4_r" + count), a.MaterialCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + count), a.CC_Equipment),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + count), a.CC_Building),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c7_r" + count), a.IndirectCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), a.ProposedCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c9_r" + count), a.CurrentCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), a.UnitCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c11_r" + count), a.ReferencedCostOrg));
+                     new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + count), a.Unit),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), a.LabourCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), a.MaterialCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c4_r" + count), a.CC_Equipment),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + count), a.CC_Building),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + count), a.IndirectCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c7_r" + count), a.ProposedCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), a.CurrentCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c9_r" + count), a.UnitCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), a.ReferencedCostOrg),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c11_r" + count), a.TimsStamp),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c12_r" + count), a.AID));
+                TBody.Add(td);
+                count++;
+            }
+            herdtable.Add(countrow);
+            herdtable.Add(TBody);
+            return herdtable;
+        }
+
+        private static XElement createAnnotationFromDB()
+        {
+            countCol = 4;
+            var annot = from m in bfAdmin.Annotations select m;
+            XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
+                      new XAttribute("cellspacing", 0),
+                      new XAttribute("cellpadding", 0),
+                      new XAttribute("border", border),
+                      new XAttribute("id", id),
+                      new XAttribute("class", classsheet),
+                      new XAttribute("title", "Annotation")
+                     );
+            XElement countrow = new XElement("COLOGROUP");
+            for (int i = 0; i < countCol; i++)
+            {
+                XElement countrow2 = new XElement("COL", new XAttribute("width", 100), new XAttribute("style", "width: 130px;"));
+                countrow.Add(countrow2);
+            }
+            int count = 0;
+            XElement TBody = new XElement("TBODY");
+            //insert header in first column
+            #region
+            XElement td = new XElement("TR", new XAttribute("style", "height: 25px;"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "AID"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "AText"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "AnnotationID"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "Reference"));
+            #endregion
+            TBody.Add(td);
+            foreach (var a in annot)
+            {
+                td = new XElement("TR", new XAttribute("style", "height: 25px;"),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count), a.AID),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + count), a.AText),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), a.AnnotationID),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), a.Reference));
                 TBody.Add(td);
                 count++;
             }
@@ -810,11 +1019,11 @@ namespace Spreadsheet
                           new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "Material Code"),
+                              "MaterialCode"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "Material Description"),
+                              "MaterialDesc"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
@@ -830,7 +1039,7 @@ namespace Spreadsheet
                           new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "Service Code"),
+                              "SVCCode"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
@@ -986,15 +1195,15 @@ namespace Spreadsheet
 
         private static XElement createActivityCostHtml()
         {
-            countCol = 12;
+            countCol = 13;
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
-            new XAttribute("cellspacing", 0),
-            new XAttribute("cellpadding", 0),
-            new XAttribute("border", border),
-            new XAttribute("id", id),
-            new XAttribute("class", classsheet),
-            new XAttribute("title", "ActivityCost")
-           );
+                      new XAttribute("cellspacing", 0),
+                      new XAttribute("cellpadding", 0),
+                      new XAttribute("border", border),
+                      new XAttribute("id", id),
+                      new XAttribute("class", classsheet),
+                      new XAttribute("title", "ActivityCost")
+                     );
             XElement countrow = new XElement("COLOGROUP");
             for (int i = 0; i < countCol; i++)
             {
@@ -1010,10 +1219,6 @@ namespace Spreadsheet
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
                               "ACTCode"),
-                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
-                              new XAttribute("class", "styleBold styleCenter"),
-                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "ACTName"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
@@ -1050,25 +1255,85 @@ namespace Spreadsheet
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
                               "UnitCost"),
-                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                         new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "ReferencedCostOrg"));
+                              "ReferencedCostOrg"),
+                         new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "TimsStamp"),
+                         new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "AID"));
             #endregion
             TBody.Add(td);
             td = new XElement("TR", new XAttribute("style", "height: 25px;"),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count), ""),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + count), ""),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), ""),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), ""),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c4_r" + count), ""),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + count), ""),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + count), ""),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c7_r" + count), ""),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), ""),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), ""),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), ""),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c9_r" + count), ""));
+                 new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c4_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c7_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c9_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c11_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c12_r" + count), ""));
+            TBody.Add(td);
+            herdtable.Add(countrow);
+            herdtable.Add(TBody);
+            return herdtable;
+        }
+
+        private static XElement createAnnotationHtml()
+        {
+            countCol = 4;
+            XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
+                      new XAttribute("cellspacing", 0),
+                      new XAttribute("cellpadding", 0),
+                      new XAttribute("border", border),
+                      new XAttribute("id", id),
+                      new XAttribute("class", classsheet),
+                      new XAttribute("title", "Annotation")
+                     );
+            XElement countrow = new XElement("COLOGROUP");
+            for (int i = 0; i < countCol; i++)
+            {
+                XElement countrow2 = new XElement("COL", new XAttribute("width", 100), new XAttribute("style", "width: 130px;"));
+                countrow.Add(countrow2);
+            }
+            int count = 0;
+            XElement TBody = new XElement("TBODY");
+            //insert header in first column
+            #region
+            XElement td = new XElement("TR", new XAttribute("style", "height: 25px;"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "AID"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "AText"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "AnnotationID"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "Reference"));
+            #endregion
+            TBody.Add(td);
+            td = new XElement("TR", new XAttribute("style", "height: 25px;"),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), ""),
+                 new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), ""));
             TBody.Add(td);
             herdtable.Add(countrow);
             herdtable.Add(TBody);
@@ -1163,7 +1428,6 @@ namespace Spreadsheet
         private static XElement createActivityHtml()
         {
             countCol = 3;
-            var act = from a in bfAdmin.Activities select a;
             XElement herdtable2 = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
                       new XAttribute("cellpadding", 0),
@@ -1208,7 +1472,6 @@ namespace Spreadsheet
         private static XElement createSubActivityHtml()
         {
             countCol = 3;
-            var sact = from s in bfAdmin.SubActivities select s;
             XElement herdtable3 = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
                       new XAttribute("cellpadding", 0),
@@ -1253,7 +1516,6 @@ namespace Spreadsheet
         private static XElement createMaterialHtml()
         {
             countCol = 7;
-            var mat = from m in bfAdmin.Materials select m;
             XElement herdtable4 = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
                       new XAttribute("cellpadding", 0),
@@ -1275,11 +1537,11 @@ namespace Spreadsheet
                           new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "Material Code"),
+                              "MaterialCode"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "Material Description"),
+                              "MaterialDesc"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
@@ -1295,7 +1557,7 @@ namespace Spreadsheet
                           new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "Service Code"),
+                              "SVCCode"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
