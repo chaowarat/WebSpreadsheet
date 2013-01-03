@@ -1,89 +1,148 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 11.125" name="BenefitAdmin">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 14.5, 9.625" name="BenefitAdmin">
   <DataContextMoniker Name="/BenefitAdminDataContext" />
   <nestedChildShapes>
-    <classShape Id="fe686d84-2e85-4538-aba9-c291360c6b94" absoluteBounds="0.75, 1, 2, 1.1939925130208335">
-      <DataClassMoniker Name="/BenefitAdminDataContext/Ministry" />
-      <nestedChildShapes>
-        <elementListCompartment Id="f05baf2d-2162-4bd1-811a-84bfa45d5208" absoluteBounds="0.765, 1.46, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="b3e63f9e-8512-49ff-9243-882ddf4afb5c" absoluteBounds="6.25, 0.875, 2, 1.3862939453124998">
-      <DataClassMoniker Name="/BenefitAdminDataContext/Provider" />
-      <nestedChildShapes>
-        <elementListCompartment Id="07368bec-07c0-4b7c-bea4-a4927bdb1919" absoluteBounds="6.265, 1.335, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="0063983c-494e-4af2-9280-6e9d1e423310" absoluteBounds="3.5, 0.875, 2, 1.3862939453124998">
-      <DataClassMoniker Name="/BenefitAdminDataContext/Organization" />
-      <nestedChildShapes>
-        <elementListCompartment Id="d5ed6b5d-23ed-4e2e-b0c8-9c31dd591f6e" absoluteBounds="3.515, 1.335, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <associationConnector edgePoints="[(5.5 : 1.56814697265625); (6.25 : 1.56814697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
-      <AssociationMoniker Name="/BenefitAdminDataContext/Organization/Organization_Provider" />
-      <nodes>
-        <classShapeMoniker Id="0063983c-494e-4af2-9280-6e9d1e423310" />
-        <classShapeMoniker Id="b3e63f9e-8512-49ff-9243-882ddf4afb5c" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 1.59699625651042); (3.5 : 1.59699625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/BenefitAdminDataContext/Ministry/Ministry_Organization" />
-      <nodes>
-        <classShapeMoniker Id="fe686d84-2e85-4538-aba9-c291360c6b94" />
-        <classShapeMoniker Id="0063983c-494e-4af2-9280-6e9d1e423310" />
-      </nodes>
-    </associationConnector>
-    <classShape Id="a1c70bf6-5499-40ff-843d-e8f6ccbf1103" absoluteBounds="3.25, 3.25, 2, 1.3862939453125005">
+    <classShape Id="e3332318-d346-4fdf-9818-a19e633fe6b1" absoluteBounds="3.5, 5.125, 2, 1.3862939453125005">
       <DataClassMoniker Name="/BenefitAdminDataContext/Activity" />
       <nestedChildShapes>
-        <elementListCompartment Id="c36d0203-a39a-41a3-a004-44b7f0d9965d" absoluteBounds="3.265, 3.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="10dee1c8-1564-4322-a3c2-d5e61bee08d2" absoluteBounds="3.515, 5.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="ebebed63-14f2-489d-b1d0-28fc70613f9e" absoluteBounds="0.625, 3.25, 2, 2.9247054036458326">
-      <DataClassMoniker Name="/BenefitAdminDataContext/Service" />
-      <nestedChildShapes>
-        <elementListCompartment Id="ad39e16d-5846-479e-9a6c-f25992d48573" absoluteBounds="0.64, 3.71, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="0ebf016f-9221-40eb-a93a-3e4eede04304" absoluteBounds="6.25, 3.25, 2, 1.3862939453125005">
+    <classShape Id="22bfbda5-c852-4792-b9b2-47f4da19034a" absoluteBounds="6.25, 7.125, 2, 1.3862939453125005">
       <DataClassMoniker Name="/BenefitAdminDataContext/SubActivity" />
       <nestedChildShapes>
-        <elementListCompartment Id="b5210378-69a6-4960-b0e3-b605533eeb03" absoluteBounds="6.265, 3.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="1a6c0bd4-97dd-41fb-8b09-a76810caec1a" absoluteBounds="6.265, 7.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.625 : 3.94314697265625); (3.25 : 3.94314697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/BenefitAdminDataContext/Service/Service_Activity" />
-      <nodes>
-        <classShapeMoniker Id="ebebed63-14f2-489d-b1d0-28fc70613f9e" />
-        <classShapeMoniker Id="a1c70bf6-5499-40ff-843d-e8f6ccbf1103" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(5.25 : 3.94314697265625); (6.25 : 3.94314697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
-      <AssociationMoniker Name="/BenefitAdminDataContext/Activity/Activity_SubActivity" />
-      <nodes>
-        <classShapeMoniker Id="a1c70bf6-5499-40ff-843d-e8f6ccbf1103" />
-        <classShapeMoniker Id="0ebf016f-9221-40eb-a93a-3e4eede04304" />
-      </nodes>
-    </associationConnector>
-    <classShape Id="5dcac2c7-4142-4a08-8c83-2a8053a6f654" absoluteBounds="3.25, 5, 2, 2.1554996744791666">
-      <DataClassMoniker Name="/BenefitAdminDataContext/Material" />
-      <nestedChildShapes>
-        <elementListCompartment Id="64c5f1de-b30a-4554-afb3-6270a9728b0c" absoluteBounds="3.2649999999999997, 5.46, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <associationConnector edgePoints="[(2.625 : 5.58735270182292); (3.25 : 5.58735270182292)]" fixedFrom="NotFixed" fixedTo="NotFixed">
-      <AssociationMoniker Name="/BenefitAdminDataContext/Service/Service_Material" />
-      <nodes>
-        <classShapeMoniker Id="ebebed63-14f2-489d-b1d0-28fc70613f9e" />
-        <classShapeMoniker Id="5dcac2c7-4142-4a08-8c83-2a8053a6f654" />
-      </nodes>
-    </associationConnector>
-    <classShape Id="5009c261-345d-415f-a35b-260827d195f2" absoluteBounds="1, 7.75, 2, 3.1170068359375">
+    <classShape Id="00de7912-384e-49bc-a5b1-d1f927cf1302" absoluteBounds="11.5, 4, 2, 3.3093082682291666">
       <DataClassMoniker Name="/BenefitAdminDataContext/ActivityCost" />
       <nestedChildShapes>
-        <elementListCompartment Id="45826bc7-cedc-43d7-8711-731085d071bc" absoluteBounds="1.0149999999999997, 8.21, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="2815b7f5-9dec-44da-a8bf-d6b24d3bb7a8" absoluteBounds="11.515, 4.46, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="90101d13-6a66-472c-8e76-d2cc0c9cf2c4" absoluteBounds="8.75, 4.875, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/BenefitAdminDataContext/Annotation" />
+      <nestedChildShapes>
+        <elementListCompartment Id="56689cbd-1123-4819-8479-59c1ae7ff15b" absoluteBounds="8.765, 5.335, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9f800b17-2b45-487a-a2d4-68080cfe55c1" absoluteBounds="0.75, 1.625, 2, 1.3862939453125003">
+      <DataClassMoniker Name="/BenefitAdminDataContext/Condition" />
+      <nestedChildShapes>
+        <elementListCompartment Id="cce7f5ee-ff60-4e11-81da-af4fb2d175c0" absoluteBounds="0.765, 2.085, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="06d9b227-1d90-4e19-b84a-666dd795639b" absoluteBounds="6.25, 4.25, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/BenefitAdminDataContext/ConditionActivity" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b6847eac-1fcb-4cf3-b49b-fe26cab1de11" absoluteBounds="6.265, 4.71, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6931cc94-9004-4b2a-9462-c918f317bb26" absoluteBounds="3.5, 2.75, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/BenefitAdminDataContext/ConditionService" />
+      <nestedChildShapes>
+        <elementListCompartment Id="902db810-e2a6-4517-8a2a-76dc8c63fc43" absoluteBounds="3.515, 3.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4fc0a5b1-9b9a-4e23-a3fe-9bb27c7e0b4e" absoluteBounds="3.5, 7.25, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/BenefitAdminDataContext/Material" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5b24241e-4ade-46aa-9ce4-c4e17ef6eb6a" absoluteBounds="3.515, 7.71, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="2310ca48-b379-4e9a-8b8d-e64f6730b752" absoluteBounds="6.75, 1, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/BenefitAdminDataContext/Ministry" />
+      <nestedChildShapes>
+        <elementListCompartment Id="410971b9-f417-46d0-81cd-25895d8e75e8" absoluteBounds="6.765, 1.46, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5a619724-e041-464b-a162-f26dfbc72228" absoluteBounds="9.5, 0.875, 2, 1.3862939453125003">
+      <DataClassMoniker Name="/BenefitAdminDataContext/Organization" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1f70a63f-c031-4318-ad04-d51bd68aa93d" absoluteBounds="9.515, 1.335, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4deb3cd6-9e5f-48e0-b5db-42e6505db036" absoluteBounds="12.25, 0.875, 2, 1.3862939453125003">
+      <DataClassMoniker Name="/BenefitAdminDataContext/Provider" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b2ebeb35-cdae-408c-b747-66b072afa40d" absoluteBounds="12.265, 1.335, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="de9a1901-95a8-463b-a2c1-a955e5cce4b4" absoluteBounds="0.75, 3.875, 2, 2.9247054036458326">
+      <DataClassMoniker Name="/BenefitAdminDataContext/Service" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6e6d097a-ad6e-491c-b67b-73c527abb380" absoluteBounds="0.765, 4.335, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.5 : 6.5112939453125); (5.875 : 6.8862939453125); (5.875 : 6.75); (6.25 : 7.125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BenefitAdminDataContext/Activity/Activity_SubActivity" />
+      <nodes>
+        <classShapeMoniker Id="e3332318-d346-4fdf-9818-a19e633fe6b1" />
+        <classShapeMoniker Id="22bfbda5-c852-4792-b9b2-47f4da19034a" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(10.75 : 5.66429768880208); (11.5 : 5.66429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BenefitAdminDataContext/Annotation/Annotation_ActivityCost" />
+      <nodes>
+        <classShapeMoniker Id="90101d13-6a66-472c-8e76-d2cc0c9cf2c4" />
+        <classShapeMoniker Id="00de7912-384e-49bc-a5b1-d1f927cf1302" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 5.28449625651042); (6.25 : 5.28449625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BenefitAdminDataContext/Activity/Activity_ConditionActivity" />
+      <nodes>
+        <classShapeMoniker Id="e3332318-d346-4fdf-9818-a19e633fe6b1" />
+        <classShapeMoniker Id="06d9b227-1d90-4e19-b84a-666dd795639b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 2.47199625651042); (6.46875 : 2.47199625651042); (6.46875 : 4.25)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BenefitAdminDataContext/Condition/Condition_ConditionActivity" />
+      <nodes>
+        <classShapeMoniker Id="9f800b17-2b45-487a-a2d4-68080cfe55c1" />
+        <classShapeMoniker Id="06d9b227-1d90-4e19-b84a-666dd795639b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 2.88064697265625); (3.5 : 2.88064697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BenefitAdminDataContext/Condition/Condition_ConditionService" />
+      <nodes>
+        <classShapeMoniker Id="9f800b17-2b45-487a-a2d4-68080cfe55c1" />
+        <classShapeMoniker Id="6931cc94-9004-4b2a-9462-c918f317bb26" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.75 : 1.59699625651042); (9.5 : 1.59699625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BenefitAdminDataContext/Ministry/Ministry_Organization" />
+      <nodes>
+        <classShapeMoniker Id="2310ca48-b379-4e9a-8b8d-e64f6730b752" />
+        <classShapeMoniker Id="5a619724-e041-464b-a162-f26dfbc72228" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11.5 : 1.56814697265625); (12.25 : 1.56814697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BenefitAdminDataContext/Organization/Organization_Provider" />
+      <nodes>
+        <classShapeMoniker Id="5a619724-e041-464b-a162-f26dfbc72228" />
+        <classShapeMoniker Id="4deb3cd6-9e5f-48e0-b5db-42e6505db036" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 5.81814697265625); (3.5 : 5.81814697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BenefitAdminDataContext/Service/Service_Activity" />
+      <nodes>
+        <classShapeMoniker Id="de9a1901-95a8-463b-a2c1-a955e5cce4b4" />
+        <classShapeMoniker Id="e3332318-d346-4fdf-9818-a19e633fe6b1" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 3.875); (3.125 : 3.5); (3.125 : 4.31899251302083); (3.5 : 3.94399251302083)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/BenefitAdminDataContext/Service/Service_ConditionService" />
+      <nodes>
+        <classShapeMoniker Id="de9a1901-95a8-463b-a2c1-a955e5cce4b4" />
+        <classShapeMoniker Id="6931cc94-9004-4b2a-9462-c918f317bb26" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.75 : 6.79970540364583); (1.75 : 8.32774983723958); (3.5 : 8.32774983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BenefitAdminDataContext/Service/Service_Material" />
+      <nodes>
+        <classShapeMoniker Id="de9a1901-95a8-463b-a2c1-a955e5cce4b4" />
+        <classShapeMoniker Id="4fc0a5b1-9b9a-4e23-a3fe-9bb27c7e0b4e" />
+      </nodes>
+    </associationConnector>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

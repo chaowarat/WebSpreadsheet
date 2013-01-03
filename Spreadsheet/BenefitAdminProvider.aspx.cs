@@ -22,15 +22,15 @@ namespace Spreadsheet
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!User.Identity.IsAuthenticated || !User.Identity.Name.Equals("ProviderAdmin"))
-            {
-                Response.Redirect("Casemanager.aspx");
-            }
-            else
-            {
+            //if (!User.Identity.IsAuthenticated || !User.Identity.Name.Equals("ProviderAdmin"))
+            //{
+            //    Response.Redirect("Casemanager.aspx");
+            //}
+            //else
+            //{
                 HtmlManager.createHtml(fileName);
                 Label_user.Text = "Welcome " + Session["user"];
-            }
+            //}
         }
 
         [System.Web.Services.WebMethod]

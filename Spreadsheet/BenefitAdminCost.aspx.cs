@@ -102,7 +102,7 @@ namespace Spreadsheet
                                 {
                                     bfAdmin.SubmitChanges();
                                 }
-                                catch (Exception) { bfAdmin = new CaseManagerDBDataContext(); }
+                                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
                             }
                         }
                     }
