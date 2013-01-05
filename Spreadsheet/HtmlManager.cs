@@ -23,7 +23,6 @@ namespace Spreadsheet
     public class HtmlManager
     {
         static BenefitAdminDataContext bfAdmin = new BenefitAdminDataContext();
-        static string pathTemporary = System.Web.HttpContext.Current.Server.MapPath("~/sheets/temporary.html");
         static int countCol = 2;
         static string border = "1px";
         static string id = "jSheet_0_0";
@@ -75,23 +74,6 @@ namespace Spreadsheet
             // Retrieve reference to a blob named "myblob".
             var blockBlob = container.GetBlockBlobReference(fileName);
             blockBlob.UploadFromStream(data); 
-        }
-
-        public static void uploadToBlob(string fileName)
-        {
-            createBlob();
-            // Create the blob client.
-            var blobClient = storageAccount.CreateCloudBlobClient();
-
-            // Retrieve reference to a previously created container.
-            var container = blobClient.GetContainerReference("tmp");
-
-            // Retrieve reference to a blob named "myblob".
-            var blockBlob = container.GetBlockBlobReference(fileName);
-            using (var fileStream = System.IO.File.OpenRead(pathTemporary))
-            {
-                blockBlob.UploadFromStream(fileStream);
-            }
         }
 
         public static bool blobFileExists(string fileName)
@@ -561,6 +543,11 @@ namespace Spreadsheet
             }
         }
 
+        public static void Clean()
+        {
+            bfAdmin = new BenefitAdminDataContext();
+            storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["TmpDir"].ConnectionString);
+        }
         /// <summary>
         /// create database from sql server
         /// </summary>

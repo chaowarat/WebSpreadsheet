@@ -328,6 +328,7 @@ namespace Spreadsheet
                     //excelReader.IsFirstRowAsColumnNames = true;
 
                     resultFromUpload = excelReader.AsDataSet();
+                    //resultFromUpload.Locale = new System.Globalization.CultureInfo("th-TH");
                     for (int i = 0; i < resultFromUpload.Tables.Count; i++)
                     {
                         DropDownListFrom.Items.Add(resultFromUpload.Tables[i].TableName.Trim());
