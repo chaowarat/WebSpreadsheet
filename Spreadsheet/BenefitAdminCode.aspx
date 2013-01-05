@@ -87,7 +87,7 @@
                 <td class="style1">
                     <asp:RadioButtonList ID="RadioButtonList_type" runat="server" Width="200px" 
                         RepeatDirection="Horizontal">
-                        <asp:ListItem>Insert</asp:ListItem>
+                        <asp:ListItem Selected="True">Insert</asp:ListItem>
                         <asp:ListItem Value="CreateNew">Create New Sheet</asp:ListItem>
                     </asp:RadioButtonList>
                 </td>
@@ -124,7 +124,7 @@
             </tr>
         </table>
         &nbsp;<div 
-            id="jQuerySheet0" class="jQuerySheet" style="height: 500px; left: 5px;">
+            id="jQuerySheet0" class="jQuerySheet" style="height: 500px; width: 97%; left: 5px;">
         </div>
 
         <span id="inlineMenu" style="display: none;">

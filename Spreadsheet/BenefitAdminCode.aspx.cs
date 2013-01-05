@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Data.OleDb;
 using System.Data;
+using Excel;
 
 namespace Spreadsheet
 {
@@ -19,6 +20,7 @@ namespace Spreadsheet
         BenefitAdminDataContext bfAdmin = new BenefitAdminDataContext();
         private static string fileName = "code.html";
         private static string staticXmlFileName = "code.xml";
+        private static DataSet resultFromUpload = null;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -307,51 +309,32 @@ namespace Spreadsheet
         {
             string fileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
             string fileExtension = Path.GetExtension(FileUpload1.PostedFile.FileName);
-            string connectionString = "";
             if (FileUpload1.HasFile && fileName != "" && fileExtension != "")
             {
-                string fileLocation = Server.MapPath("~/sheets/" + fileName);
-                FileUpload1.SaveAs(fileLocation);
-
-                //Check whether file extension is xls or xslx
-                if (fileExtension == ".xls")
-                {
-                    connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
-                }
-                else if (fileExtension == ".xlsx")
-                {
-                    connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
-                }
-
-                //Create OleDB Connection and OleDb Command
-                OleDbConnection con = new OleDbConnection(connectionString);
-                OleDbCommand cmd = new OleDbCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.Connection = con;
-                OleDbDataAdapter dAdapter = new OleDbDataAdapter(cmd);
-                DataTable dtExcelRecords = new DataTable();
                 try
                 {
-                    con.Open();
-                    DataTable dtExcelSheetName = con.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-
-                    //For many Sheet
-                    String[] excelSheets = new String[dtExcelSheetName.Rows.Count];
-                    int i = 0;
-                    // Add the sheet name to the string array.
-                    foreach (DataRow row in dtExcelSheetName.Rows)
+                    Stream spreadsheet = FileUpload1.PostedFile.InputStream;
+                    IExcelDataReader excelReader = null;
+                    if (fileExtension.Equals(".xls"))
                     {
-                        excelSheets[i] = row["TABLE_NAME"].ToString();
-                        DropDownListFrom.Items.Add(excelSheets[i].Substring(0, excelSheets[i].Length - 1));
-                        i++;
+                        excelReader = ExcelReaderFactory.CreateBinaryReader(spreadsheet);
                     }
-                    Application["fileName"] = fileName;
+                    else if (fileExtension.Equals(".xlsx"))
+                    {
+                        excelReader = ExcelReaderFactory.CreateOpenXmlReader(spreadsheet);
+                    }
+
+                    //first row is column name not parse
+                    //excelReader.IsFirstRowAsColumnNames = true;
+
+                    resultFromUpload = excelReader.AsDataSet();
+                    for (int i = 0; i < resultFromUpload.Tables.Count; i++)
+                    {
+                        DropDownListFrom.Items.Add(resultFromUpload.Tables[i].TableName.Trim());
+                    }
+                    excelReader.Close();
                 }
-                catch (Exception) { }
-                finally
-                {
-                    con.Close();
-                }
+                catch { }
             }
         }
 
@@ -405,113 +388,149 @@ namespace Spreadsheet
                 #endregion
             if (DropDownListTo.SelectedIndex == 0)
             {
+                int skip = 0;
                 foreach (DataRow row in data.Rows)
                 {
-                    Service svr = new Service();
-                    svr.SVCCode = row[0].ToString();
-                    svr.SVCName = row[1].ToString();
-                    svr.SVCDesc = row[2].ToString();
-                    svr.HostCode = row[3].ToString();
-                    svr.StaffRole = row[4].ToString();
-                    svr.SVCType = row[5].ToString();
-                    svr.SVCObjective = row[6].ToString();
-                    svr.SVCSupport = row[7].ToString();
-                    svr.SVCCoverage = row[8].ToString();
-                    svr.SVCStart = row[9].ToString();
-                    svr.SVCEnd = row[10].ToString();
-
-                    var Svr = from c in bfAdmin.Services where c.SVCCode.ToString().Trim().Equals(row[0].ToString().Trim()) select c;
-                    if (Svr != null)
+                    if (row[0].ToString() != null && skip > 0)
                     {
-                        bfAdmin.Services.DeleteAllOnSubmit(Svr);
+                        Service svr = new Service();
+                        try
+                        {
+                            svr.SVCCode = row[0].ToString();
+                            svr.SVCName = row[1].ToString() == null ? "" : row[1].ToString();
+                            svr.SVCDesc = row[2].ToString() == null ? "" : row[2].ToString();
+                            svr.HostCode = row[3].ToString() == null ? "" : row[3].ToString();
+                            svr.StaffRole = row[4].ToString() == null ? "" : row[4].ToString();
+                            svr.SVCType = row[5].ToString() == null ? "" : row[5].ToString();
+                            svr.SVCObjective = row[6].ToString() == null ? "" : row[6].ToString();
+                            svr.SVCSupport = row[7].ToString() == null ? "" : row[7].ToString();
+                            svr.SVCCoverage = row[8].ToString() == null ? "" : row[8].ToString();
+                            svr.SVCStart = row[9].ToString() == null ? "" : row[9].ToString();
+                            svr.SVCEnd = row[10].ToString() == null ? "" : row[10].ToString();
+                        }
+                        catch { }
+
+                        var Svr = from c in bfAdmin.Services where c.SVCCode.ToString().Trim().Equals(row[0].ToString().Trim()) select c;
+                        if (Svr != null)
+                        {
+                            bfAdmin.Services.DeleteAllOnSubmit(Svr);
+                            try
+                            {
+                                bfAdmin.SubmitChanges();
+                            }
+                            catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                        }
+                        bfAdmin.Services.InsertOnSubmit(svr);
                         try
                         {
                             bfAdmin.SubmitChanges();
                         }
                         catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
                     }
-                    bfAdmin.Services.InsertOnSubmit(svr);
-                    try
-                    {
-                        bfAdmin.SubmitChanges();
-                    }
-                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                    skip = 1;
                 }
             }
             else if (DropDownListTo.SelectedIndex == 1)
             {
+                int skip = 0;
                 foreach (DataRow row in data.Rows)
                 {
-                    Activity act = new Activity();
-                    act.ACTCode = row[0].ToString();
-                    act.ACTDesc = row[1].ToString();
-                    act.SVCCode = row[2].ToString();
+                    if (row[0].ToString() != null && skip > 0)
+                    {
+                        Activity act = new Activity();
+                        try
+                        {
+                            act.ACTCode = row[0].ToString();
+                            act.ACTDesc = row[1].ToString() == null ? "" : row[1].ToString();
+                            act.SVCCode = row[2].ToString() == null ? "" : row[2].ToString();
+                        }
+                        catch { }
 
-                    var Act = from c in bfAdmin.Activities where c.ACTCode.ToString().Trim().Equals(row[0].ToString().Trim()) select c;
-                    bfAdmin.Activities.DeleteAllOnSubmit(Act);
-                    try
-                    {
-                        bfAdmin.SubmitChanges();
+                        var Act = from c in bfAdmin.Activities where c.ACTCode.ToString().Trim().Equals(row[0].ToString().Trim()) select c;
+                        bfAdmin.Activities.DeleteAllOnSubmit(Act);
+                        try
+                        {
+                            bfAdmin.SubmitChanges();
+                        }
+                        catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                        bfAdmin.Activities.InsertOnSubmit(act);
+                        try
+                        {
+                            bfAdmin.SubmitChanges();
+                        }
+                        catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
                     }
-                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
-                    bfAdmin.Activities.InsertOnSubmit(act);
-                    try
-                    {
-                        bfAdmin.SubmitChanges();
-                    }
-                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                    skip = 1;
                 }
             }
             else if (DropDownListTo.SelectedIndex == 2)
             {
+                int skip = 0;
                 foreach (DataRow row in data.Rows)
                 {
-                    SubActivity sact = new SubActivity();
-                    sact.SACTCode = row[0].ToString();
-                    sact.SACTDesc = row[1].ToString();
-                    sact.ACTCode = row[2].ToString();
+                    if (row[0].ToString() != null && skip > 0)
+                    {
+                        SubActivity sact = new SubActivity();
+                        try
+                        {
+                            sact.SACTCode = row[0].ToString();
+                            sact.SACTDesc = row[1].ToString() == null ? "" : row[1].ToString();
+                            sact.ACTCode = row[2].ToString() == null ? "" : row[2].ToString();
+                        }
+                        catch { }
 
-                    var Sact = from c in bfAdmin.SubActivities where c.SACTCode.ToString().Trim().Equals(row[0].ToString().Trim()) select c;
-                    bfAdmin.SubActivities.DeleteAllOnSubmit(Sact);
-                    try
-                    {
-                        bfAdmin.SubmitChanges();
+                        var Sact = from c in bfAdmin.SubActivities where c.SACTCode.ToString().Trim().Equals(row[0].ToString().Trim()) select c;
+                        bfAdmin.SubActivities.DeleteAllOnSubmit(Sact);
+                        try
+                        {
+                            bfAdmin.SubmitChanges();
+                        }
+                        catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                        bfAdmin.SubActivities.InsertOnSubmit(sact);
+                        try
+                        {
+                            bfAdmin.SubmitChanges();
+                        }
+                        catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
                     }
-                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
-                    bfAdmin.SubActivities.InsertOnSubmit(sact);
-                    try
-                    {
-                        bfAdmin.SubmitChanges();
-                    }
-                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                    skip = 1;
                 }
             }
             else
             {
+                int skip = 0;
                 foreach (DataRow row in data.Rows)
                 {
-                    Material mat = new Material();
-                    mat.MaterialCode = row[0].ToString();
-                    mat.MaterialDesc = row[1].ToString();
-                    mat.Unit = row[2].ToString();
-                    mat.EstimatedPrice = row[3].ToString();
-                    mat.RealPrice = row[4].ToString();
-                    mat.SVCCode = row[5].ToString();
+                    if (row[0].ToString() != null && skip > 0)
+                    {
+                        Material mat = new Material();
+                        try
+                        {
+                            mat.MaterialCode = row[0].ToString();
+                            mat.MaterialDesc = row[1].ToString() == null ? "" : row[1].ToString();
+                            mat.Unit = row[2].ToString() == null ? "" : row[2].ToString();
+                            mat.EstimatedPrice = row[3].ToString() == null ? "" : row[3].ToString();
+                            mat.RealPrice = row[4].ToString() == null ? "" : row[4].ToString();
+                            mat.SVCCode = row[5].ToString() == null ? "" : row[5].ToString();
+                        }
+                        catch { }
 
-                    var Mat = from c in bfAdmin.Materials where c.MaterialCode.ToString().Trim().Equals(row[0].ToString().Trim()) select c;
-                    bfAdmin.Materials.DeleteAllOnSubmit(Mat);
-                    try
-                    {
-                        bfAdmin.SubmitChanges();
+                        var Mat = from c in bfAdmin.Materials where c.MaterialCode.ToString().Trim().Equals(row[0].ToString().Trim()) select c;
+                        bfAdmin.Materials.DeleteAllOnSubmit(Mat);
+                        try
+                        {
+                            bfAdmin.SubmitChanges();
+                        }
+                        catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+
+                        bfAdmin.Materials.InsertOnSubmit(mat);
+                        try
+                        {
+                            bfAdmin.SubmitChanges();
+                        }
+                        catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
                     }
-                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
-                    
-                    bfAdmin.Materials.InsertOnSubmit(mat);
-                    try
-                    {
-                        bfAdmin.SubmitChanges();
-                    }
-                    catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                    skip = 1;
                 }
             }
 
@@ -527,59 +546,20 @@ namespace Spreadsheet
 
         protected void ButtonOK_Click(object sender, EventArgs e)
         {
-            string fileName = Application["fileName"].ToString();
-            string fileExtension = Path.GetExtension(fileName);
-            string connectionString = "";
-            string fileLocation = Server.MapPath("~/sheets/" + fileName);
-
-            //Check whether file extension is xls or xslx
-            if (fileExtension == ".xls")
-            {
-                connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
-            }
-            else if (fileExtension == ".xlsx")
-            {
-                connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
-            }
-
-            //Create OleDB Connection and OleDb Command
-            OleDbConnection con = new OleDbConnection(connectionString);
-            OleDbCommand cmd = new OleDbCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.Connection = con;
-            OleDbDataAdapter dAdapter = new OleDbDataAdapter(cmd);
-            DataTable dtExcelRecords = new DataTable();
-            Dictionary<string, int> recordCount = new Dictionary<string, int>();
-            List<DataTable> list = new List<DataTable>();
             try
             {
-                con.Open();
-                DataTable dtExcelSheetName = con.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-
-                //For many Sheet
-                String excelSheets;
-                // Add the sheet name to the string array.
-                foreach (DataRow row in dtExcelSheetName.Rows)
+                for (int i = 0; i < resultFromUpload.Tables.Count; i++)
                 {
-                    excelSheets = row["TABLE_NAME"].ToString();
-                    if (excelSheets.Substring(0, excelSheets.Length - 1).Equals(DropDownListFrom.SelectedItem.ToString()))
+                    if (DropDownListFrom.SelectedItem.ToString().Trim().Equals(resultFromUpload.Tables[i].TableName.Trim()))
                     {
-                        cmd.CommandText = "SELECT * FROM [" + excelSheets + "]";
-                        dAdapter.SelectCommand = cmd;
-                        dAdapter.Fill(dtExcelRecords);
-                        list.Add(dtExcelRecords);
-                        excelToDB(dtExcelRecords);
+                        excelToDB(resultFromUpload.Tables[i]);
                         break;
                     }
                 }
-
             }
-            catch (Exception) { }
-            finally
-            {
-                con.Close();
-                System.IO.File.Delete(fileLocation);
-            }
+            catch { }
+            DropDownListFrom.Items.Clear();
+            resultFromUpload = null;
         }
 
     }

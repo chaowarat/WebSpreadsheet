@@ -22,7 +22,7 @@ namespace Spreadsheet
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Spreadsheet")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="spreadsheet")]
 	public partial class BenefitAdminDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -45,6 +45,12 @@ namespace Spreadsheet
     partial void InsertCondition(Condition instance);
     partial void UpdateCondition(Condition instance);
     partial void DeleteCondition(Condition instance);
+    partial void InsertConditionActivity(ConditionActivity instance);
+    partial void UpdateConditionActivity(ConditionActivity instance);
+    partial void DeleteConditionActivity(ConditionActivity instance);
+    partial void InsertConditionService(ConditionService instance);
+    partial void UpdateConditionService(ConditionService instance);
+    partial void DeleteConditionService(ConditionService instance);
     partial void InsertMaterial(Material instance);
     partial void UpdateMaterial(Material instance);
     partial void DeleteMaterial(Material instance);
@@ -63,7 +69,7 @@ namespace Spreadsheet
     #endregion
 		
 		public BenefitAdminDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["SpreadsheetConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["spreadsheetConnectionString"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -203,6 +209,8 @@ namespace Spreadsheet
 		
 		private EntitySet<SubActivity> _SubActivities;
 		
+		private EntitySet<ConditionActivity> _ConditionActivities;
+		
 		private EntityRef<Service> _Service;
 		
     #region Extensibility Method Definitions
@@ -220,6 +228,7 @@ namespace Spreadsheet
 		public Activity()
 		{
 			this._SubActivities = new EntitySet<SubActivity>(new Action<SubActivity>(this.attach_SubActivities), new Action<SubActivity>(this.detach_SubActivities));
+			this._ConditionActivities = new EntitySet<ConditionActivity>(new Action<ConditionActivity>(this.attach_ConditionActivities), new Action<ConditionActivity>(this.detach_ConditionActivities));
 			this._Service = default(EntityRef<Service>);
 			OnCreated();
 		}
@@ -301,6 +310,19 @@ namespace Spreadsheet
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Activity_ConditionActivity", Storage="_ConditionActivities", ThisKey="ACTCode", OtherKey="ACTCode")]
+		public EntitySet<ConditionActivity> ConditionActivities
+		{
+			get
+			{
+				return this._ConditionActivities;
+			}
+			set
+			{
+				this._ConditionActivities.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_Activity", Storage="_Service", ThisKey="SVCCode", OtherKey="SVCCode", IsForeignKey=true, DeleteRule="CASCADE")]
 		public Service Service
 		{
@@ -362,6 +384,18 @@ namespace Spreadsheet
 		}
 		
 		private void detach_SubActivities(SubActivity entity)
+		{
+			this.SendPropertyChanging();
+			entity.Activity = null;
+		}
+		
+		private void attach_ConditionActivities(ConditionActivity entity)
+		{
+			this.SendPropertyChanging();
+			entity.Activity = this;
+		}
+		
+		private void detach_ConditionActivities(ConditionActivity entity)
 		{
 			this.SendPropertyChanging();
 			entity.Activity = null;
@@ -1084,6 +1118,10 @@ namespace Spreadsheet
 		
 		private string _Condition1;
 		
+		private EntityRef<ConditionActivity> _ConditionActivity;
+		
+		private EntityRef<ConditionService> _ConditionService;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1098,6 +1136,8 @@ namespace Spreadsheet
 		
 		public Condition()
 		{
+			this._ConditionActivity = default(EntityRef<ConditionActivity>);
+			this._ConditionService = default(EntityRef<ConditionService>);
 			OnCreated();
 		}
 		
@@ -1161,6 +1201,64 @@ namespace Spreadsheet
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Condition_ConditionActivity", Storage="_ConditionActivity", ThisKey="ConditionCode", OtherKey="ConditionCode", IsUnique=true, IsForeignKey=false)]
+		public ConditionActivity ConditionActivity
+		{
+			get
+			{
+				return this._ConditionActivity.Entity;
+			}
+			set
+			{
+				ConditionActivity previousValue = this._ConditionActivity.Entity;
+				if (((previousValue != value) 
+							|| (this._ConditionActivity.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ConditionActivity.Entity = null;
+						previousValue.Condition = null;
+					}
+					this._ConditionActivity.Entity = value;
+					if ((value != null))
+					{
+						value.Condition = this;
+					}
+					this.SendPropertyChanged("ConditionActivity");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Condition_ConditionService", Storage="_ConditionService", ThisKey="ConditionCode", OtherKey="ConditionCode", IsUnique=true, IsForeignKey=false)]
+		public ConditionService ConditionService
+		{
+			get
+			{
+				return this._ConditionService.Entity;
+			}
+			set
+			{
+				ConditionService previousValue = this._ConditionService.Entity;
+				if (((previousValue != value) 
+							|| (this._ConditionService.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ConditionService.Entity = null;
+						previousValue.Condition = null;
+					}
+					this._ConditionService.Entity = value;
+					if ((value != null))
+					{
+						value.Condition = this;
+					}
+					this.SendPropertyChanged("ConditionService");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1183,18 +1281,37 @@ namespace Spreadsheet
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ConditionActivity")]
-	public partial class ConditionActivity
+	public partial class ConditionActivity : INotifyPropertyChanging, INotifyPropertyChanged
 	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private string _ConditionCode;
 		
 		private string _ACTCode;
 		
+		private EntityRef<Activity> _Activity;
+		
+		private EntityRef<Condition> _Condition;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnConditionCodeChanging(string value);
+    partial void OnConditionCodeChanged();
+    partial void OnACTCodeChanging(string value);
+    partial void OnACTCodeChanged();
+    #endregion
+		
 		public ConditionActivity()
 		{
+			this._Activity = default(EntityRef<Activity>);
+			this._Condition = default(EntityRef<Condition>);
+			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionCode", DbType="Char(255)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionCode", DbType="Char(255) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
 		public string ConditionCode
 		{
 			get
@@ -1205,7 +1322,15 @@ namespace Spreadsheet
 			{
 				if ((this._ConditionCode != value))
 				{
+					if (this._Condition.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnConditionCodeChanging(value);
+					this.SendPropertyChanging();
 					this._ConditionCode = value;
+					this.SendPropertyChanged("ConditionCode");
+					this.OnConditionCodeChanged();
 				}
 			}
 		}
@@ -1221,25 +1346,140 @@ namespace Spreadsheet
 			{
 				if ((this._ACTCode != value))
 				{
+					if (this._Activity.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnACTCodeChanging(value);
+					this.SendPropertyChanging();
 					this._ACTCode = value;
+					this.SendPropertyChanged("ACTCode");
+					this.OnACTCodeChanged();
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Activity_ConditionActivity", Storage="_Activity", ThisKey="ACTCode", OtherKey="ACTCode", IsForeignKey=true, DeleteRule="CASCADE")]
+		public Activity Activity
+		{
+			get
+			{
+				return this._Activity.Entity;
+			}
+			set
+			{
+				Activity previousValue = this._Activity.Entity;
+				if (((previousValue != value) 
+							|| (this._Activity.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Activity.Entity = null;
+						previousValue.ConditionActivities.Remove(this);
+					}
+					this._Activity.Entity = value;
+					if ((value != null))
+					{
+						value.ConditionActivities.Add(this);
+						this._ACTCode = value.ACTCode;
+					}
+					else
+					{
+						this._ACTCode = default(string);
+					}
+					this.SendPropertyChanged("Activity");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Condition_ConditionActivity", Storage="_Condition", ThisKey="ConditionCode", OtherKey="ConditionCode", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Condition Condition
+		{
+			get
+			{
+				return this._Condition.Entity;
+			}
+			set
+			{
+				Condition previousValue = this._Condition.Entity;
+				if (((previousValue != value) 
+							|| (this._Condition.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Condition.Entity = null;
+						previousValue.ConditionActivity = null;
+					}
+					this._Condition.Entity = value;
+					if ((value != null))
+					{
+						value.ConditionActivity = this;
+						this._ConditionCode = value.ConditionCode;
+					}
+					else
+					{
+						this._ConditionCode = default(string);
+					}
+					this.SendPropertyChanged("Condition");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ConditionService")]
-	public partial class ConditionService
+	public partial class ConditionService : INotifyPropertyChanging, INotifyPropertyChanged
 	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private string _ConditionCode;
 		
 		private string _SVCCODE;
 		
+		private EntityRef<Condition> _Condition;
+		
+		private EntityRef<Service> _Service;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnConditionCodeChanging(string value);
+    partial void OnConditionCodeChanged();
+    partial void OnSVCCODEChanging(string value);
+    partial void OnSVCCODEChanged();
+    #endregion
+		
 		public ConditionService()
 		{
+			this._Condition = default(EntityRef<Condition>);
+			this._Service = default(EntityRef<Service>);
+			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionCode", DbType="Char(255)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionCode", DbType="Char(255) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
 		public string ConditionCode
 		{
 			get
@@ -1250,7 +1490,15 @@ namespace Spreadsheet
 			{
 				if ((this._ConditionCode != value))
 				{
+					if (this._Condition.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnConditionCodeChanging(value);
+					this.SendPropertyChanging();
 					this._ConditionCode = value;
+					this.SendPropertyChanged("ConditionCode");
+					this.OnConditionCodeChanged();
 				}
 			}
 		}
@@ -1266,8 +1514,104 @@ namespace Spreadsheet
 			{
 				if ((this._SVCCODE != value))
 				{
+					if (this._Service.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSVCCODEChanging(value);
+					this.SendPropertyChanging();
 					this._SVCCODE = value;
+					this.SendPropertyChanged("SVCCODE");
+					this.OnSVCCODEChanged();
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Condition_ConditionService", Storage="_Condition", ThisKey="ConditionCode", OtherKey="ConditionCode", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Condition Condition
+		{
+			get
+			{
+				return this._Condition.Entity;
+			}
+			set
+			{
+				Condition previousValue = this._Condition.Entity;
+				if (((previousValue != value) 
+							|| (this._Condition.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Condition.Entity = null;
+						previousValue.ConditionService = null;
+					}
+					this._Condition.Entity = value;
+					if ((value != null))
+					{
+						value.ConditionService = this;
+						this._ConditionCode = value.ConditionCode;
+					}
+					else
+					{
+						this._ConditionCode = default(string);
+					}
+					this.SendPropertyChanged("Condition");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_ConditionService", Storage="_Service", ThisKey="SVCCODE", OtherKey="SVCCode", IsForeignKey=true, DeleteRule="CASCADE")]
+		public Service Service
+		{
+			get
+			{
+				return this._Service.Entity;
+			}
+			set
+			{
+				Service previousValue = this._Service.Entity;
+				if (((previousValue != value) 
+							|| (this._Service.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Service.Entity = null;
+						previousValue.ConditionServices.Remove(this);
+					}
+					this._Service.Entity = value;
+					if ((value != null))
+					{
+						value.ConditionServices.Add(this);
+						this._SVCCODE = value.SVCCode;
+					}
+					else
+					{
+						this._SVCCODE = default(string);
+					}
+					this.SendPropertyChanged("Service");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
@@ -1993,6 +2337,8 @@ namespace Spreadsheet
 		
 		private EntitySet<Activity> _Activities;
 		
+		private EntitySet<ConditionService> _ConditionServices;
+		
 		private EntitySet<Material> _Materials;
 		
     #region Extensibility Method Definitions
@@ -2026,6 +2372,7 @@ namespace Spreadsheet
 		public Service()
 		{
 			this._Activities = new EntitySet<Activity>(new Action<Activity>(this.attach_Activities), new Action<Activity>(this.detach_Activities));
+			this._ConditionServices = new EntitySet<ConditionService>(new Action<ConditionService>(this.attach_ConditionServices), new Action<ConditionService>(this.detach_ConditionServices));
 			this._Materials = new EntitySet<Material>(new Action<Material>(this.attach_Materials), new Action<Material>(this.detach_Materials));
 			OnCreated();
 		}
@@ -2263,6 +2610,19 @@ namespace Spreadsheet
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_ConditionService", Storage="_ConditionServices", ThisKey="SVCCode", OtherKey="SVCCODE")]
+		public EntitySet<ConditionService> ConditionServices
+		{
+			get
+			{
+				return this._ConditionServices;
+			}
+			set
+			{
+				this._ConditionServices.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_Material", Storage="_Materials", ThisKey="SVCCode", OtherKey="SVCCode")]
 		public EntitySet<Material> Materials
 		{
@@ -2303,6 +2663,18 @@ namespace Spreadsheet
 		}
 		
 		private void detach_Activities(Activity entity)
+		{
+			this.SendPropertyChanging();
+			entity.Service = null;
+		}
+		
+		private void attach_ConditionServices(ConditionService entity)
+		{
+			this.SendPropertyChanging();
+			entity.Service = this;
+		}
+		
+		private void detach_ConditionServices(ConditionService entity)
 		{
 			this.SendPropertyChanging();
 			entity.Service = null;

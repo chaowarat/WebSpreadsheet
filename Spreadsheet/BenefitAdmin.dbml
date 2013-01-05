@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Spreadsheet" Class="BenefitAdminDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=CCC;Initial Catalog=Spreadsheet;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="SpreadsheetConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="spreadsheet" Class="BenefitAdminDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=rjhk5cc9ao.database.windows.net;Initial Catalog=spreadsheet;User ID=adminTest" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="spreadsheetConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Activity" Member="Activities">
     <Type Name="Activity">
       <Column Name="ACTCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -50,23 +50,23 @@
       <Column Name="ConditionCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ConditionDesc" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="Condition" Member="Condition1" Type="System.String" DbType="Char(255)" CanBeNull="true" />
-      <Association Name="Condition_ConditionActivity" Member="ConditionActivities" ThisKey="ConditionCode" OtherKey="ConditionCode" Type="ConditionActivity" />
-      <Association Name="Condition_ConditionService" Member="ConditionServices" ThisKey="ConditionCode" OtherKey="ConditionCode" Type="ConditionService" />
+      <Association Name="Condition_ConditionActivity" Member="ConditionActivity" ThisKey="ConditionCode" OtherKey="ConditionCode" Type="ConditionActivity" Cardinality="One" />
+      <Association Name="Condition_ConditionService" Member="ConditionService" ThisKey="ConditionCode" OtherKey="ConditionCode" Type="ConditionService" Cardinality="One" />
     </Type>
   </Table>
   <Table Name="dbo.ConditionActivity" Member="ConditionActivities">
     <Type Name="ConditionActivity">
-      <Column Name="ConditionCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="ConditionCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ACTCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Association Name="Activity_ConditionActivity" Member="Activity" ThisKey="ACTCode" OtherKey="ACTCode" Type="Activity" IsForeignKey="true" DeleteRule="CASCADE" />
-      <Association Name="Condition_ConditionActivity" Member="Condition" ThisKey="ConditionCode" OtherKey="ConditionCode" Type="Condition" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="Condition_ConditionActivity" Member="Condition" ThisKey="ConditionCode" OtherKey="ConditionCode" Type="Condition" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.ConditionService" Member="ConditionServices">
     <Type Name="ConditionService">
-      <Column Name="ConditionCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="ConditionCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="SVCCODE" Type="System.String" DbType="Char(255)" CanBeNull="true" />
-      <Association Name="Condition_ConditionService" Member="Condition" ThisKey="ConditionCode" OtherKey="ConditionCode" Type="Condition" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="Condition_ConditionService" Member="Condition" ThisKey="ConditionCode" OtherKey="ConditionCode" Type="Condition" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="Service_ConditionService" Member="Service" ThisKey="SVCCODE" OtherKey="SVCCode" Type="Service" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
   </Table>

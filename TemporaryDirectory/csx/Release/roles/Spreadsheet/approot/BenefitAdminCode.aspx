@@ -87,7 +87,7 @@
                 <td class="style1">
                     <asp:RadioButtonList ID="RadioButtonList_type" runat="server" Width="200px" 
                         RepeatDirection="Horizontal">
-                        <asp:ListItem>Insert</asp:ListItem>
+                        <asp:ListItem Selected="True">Insert</asp:ListItem>
                         <asp:ListItem Value="CreateNew">Create New Sheet</asp:ListItem>
                     </asp:RadioButtonList>
                 </td>
@@ -124,12 +124,14 @@
             </tr>
         </table>
         &nbsp;<div 
-            id="jQuerySheet0" class="jQuerySheet" style="height: 500px; left: 5px;">
+            id="jQuerySheet0" class="jQuerySheet" style="height: 500px; width: 97%; left: 5px;">
         </div>
 
         <span id="inlineMenu" style="display: none;">
 			<span>
-
+                  
+            <img id="saving" src="images/saving.gif" alt="Klematis" width="20" height="20" style="margin-bottom: -5px;" />
+            
             <!-- Button save -->
             <input id="Button2" type="button" value="Save" onclick="sheetInstance.getXMLSource1(sheetInstance.HTMLtoPrettySource(jQuery(sheetInstance.exportSheet.xml(true))[0]));" />
             <input id="buttonHidden" type="hidden"  onclick="sheetInstance.s.fnOpen(htmlData); return false;" />
