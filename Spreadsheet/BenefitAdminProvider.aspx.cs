@@ -16,7 +16,6 @@ namespace Spreadsheet
 {
     public partial class BenefitAdminProvider : System.Web.UI.Page
     {
-        string fileName = "provider.html";
         private static string staticXmlFileName = "provider.xml";
         private static string staticHtmlFileName = "provider.html";
 
@@ -29,9 +28,14 @@ namespace Spreadsheet
             //else
             //{
                 Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                HtmlManager.createHtml(fileName);
                 Label_user.Text = "Welcome " + Session["user"];
             //}
+        }
+
+        [System.Web.Services.WebMethod]
+        public static string getHTML()
+        {
+            return HtmlManager.createHtml(staticHtmlFileName);
         }
 
         [System.Web.Services.WebMethod]

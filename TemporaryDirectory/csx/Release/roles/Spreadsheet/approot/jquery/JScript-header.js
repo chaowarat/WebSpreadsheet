@@ -1,12 +1,33 @@
 ﻿
+var htmlData = '';
+
 $(function () {
     $('#jQuerySheet0').sheet({
-        title: 'Benefit Admin',
         inlineMenu: inlineMenu($.sheet.instance),
-        urlGet: "/sheets/temporary.html",
-        autoFiller: true
+        //urlGet: "/sheets/temporary.html",
+        fnSave: function () { $('#Button2').trigger('click'); },
+        autoFiller: true,
+        buildSheet: '0x0'
     });
+    getHtmlData(window.location.pathname);
 });
+
+function getHtmlData(pathname) {
+    $.ajax({
+        type: "POST",
+        url: pathname + "/getHTML",
+        data: "{}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            htmlData = msg.d;
+            $('#buttonHidden').trigger('click');
+        },
+        error: function (request, status, error) {
+            alert(request.responseText);
+        }
+    });
+}
 
 function inlineMenu(I) {
     I = (I ? I.length : 0);
@@ -27,7 +48,6 @@ function inlineMenu(I) {
 
     menu.find('.colorPickers').children().eq(1).css('background-image', "url('images/palette.png')");
     menu.find('.colorPickers').children().eq(3).css('background-image', "url('images/palette_bg.png')");
-
 
     return menu;
 }

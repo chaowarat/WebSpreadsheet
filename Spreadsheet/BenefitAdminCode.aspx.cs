@@ -17,7 +17,7 @@ namespace Spreadsheet
     public partial class BenefitAdminCode : System.Web.UI.Page
     {
         BenefitAdminDataContext bfAdmin = new BenefitAdminDataContext();
-        string fileName = "code.html";
+        private static string fileName = "code.html";
         private static string staticXmlFileName = "code.xml";
 
         protected void Page_Load(object sender, EventArgs e)
@@ -29,7 +29,6 @@ namespace Spreadsheet
             //else
             //{
                 Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                HtmlManager.createHtml(fileName);
                 //Label_user.Text = "Welcome " + Session["user"];
             //}
         }
@@ -37,11 +36,7 @@ namespace Spreadsheet
         [System.Web.Services.WebMethod]
         public static string getHTML()
         {
-            string pathTemporary = System.Web.HttpContext.Current.Server.MapPath("~/sheets/temporary.html");
-            StreamReader read = new StreamReader(pathTemporary, System.Text.Encoding.UTF8);
-            string tmp = read.ReadToEnd();
-            read.Close();
-            return tmp;
+            return HtmlManager.createHtml(fileName);
         }
 
         [System.Web.Services.WebMethod]

@@ -17,7 +17,7 @@ namespace Spreadsheet
     public partial class BenefitAdminCost : System.Web.UI.Page
     {
         BenefitAdminDataContext bfAdmin = new BenefitAdminDataContext();
-        string fileName = "cost.html";
+        private static string fileName = "cost.html";
         private static string staticXmlFileName = "cost.xml";
 
         protected void Page_Load(object sender, EventArgs e)
@@ -29,9 +29,14 @@ namespace Spreadsheet
             //else
             //{
                 Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                HtmlManager.createHtml(fileName);
                 //Label_user.Text = "Welcome " + Session["user"];
             //}
+        }
+
+        [System.Web.Services.WebMethod]
+        public static string getHTML()
+        {
+            return HtmlManager.createHtml(fileName);
         }
 
         [System.Web.Services.WebMethod]

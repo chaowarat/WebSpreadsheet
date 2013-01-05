@@ -9,13 +9,13 @@ $(function () {
         autoFiller: true,
         buildSheet: '0x0'
     });
-    getHtmlData();
+    getHtmlData(window.location.pathname);
 });
 
-function getHtmlData() {
+function getHtmlData(pathname) {
     $.ajax({
         type: "POST",
-        url: "BenefitAdminCode.aspx/getHTML",
+        url: pathname + "/getHTML",
         data: "{}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",

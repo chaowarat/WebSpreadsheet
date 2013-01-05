@@ -113,10 +113,11 @@ namespace Spreadsheet
             }
         }
 
-        public static void createHtml(string fileName)
+        public static string createHtml(string fileName)
         {
-            FileStream fs = new FileStream(pathTemporary, FileMode.Truncate);
-            StreamWriter h = new StreamWriter(fs, System.Text.Encoding.UTF8);
+            //FileStream fs = new FileStream(pathTemporary, FileMode.Truncate);
+            MemoryStream mem = new MemoryStream();
+            StreamWriter h = new StreamWriter(mem, System.Text.Encoding.UTF8);
 
             if (fileName.Equals("provider.html"))
             {
@@ -136,8 +137,11 @@ namespace Spreadsheet
                 h.Write(createSubActivityFromDB());
                 h.Write(createMaterialFromDB());
             }
-            h.Close();
-            fs.Close();        
+            mem.Position = 0;
+            using (StreamReader read = new StreamReader(mem))
+            {
+                return read.ReadToEnd();
+            }
         }
 
         public static void saveHtml(string data, string fileName)
