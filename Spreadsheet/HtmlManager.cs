@@ -7,6 +7,11 @@ using System.Xml.Linq;
 using System.Web;
 using System.Xml.XPath;
 using System.Text;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.StorageClient;
+using System.Configuration;
 
 namespace Spreadsheet
 {
@@ -18,59 +23,125 @@ namespace Spreadsheet
     public class HtmlManager
     {
         static BenefitAdminDataContext bfAdmin = new BenefitAdminDataContext();
-        static private string pathSheets = System.Web.HttpContext.Current.Server.MapPath("~/sheets");
-        static private string pathTemporary = pathSheets + @"/temporary.html";
+        static string pathTemporary = System.Web.HttpContext.Current.Server.MapPath("~/sheets/temporary.html");
         static int countCol = 2;
         static string border = "1px";
         static string id = "jSheet_0_0";
         static string classsheet = "jSheet ui-widget-content";
         static int count = 0;
         static XElement TBody, td, countrow;
+        static CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["TmpDir"].ConnectionString);
+
+        public static void createBlob()
+        {
+            // Create the blob client.
+            var blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve a reference to a container. 
+            var container = blobClient.GetContainerReference("tmp");
+
+            // Create the container if it doesn't already exist.
+            container.CreateIfNotExists();
+        }
+
+        public static MemoryStream downloadFromBlob(string fileName)
+        {
+            createBlob();
+            // Create the blob client.
+            var blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve reference to a previously created container.
+            var container = blobClient.GetContainerReference("tmp");
+
+            // Retrieve reference to a blob named "myblob.txt"
+            var blockBlob2 = container.GetBlockBlobReference(fileName);
+
+            var memoryStream = new MemoryStream();
+            blockBlob2.DownloadToStream(memoryStream);
+
+            return memoryStream;
+        }
+
+        public static void uploadToBlob(string fileName, MemoryStream data)
+        {
+            data.Position = 0;
+            createBlob();
+            // Create the blob client.
+            var blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve reference to a previously created container.
+            var container = blobClient.GetContainerReference("tmp");
+
+            // Retrieve reference to a blob named "myblob".
+            var blockBlob = container.GetBlockBlobReference(fileName);
+            blockBlob.UploadFromStream(data); 
+        }
+
+        public static void uploadToBlob(string fileName)
+        {
+            createBlob();
+            // Create the blob client.
+            var blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve reference to a previously created container.
+            var container = blobClient.GetContainerReference("tmp");
+
+            // Retrieve reference to a blob named "myblob".
+            var blockBlob = container.GetBlockBlobReference(fileName);
+            using (var fileStream = System.IO.File.OpenRead(pathTemporary))
+            {
+                blockBlob.UploadFromStream(fileStream);
+            }
+        }
+
+        public static bool blobFileExists(string fileName)
+        {
+            // Create the blob client.
+            var blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve reference to a previously created container.
+            var container = blobClient.GetContainerReference("tmp");
+            var blockBlob2 = container.GetBlockBlobReference(fileName);
+            try
+            {
+                blockBlob2.FetchAttributes();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         public static void createHtml(string fileName)
         {
-            initFile();
-            FileStream fs = new FileStream(pathTemporary, FileMode.Append);
+            FileStream fs = new FileStream(pathTemporary, FileMode.Truncate);
             StreamWriter h = new StreamWriter(fs, System.Text.Encoding.UTF8);
 
-            if (System.IO.File.Exists(pathSheets + @"/" + fileName))
+            if (fileName.Equals("provider.html"))
             {
-                StreamReader read = new StreamReader(pathSheets + @"/" + fileName);
-                h.Write(read.ReadToEnd());
-                h.Close();
-                fs.Close();
-                read.Close();
+                h.Write(createMinistryHtml());
+                h.Write(createOrganizationHtml());
+                h.Write(createProviderHtml());
             }
-            else
+            else if (fileName.Equals("cost.html"))
             {
-                if (fileName.Equals("provider.html"))
-                {
-                    h.Write(createMinistryHtml());
-                    h.Write(createOrganizationHtml());
-                    h.Write(createProviderHtml());
-                }
-                else if (fileName.Equals("cost.html"))
-                {
-                    h.Write(createAnnotationFromDB());
-                    h.Write(createActivityCostFromDB());
-                }
-                else if (fileName.Equals("code.html"))
-                {
-                    h.Write(createServiceFromDB());
-                    h.Write(createActivityFromDB());
-                    h.Write(createSubActivityFromDB());
-                    h.Write(createMaterialFromDB());
-                }
-
-                h.Close();
-                fs.Close();
+                h.Write(createAnnotationFromDB());
+                h.Write(createActivityCostFromDB());
             }
+            else if (fileName.Equals("code.html"))
+            {
+                h.Write(createServiceFromDB());
+                h.Write(createActivityFromDB());
+                h.Write(createSubActivityFromDB());
+                h.Write(createMaterialFromDB());
+            }
+            h.Close();
+            fs.Close();        
         }
 
         public static void saveHtml(string data, string fileName)
         {
-            FileStream fs = new FileStream(pathSheets + @"/" + fileName, FileMode.Create);
-            StreamWriter writer = new StreamWriter(fs, System.Text.Encoding.UTF8);
             if (fileName.Split('.')[1].Equals("xml"))
             {
                 XmlDocument xmlDoc = new XmlDocument();
@@ -468,39 +539,24 @@ namespace Spreadsheet
                         #endregion
                     }
                     xmlDoc.Save(sw);
-                    writer.Write(sw);
-                    writer.Close();
-                    fs.Close();
+                    byte[] tmp = Encoding.UTF8.GetBytes(sw.ToString());
+                    uploadToBlob(fileName, new MemoryStream(tmp));
                 }
                 catch (Exception)
                 {
-                    writer.Close();
-                    fs.Close();
                 }
             }
             else
             {
                 try
                 {
-                    writer.Write(data);
-                    writer.Close();
-                    fs.Close();
+                    byte[] tmp = Encoding.UTF8.GetBytes(data);
+                    uploadToBlob(fileName, new MemoryStream(tmp));
                 }
                 catch (Exception)
                 {
-                    writer.Close();
-                    fs.Close();
                 }
             }
-        }
-
-        private static void initFile()
-        {
-            FileStream fs = new FileStream(pathTemporary, FileMode.Create);
-            StreamWriter h = new StreamWriter(fs, System.Text.Encoding.UTF8);
-            h.Write("");
-            h.Close();
-            fs.Close();
         }
 
 
