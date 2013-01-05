@@ -115,33 +115,27 @@ namespace Spreadsheet
 
         public static string createHtml(string fileName)
         {
-            //FileStream fs = new FileStream(pathTemporary, FileMode.Truncate);
-            MemoryStream mem = new MemoryStream();
-            StreamWriter h = new StreamWriter(mem, System.Text.Encoding.UTF8);
+            string tmp = "";
 
             if (fileName.Equals("provider.html"))
             {
-                h.Write(createMinistryHtml());
-                h.Write(createOrganizationHtml());
-                h.Write(createProviderHtml());
+                tmp += createMinistryFromDB().ToString();
+                tmp += createOrganizationFromDB().ToString();
+                tmp += createProviderFromDB().ToString();
             }
             else if (fileName.Equals("cost.html"))
             {
-                h.Write(createAnnotationFromDB());
-                h.Write(createActivityCostFromDB());
+                tmp += createAnnotationFromDB().ToString();
+                tmp += createActivityCostFromDB().ToString();
             }
             else if (fileName.Equals("code.html"))
             {
-                h.Write(createServiceFromDB());
-                h.Write(createActivityFromDB());
-                h.Write(createSubActivityFromDB());
-                h.Write(createMaterialFromDB());
+                tmp += createServiceFromDB().ToString();
+                tmp += createActivityFromDB().ToString();
+                tmp += createSubActivityFromDB().ToString();
+                tmp += createMaterialFromDB().ToString();
             }
-            mem.Position = 0;
-            using (StreamReader read = new StreamReader(mem))
-            {
-                return read.ReadToEnd();
-            }
+            return tmp;
         }
 
         public static void saveHtml(string data, string fileName)
@@ -542,11 +536,15 @@ namespace Spreadsheet
                         }
                         #endregion
                     }
+                    else if (fileName.Equals("provider.xml"))
+                    {
+                        xmlDoc.LoadXml(data);
+                    }
                     xmlDoc.Save(sw);
                     byte[] tmp = Encoding.UTF8.GetBytes(sw.ToString());
                     uploadToBlob(fileName, new MemoryStream(tmp));
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                 }
             }
@@ -563,12 +561,11 @@ namespace Spreadsheet
             }
         }
 
-
         /// <summary>
         /// create database from sql server
         /// </summary>
         /// <returns></returns>
-        private static XElement createMinistryFromDB()
+        public static XElement createMinistryFromDB()
         {
             var min = from m in bfAdmin.Ministries select m;
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
@@ -611,7 +608,7 @@ namespace Spreadsheet
             return herdtable;
         }
 
-        private static XElement createOrganizationFromDB()
+        public static XElement createOrganizationFromDB()
         {
             countCol = 3;
             var org = from o in bfAdmin.Organizations select o;
@@ -660,7 +657,7 @@ namespace Spreadsheet
             return herdtable2;
         }
 
-        private static XElement createProviderFromDB()
+        public static XElement createProviderFromDB()
         {
             countCol = 3;
             var pro = from p in bfAdmin.Providers select p;
@@ -709,7 +706,7 @@ namespace Spreadsheet
             return herdtable3;
         }
 
-        private static XElement createActivityCostFromDB()
+        public static XElement createActivityCostFromDB()
         {
             countCol = 13;
             var acost = from m in bfAdmin.ActivityCosts select m;
@@ -810,7 +807,7 @@ namespace Spreadsheet
             return herdtable;
         }
 
-        private static XElement createAnnotationFromDB()
+        public static XElement createAnnotationFromDB()
         {
             countCol = 4;
             var annot = from m in bfAdmin.Annotations select m;
@@ -866,7 +863,7 @@ namespace Spreadsheet
             return herdtable;
         }
 
-        private static XElement createServiceFromDB()
+        public static XElement createServiceFromDB()
         {
             countCol = 11;
             var ser = from s in bfAdmin.Services select s;
@@ -956,7 +953,7 @@ namespace Spreadsheet
             return herdtable;
         }
 
-        private static XElement createActivityFromDB()
+        public static XElement createActivityFromDB()
         {
             countCol = 3;
             var act = from a in bfAdmin.Activities select a;
@@ -1005,7 +1002,7 @@ namespace Spreadsheet
             return herdtable2;
         }
 
-        private static XElement createSubActivityFromDB()
+        public static XElement createSubActivityFromDB()
         {
             countCol = 3;
             var sact = from s in bfAdmin.SubActivities select s;
@@ -1054,7 +1051,7 @@ namespace Spreadsheet
             return herdtable3;
         }
 
-        private static XElement createMaterialFromDB()
+        public static XElement createMaterialFromDB()
         {
             countCol = 7;
             var mat = from m in bfAdmin.Materials select m;
@@ -1127,7 +1124,7 @@ namespace Spreadsheet
         /// create database from html
         /// </summary>
         /// <returns></returns>
-        private static XElement createMinistryHtml()
+        public static XElement createMinistryHtml()
         {
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
@@ -1165,7 +1162,7 @@ namespace Spreadsheet
             return herdtable;
         }
 
-        private static XElement createOrganizationHtml()
+        public static XElement createOrganizationHtml()
         {
             countCol = 3;
             XElement herdtable2 = new XElement("TABLE", new XAttribute("style", 100),
@@ -1209,7 +1206,7 @@ namespace Spreadsheet
             return herdtable2;
         }
 
-        private static XElement createProviderHtml()
+        public static XElement createProviderHtml()
         {
             countCol = 3;
             XElement herdtable3 = new XElement("TABLE", new XAttribute("style", 100),
@@ -1253,7 +1250,7 @@ namespace Spreadsheet
             return herdtable3;
         }
 
-        private static XElement createActivityCostHtml()
+        public static XElement createActivityCostHtml()
         {
             countCol = 13;
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
@@ -1349,7 +1346,7 @@ namespace Spreadsheet
             return herdtable;
         }
 
-        private static XElement createAnnotationHtml()
+        public static XElement createAnnotationHtml()
         {
             countCol = 4;
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
@@ -1400,7 +1397,7 @@ namespace Spreadsheet
             return herdtable;
         }
 
-        private static XElement createServiceHtml()
+        public static XElement createServiceHtml()
         {
             countCol = 11;
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
@@ -1485,7 +1482,7 @@ namespace Spreadsheet
             return herdtable;
         }
 
-        private static XElement createActivityHtml()
+        public static XElement createActivityHtml()
         {
             countCol = 3;
             XElement herdtable2 = new XElement("TABLE", new XAttribute("style", 100),
@@ -1529,7 +1526,7 @@ namespace Spreadsheet
             return herdtable2;
         }
 
-        private static XElement createSubActivityHtml()
+        public static XElement createSubActivityHtml()
         {
             countCol = 3;
             XElement herdtable3 = new XElement("TABLE", new XAttribute("style", 100),
@@ -1573,7 +1570,7 @@ namespace Spreadsheet
             return herdtable3;
         }
 
-        private static XElement createMaterialHtml()
+        public static XElement createMaterialHtml()
         {
             countCol = 7;
             XElement herdtable4 = new XElement("TABLE", new XAttribute("style", 100),
