@@ -1549,6 +1549,16 @@ jQuery.sheet = {
                                         //This should return either a val from textbox or formula, but if fails it tries once more from formula.
                                         var v = formula.val();
                                         var prevVal = td.text();
+                                        //even when cell edited and primary is same value
+                                        if (jS.cellLast.col == 1) {
+                                            for (var j = 1; j < jS.cellLast.row; j++) {
+                                                if (v.trim() == jS.spreadsheets[jS.i][j][1].value.trim()) {
+                                                    v = prevVal;
+                                                    alert('New primary key has been used!');
+                                                }
+                                            }
+                                        }
+
                                         var cell = jS.spreadsheets[jS.i][jS.cellLast.row][jS.cellLast.col];
                                         if (v.charAt(0) == '=') {
                                             td
@@ -3378,17 +3388,7 @@ jQuery.sheet = {
             },
 
             getXMLSource2: function (o1) {
-                var pretty = true;
-                var sheetClone = jS.sheetDecorateRemove(true);
-                var s = "";
-                if (pretty) {
-                    jQuery(sheetClone).each(function () {
-                        s += jS.HTMLtoPrettySource(this);
-                    });
-                } else {
-                    s += jQuery('<div />').html(sheetClone).html();
-                }
-                var parameters = "{'xml':'" + o1 + "','html':'" + s + "'}";
+                var parameters = "{'data':'" + o1 + "'}";
                 $.ajax({
                     type: "POST",
                     url: "/BenefitAdminProvider.aspx/SaveData",

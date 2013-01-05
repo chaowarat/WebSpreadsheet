@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="TemporaryDirectory" generation="1" functional="0" release="0" Id="06d8a208-7637-4603-815d-bc7f0b6c2986" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
+<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="TemporaryDirectory" generation="1" functional="0" release="0" Id="8b90a642-c604-4e57-8939-d4a277dced84" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
   <groups>
     <group name="TemporaryDirectoryGroup" generation="1" functional="0" release="0">
       <componentports>
@@ -81,9 +81,9 @@
     </group>
   </groups>
   <implements>
-    <implementation Id="af287620-e8fd-4b22-88dd-3b515a852f9d" ref="Microsoft.RedDog.Contract\ServiceContract\TemporaryDirectoryContract@ServiceDefinition">
+    <implementation Id="61904750-eb3c-4818-897a-81a0ff0ce993" ref="Microsoft.RedDog.Contract\ServiceContract\TemporaryDirectoryContract@ServiceDefinition">
       <interfacereferences>
-        <interfaceReference Id="501a2a84-93de-4cea-8c87-8bba9dc61755" ref="Microsoft.RedDog.Contract\Interface\Spreadsheet:Endpoint1@ServiceDefinition">
+        <interfaceReference Id="537ff696-0ff2-45f5-8c6a-113fd7a021f9" ref="Microsoft.RedDog.Contract\Interface\Spreadsheet:Endpoint1@ServiceDefinition">
           <inPort>
             <inPortMoniker name="/TemporaryDirectory/TemporaryDirectoryGroup/Spreadsheet:Endpoint1" />
           </inPort>

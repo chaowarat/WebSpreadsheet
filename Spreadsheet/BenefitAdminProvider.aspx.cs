@@ -28,7 +28,7 @@ namespace Spreadsheet
             //else
             //{
                 Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                Label_user.Text = "Welcome " + Session["user"];
+                //Label_user.Text = "Welcome " + Session["user"];
             //}
         }
 

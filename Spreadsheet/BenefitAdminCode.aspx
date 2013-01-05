@@ -129,7 +129,9 @@
 
         <span id="inlineMenu" style="display: none;">
 			<span>
-
+                  
+            <img id="saving" src="images/saving.gif" alt="Klematis" width="20" height="20" style="margin-bottom: -5px;" />
+            
             <!-- Button save -->
             <input id="Button2" type="button" value="Save" onclick="sheetInstance.getXMLSource1(sheetInstance.HTMLtoPrettySource(jQuery(sheetInstance.exportSheet.xml(true))[0]));" />
             <input id="buttonHidden" type="hidden"  onclick="sheetInstance.s.fnOpen(htmlData); return false;" />

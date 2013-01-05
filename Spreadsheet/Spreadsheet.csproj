@@ -102,6 +102,7 @@
     <Content Include="images\page_link.png" />
     <Content Include="images\palette.png" />
     <Content Include="images\palette_bg.png" />
+    <Content Include="images\saving.gif" />
     <Content Include="images\sheet_col_add.png" />
     <Content Include="images\sheet_col_add_multi.png" />
     <Content Include="images\sheet_col_delete.png" />

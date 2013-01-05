@@ -3351,6 +3351,7 @@ jQuery.sheet = {
                 //document.getElementById("HiddenField1").value = s;
                 //$("#buttonclientid").click();
                 //var pagePath = window.location.pathname;
+                $('#saving').show();
                 $.ajax({
                     type: "POST",
                     url: "BenefitAdminCost.aspx/SaveData",
@@ -3358,9 +3359,11 @@ jQuery.sheet = {
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function () {
+                        $('#saving').hide();
                         alert('Data saved.');
                     },
                     error: function (request, status, error) {
+                        $('#saving').hide();
                         alert(request.responseText);
                     }
                 });
@@ -3372,6 +3375,7 @@ jQuery.sheet = {
                 //document.getElementById("HiddenField1").value = s;
                 //$("#buttonclientid").click();
                 //var pagePath = window.location.pathname;
+                $('#saving').show();
                 $.ajax({
                     type: "POST",
                     url: "BenefitAdminCode.aspx/SaveData",
@@ -3379,15 +3383,18 @@ jQuery.sheet = {
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function () {
+                        $('#saving').hide();
                         alert('Data saved.');
                     },
                     error: function (request, status, error) {
+                        $('#saving').hide();
                         alert(request.responseText);
                     }
                 });
             },
 
             getXMLSource2: function (o1) {
+                $('#saving').show();
                 var parameters = "{'data':'" + o1 + "'}";
                 $.ajax({
                     type: "POST",
@@ -3396,9 +3403,11 @@ jQuery.sheet = {
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function () {
+                        $('#saving').hide();
                         alert('Data saved.');
                     },
                     error: function (request, status, error) {
+                        $('#saving').hide();
                         alert(request.responseText);
                     }
                 });

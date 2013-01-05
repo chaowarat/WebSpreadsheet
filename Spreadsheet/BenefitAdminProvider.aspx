@@ -5,6 +5,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
     <head id="Head1"  runat="server">
         <title>Benefit Admin Spreadsheet</title>
+
+        <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+        <META HTTP-EQUIV="EXPIRES" CONTENT="0">
+
         <!--Required-->
         <link rel="stylesheet" type="text/css" href="css/jquery.sheet.css" />
         <link rel="stylesheet" type="text/css" href="jquery-ui/theme/jquery-ui.min.css" />
@@ -96,6 +100,8 @@
         
         <span id="inlineMenu" style="display: none;">
 			<span>
+
+            <img id="saving" src="images/saving.gif" alt="Klematis" width="20" height="20" style="margin-bottom: -5px;" />
 
             <!-- Button save -->
             <input id="Button2" type="button" value="Save" onclick="sheetInstance.getXMLSource2(sheetInstance.HTMLtoPrettySource(jQuery(sheetInstance.exportSheet.xml(true))[0]));" />

@@ -10,6 +10,7 @@ $(function () {
         buildSheet: '0x0'
     });
     getHtmlData(window.location.pathname);
+    $('#saving').hide();
 });
 
 function getHtmlData(pathname) {
