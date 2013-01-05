@@ -28,6 +28,7 @@ namespace Spreadsheet
             //}
             //else
             //{
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 HtmlManager.createHtml(fileName);
                 Label_user.Text = "Welcome " + Session["user"];
             //}

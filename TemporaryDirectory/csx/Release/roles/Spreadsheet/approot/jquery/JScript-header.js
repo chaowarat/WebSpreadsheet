@@ -1,38 +1,11 @@
 ﻿
-String.prototype.fileExists = function () {
-    filename = this.trim();
-
-    var response = jQuery.ajax({
-        url: filename,
-        type: 'HEAD',
-        async: false
-    }).status;
-
-    return (response != "200") ? false : true;
-}
-
 $(function () {
-    alert(window.location.href);
-    alert(getAbsolutePath());
-    alert(location.pathname);
-    //alert('AAA' + "~/sheets/temporary.html".fileExists());
-    //alert('BBB' + "css/page-style.css".fileExists());
-    //alert('BBB' + "~/css/page-style.css".fileExists());
-    //Here is where we initiate the sheets
-    //every time sheet is created it creates a new jQuery.sheet.instance (array), to manipulate each sheet, the jQuery object is returned
     $('#jQuerySheet0').sheet({
         title: 'Benefit Admin',
         inlineMenu: inlineMenu($.sheet.instance),
-        //urlGet: "~/sheets/temporary.html",
+        urlGet: "/sheets/temporary.html",
         autoFiller: true
     });
-
-    function getAbsolutePath() {
-        var loc = window.location;
-        var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
-        return loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length));
-    }
-
 });
 
 function inlineMenu(I) {

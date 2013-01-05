@@ -28,12 +28,22 @@ namespace Spreadsheet
             //}
             //else
             //{
-            //    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 HtmlManager.createHtml(fileName);
                 //Label_user.Text = "Welcome " + Session["user"];
             //}
         }
-        
+
+        [System.Web.Services.WebMethod]
+        public static string getHTML()
+        {
+            string pathTemporary = System.Web.HttpContext.Current.Server.MapPath("~/sheets/temporary.html");
+            StreamReader read = new StreamReader(pathTemporary, System.Text.Encoding.UTF8);
+            string tmp = read.ReadToEnd();
+            read.Close();
+            return tmp;
+        }
+
         [System.Web.Services.WebMethod]
         public static void SaveData(string data)
         {

@@ -1,39 +1,33 @@
 ﻿
-String.prototype.fileExists = function () {
-    filename = this.trim();
-
-    var response = jQuery.ajax({
-        url: filename,
-        type: 'HEAD',
-        async: false
-    }).status;
-
-    return (response != "200") ? false : true;
-}
+var htmlData = '';
 
 $(function () {
-    alert(window.location.href);
-    alert(getAbsolutePath());
-    alert(location.pathname);
-    //alert('AAA' + "~/sheets/temporary.html".fileExists());
-    //alert('BBB' + "css/page-style.css".fileExists());
-    //alert('BBB' + "~/css/page-style.css".fileExists());
-    //Here is where we initiate the sheets
-    //every time sheet is created it creates a new jQuery.sheet.instance (array), to manipulate each sheet, the jQuery object is returned
     $('#jQuerySheet0').sheet({
-        title: 'Benefit Admin',
         inlineMenu: inlineMenu($.sheet.instance),
-        //urlGet: "~/sheets/temporary.html",
-        autoFiller: true
+        //urlGet: "/sheets/temporary.html",
+        fnSave: function () { $('#Button2').trigger('click'); },
+        autoFiller: true,
+        buildSheet: '0x0'
     });
-
-    function getAbsolutePath() {
-        var loc = window.location;
-        var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
-        return loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length));
-    }
-
+    getHtmlData();
 });
+
+function getHtmlData() {
+    $.ajax({
+        type: "POST",
+        url: "BenefitAdminCode.aspx/getHTML",
+        data: "{}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            htmlData = msg.d;
+            $('#buttonHidden').trigger('click');
+        },
+        error: function (request, status, error) {
+            alert(request.responseText);
+        }
+    });
+}
 
 function inlineMenu(I) {
     I = (I ? I.length : 0);
@@ -54,7 +48,6 @@ function inlineMenu(I) {
 
     menu.find('.colorPickers').children().eq(1).css('background-image', "url('images/palette.png')");
     menu.find('.colorPickers').children().eq(3).css('background-image', "url('images/palette_bg.png')");
-
 
     return menu;
 }
