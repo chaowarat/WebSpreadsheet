@@ -3358,13 +3358,14 @@ jQuery.sheet = {
                     data: "{'data':'" + o1 + "'}",
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    success: function () {
+                    success: function (msg) {
                         $('#saving').hide();
-                        alert('Data saved.');
+                        if(msg.d != null)
+                            alert('Sheet not contains special character!!!');
                     },
                     error: function (request, status, error) {
                         $('#saving').hide();
-                        alert(request.responseText);
+                        alert(error + ' or sheet contains special character!!!');
                     }
                 });
             },
@@ -3382,13 +3383,14 @@ jQuery.sheet = {
                     data: "{'data':'" + o1 + "'}",
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    success: function () {
+                    success: function (msg) {
                         $('#saving').hide();
-                        alert('Data saved.');
+                        if (msg.d != null)
+                            alert('Sheet not contains special character!!!');
                     },
                     error: function (request, status, error) {
                         $('#saving').hide();
-                        alert(request.responseText);
+                        alert(error + ' or sheet contains special character!!!');
                     }
                 });
             },
@@ -3402,13 +3404,14 @@ jQuery.sheet = {
                     data: parameters,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    success: function () {
+                    success: function (msg) {
                         $('#saving').hide();
-                        alert('Data saved.');
+                        if (msg.d != null)
+                            alert('Sheet not contains special character!!!');
                     },
                     error: function (request, status, error) {
                         $('#saving').hide();
-                        alert(request.responseText);
+                        alert(error + ' or sheet contains special character!!!');
                     }
                 });
             },

@@ -17,7 +17,6 @@ namespace Spreadsheet
     public partial class BenefitAdminProvider : System.Web.UI.Page
     {
         private static string staticHtmlFileName = "provider.html";
-        private static string staticXmlFileName = "provider.xml";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -39,10 +38,19 @@ namespace Spreadsheet
         }
 
         [System.Web.Services.WebMethod]
-        public static void SaveData(string data)
+        public static string SaveData(string data)
         {
-            data = data.Replace("&", "%26");
-            HtmlManager.saveHtml(data, staticXmlFileName);
+            data = data.Replace("&", "&amp;");
+            MemoryStream mem = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(data));
+            XPathDocument document;
+            try
+            {
+                document = new XPathDocument(mem);
+            }
+            catch (Exception)
+            {
+                return "error";
+            }
             BenefitAdminDataContext bfAdmin = new BenefitAdminDataContext();
             var allInMis = from c in bfAdmin.Ministries select c;
             bfAdmin.Ministries.DeleteAllOnSubmit(allInMis);
@@ -68,8 +76,6 @@ namespace Spreadsheet
             }
             catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
 
-            MemoryStream mem = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(data));
-            XPathDocument document = new XPathDocument(mem);
             XPathNavigator navigator = document.CreateNavigator();
             XPathNodeIterator allDocs = navigator.Select("DOCUMENTS/DOCUMENT");
             while (allDocs.MoveNext())
@@ -185,8 +191,8 @@ namespace Spreadsheet
                     }
                     #endregion
                 }
-
             }
+            return null;
         }
 
         protected void LinkButton_signOut_Click(object sender, EventArgs e)

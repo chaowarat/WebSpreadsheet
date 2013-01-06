@@ -26,32 +26,13 @@
 			<!--MouseWheel-->
 				<script type="text/javascript" src="plugins/jquery.mousewheel.min.js"></script>
 			<!--/MouseWheel-->
-            <!--Nearest-->
-            <script type="text/javascript" src="plugins/jquery.nearest.min.js"></script>
-            <!--/Nearest-->
 			<!--jQuery UI-->
 				<script type="text/javascript" src="jquery-ui/ui/jquery-ui.min.js"></script>
 			<!--/jQuery UI-->
-			<!--Raphaeljs - for charts-->
-				<script type="text/javascript" src="plugins/raphael-min.js"></script>
-				<script type="text/javascript" src="plugins/g.raphael-min.js"></script>
-			<!--/Raphaeljs-->
 			<!--ColorPicker-->
 				<link rel="stylesheet" type="text/css" href="plugins/jquery.colorPicker.css" />
 				<script type="text/javascript" src="plugins/jquery.colorPicker.min.js"></script>
 			<!--/ColorPicker-->
-			<!--Theme Switcher Tool-->
-				<!--<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>-->
-			<!--/Theme Switcher Tool-->
-			<!--Elastic-->
-				<script type="text/javascript" src="plugins/jquery.elastic.min.js"></script>
-			<!--/Elastic-->
-			<!--Advanced_Math-->
-				<script type="text/javascript" src="plugins/jquery.sheet.advancedfn.js"></script>
-			<!--/Advanced_Math-->
-			<!--Finance-->
-				<script type="text/javascript" src="plugins/jquery.sheet.financefn.js"></script>
-			<!--/Finance-->
 		<!--/Optional-->
 
         <link rel="stylesheet" type="text/css" href="css/page-style.css" />     
@@ -130,12 +111,6 @@
 					<img alt="Delete Column" src="images/sheet_col_delete.png"/></a>
 				<a href="#" onclick="sheetInstance.getTdRange(null, sheetInstance.obj.formula().val()); return false;" title="Get Cell Range">
 					<img alt="Get Cell Range" src="images/sheet_get_range.png"/></a>
-				<a href="#" onclick="sheetInstance.s.fnSave(); return false;" title="Save Sheets">
-					<img alt="Save Sheet" src="images/disk.png"/></a>
-				<a href="#" onclick="sheetInstance.deleteSheet(); return false;" title="Delete Current Sheet">
-					<img alt="Delete Current Sheet" src="images/table_delete.png"/></a>
-				<a href="#" onclick="sheetInstance.calc(sheetInstance.i); return false;" title="Refresh Calculations">
-					<img alt="Refresh Calculations" src="images/arrow_refresh.png"/></a>
 				<a href="#" onclick="sheetInstance.cellFind(); return false;" title="Find">
 					<img alt="Find" src="images/find.png"/></a>
 				<a href="#" onclick="sheetInstance.cellStyleToggle('styleBold'); return false;" title="Bold">
@@ -156,16 +131,9 @@
 					<img alt="Fill Down" src="images/arrow_down.png"/></a>
 				<a href="#" onclick="sheetInstance.fillUpOrDown(true); return false;" title="Fill Up">
 					<img alt="Fill Up" src="images/arrow_up.png"/></a>
-				<span class="colorPickers">
-					<input title="Foreground color" class="colorPickerFont" style="background-image: url('images/palette.png') ! important; width: 16px; height: 16px;"/>
-					<input title="Background Color" class="colorPickerCell" style="background-image: url('images/palette_bg.png') ! important; width: 16px; height: 16px;"/>
-				</span>
-				<a href="#" onclick="sheetInstance.obj.formula().val('=HYPERLINK(\'' + prompt('Enter Web Address', 'http://www.visop-dev.com/') + '\')').keydown(); return false;" title="HyperLink">
-					<img alt="Web Link" src="images/page_link.png"/></a>
 				<a href="#" onclick="sheetInstance.toggleFullScreen(); $('#lockedMenu').toggle(); return false;" title="Toggle Full Screen">
 					<img alt="Web Link" src="images/arrow_out.png"/></a>
-
-			</span>
+                </span>
 		</span>
         </form>
 </body>

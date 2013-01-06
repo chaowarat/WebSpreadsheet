@@ -526,7 +526,7 @@ namespace Spreadsheet
                     byte[] tmp = Encoding.UTF8.GetBytes(sw.ToString());
                     uploadToBlob(fileName, new MemoryStream(tmp));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }

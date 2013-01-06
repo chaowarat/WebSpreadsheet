@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Xml;
 using System.Data;
+using System.Xml.XPath;
 
 namespace Spreadsheet
 {
@@ -13,32 +14,276 @@ namespace Spreadsheet
     public class XMLService : IXMLService
     {
         BenefitAdminDataContext bfAdmin = new BenefitAdminDataContext();
+        string xmlCode = "code.xml";
+        string xmlCost = "cost.xml";
 
-        private XmlElement getCodeXML()
+        private XmlDocument getXmlDocumentFromDB(string sheetName)
         {
             XmlDocument xmlDoc = new XmlDocument();
-            string pathSheets = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + @"sheets\code.xml";
-            xmlDoc.Load(pathSheets);
 
-            return xmlDoc.DocumentElement;
-        }
+            if (sheetName.Equals(xmlCode))
+            {
+                XmlElement root = xmlDoc.CreateElement("CODE");
+                xmlDoc.AppendChild(root);
 
-        private XmlElement getProviderXML()
-        {
-            XmlDocument xmlDoc = new XmlDocument();
-            string pathSheets = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + @"sheets\provider.xml";
-            xmlDoc.Load(pathSheets);
+                XmlElement root2 = xmlDoc.CreateElement("Service");
+                root.AppendChild(root2);
+                #region Service
+                try{
+                    var data = from s in bfAdmin.Services select s;
+                    foreach (Service service in data)
+                    {
+                        XmlElement list = xmlDoc.CreateElement("DATA");
+                        root2.AppendChild(list);
 
-            return xmlDoc.DocumentElement;
-        }
+                        XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
+                        SVCCode.InnerText = service.SVCCode.Trim();
+                        list.AppendChild(SVCCode);
 
-        private XmlElement getCostXML()
-        {
-            XmlDocument xmlDoc = new XmlDocument();
-            string pathSheets = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + @"sheets\cost.xml";
-            xmlDoc.Load(pathSheets);
+                        XmlElement SVCName = xmlDoc.CreateElement("SVCName");
+                        SVCName.InnerText = service.SVCName.Trim();
+                        list.AppendChild(SVCName);
 
-            return xmlDoc.DocumentElement;
+                        XmlElement SVCDesc = xmlDoc.CreateElement("SVCDesc");
+                        SVCDesc.InnerText = service.SVCDesc.Trim();
+                        list.AppendChild(SVCDesc);
+
+                        XmlElement HostCode = xmlDoc.CreateElement("HostCode");
+                        HostCode.InnerText = service.HostCode.Trim();
+                        list.AppendChild(HostCode);
+
+                        XmlElement StaffRole = xmlDoc.CreateElement("StaffRole");
+                        StaffRole.InnerText = service.StaffRole.Trim();
+                        list.AppendChild(StaffRole);
+
+                        XmlElement SVCType = xmlDoc.CreateElement("SVCType");
+                        SVCType.InnerText = service.SVCType.Trim();
+                        list.AppendChild(SVCType);
+
+                        XmlElement SVCObjective = xmlDoc.CreateElement("SVCObjective");
+                        SVCObjective.InnerText = service.SVCObjective.Trim();
+                        list.AppendChild(SVCObjective);
+
+                        XmlElement SVCSupport = xmlDoc.CreateElement("SVCSupport");
+                        SVCSupport.InnerText = service.SVCSupport.Trim();
+                        list.AppendChild(SVCSupport);
+
+                        XmlElement SVCCoverage = xmlDoc.CreateElement("SVCCoverage");
+                        SVCCoverage.InnerText = service.SVCCoverage.Trim();
+                        list.AppendChild(SVCCoverage);
+
+                        XmlElement SVCStart = xmlDoc.CreateElement("SVCStart");
+                        SVCStart.InnerText = service.SVCStart.Trim();
+                        list.AppendChild(SVCStart);
+
+                        XmlElement SVCEnd = xmlDoc.CreateElement("SVCEnd");
+                        SVCEnd.InnerText = service.SVCEnd.Trim();
+                        list.AppendChild(SVCEnd);
+                    }
+                }
+                catch(Exception){ }
+                 #endregion
+                
+                XmlElement rootAct = xmlDoc.CreateElement("Activity");
+                root.AppendChild(rootAct);
+                #region Activity
+                var dataAct = from s in bfAdmin.Activities select s;
+                        foreach(Activity activity in dataAct)
+                        {
+                                XmlElement list = xmlDoc.CreateElement("DATA");
+                                rootAct.AppendChild(list);
+
+                                XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
+                                ACTCode.InnerText = activity.ACTCode.Trim();
+                                list.AppendChild(ACTCode);
+
+                                XmlElement ACTDes = xmlDoc.CreateElement("ACTDest");
+                                ACTDes.InnerText = activity.ACTDesc.Trim();
+                                list.AppendChild(ACTDes);
+
+                                XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
+                                SVCCode.InnerText = activity.SVCCode.Trim();
+                                list.AppendChild(SVCCode);
+                         }
+                        
+                    #endregion
+
+                XmlElement rootSAct = xmlDoc.CreateElement("SubActivity");
+                root.AppendChild(rootSAct);
+                #region SubActivity
+                try
+                {
+                    var dataSAct = from s in bfAdmin.SubActivities select s;
+                    foreach (SubActivity sactivity in dataSAct)
+                    {
+                        XmlElement list = xmlDoc.CreateElement("DATA");
+                        rootSAct.AppendChild(list);
+
+                        XmlElement SACTCode = xmlDoc.CreateElement("SACTCode");
+                        SACTCode.InnerText = sactivity.SACTCode.Trim();
+                        list.AppendChild(SACTCode);
+
+                        XmlElement SACTDes = xmlDoc.CreateElement("SACTDest");
+                        SACTDes.InnerText = sactivity.SACTDesc.Trim();
+                        list.AppendChild(SACTDes);
+
+                        XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
+                        ACTCode.InnerText = sactivity.ACTCode.Trim();
+                        list.AppendChild(ACTCode);
+                    }
+                }
+                catch (Exception) { }
+                #endregion
+
+                XmlElement rootMat = xmlDoc.CreateElement("Material");
+                root.AppendChild(rootMat);
+                #region Material
+                try
+                {
+                    var dataMat = from s in bfAdmin.Materials select s;
+                    foreach (Material material in dataMat)
+                    {
+                        XmlElement list = xmlDoc.CreateElement("DATA");
+                        rootMat.AppendChild(list);
+
+                        XmlElement MaterialCode = xmlDoc.CreateElement("MaterialCode");
+                        MaterialCode.InnerText = material.MaterialCode.Trim();
+                        list.AppendChild(MaterialCode);
+
+                        XmlElement MaterialDesc = xmlDoc.CreateElement("MaterialDesc");
+                        MaterialDesc.InnerText = material.MaterialDesc.Trim();
+                        list.AppendChild(MaterialDesc);
+
+                        XmlElement Unit = xmlDoc.CreateElement("Unit");
+                        Unit.InnerText = material.Unit.Trim();
+                        list.AppendChild(Unit);
+
+                        XmlElement EstimatedPrice = xmlDoc.CreateElement("EstimatedPrice");
+                        EstimatedPrice.InnerText = material.EstimatedPrice.Trim();
+                        list.AppendChild(EstimatedPrice);
+
+                        XmlElement RealPrice = xmlDoc.CreateElement("RealPrice");
+                        RealPrice.InnerText = material.RealPrice.Trim();
+                        list.AppendChild(RealPrice);
+
+                        XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
+                        SVCCode.InnerText = material.SVCCode.Trim();
+                        list.AppendChild(SVCCode);
+
+                        XmlElement Note = xmlDoc.CreateElement("Note");
+                        Note.InnerText = material.Note.Trim();
+                        list.AppendChild(Note);
+                    }
+                }
+                catch(Exception){ }
+                #endregion 
+            }
+            else if (sheetName.Equals(xmlCost))
+            {
+                XmlElement root = xmlDoc.CreateElement("COST");
+                xmlDoc.AppendChild(root);
+        
+                XmlElement rootAnno = xmlDoc.CreateElement("Annotation");
+                root.AppendChild(rootAnno);
+                #region Annotation
+                try
+                {
+                    var dataAnno = from s in bfAdmin.Annotations select s;
+                    foreach (Annotation annotation in dataAnno)
+                    {
+                        XmlElement list = xmlDoc.CreateElement("DATA");
+                        rootAnno.AppendChild(list);
+
+                        XmlElement AID = xmlDoc.CreateElement("AID");
+                        AID.InnerText = annotation.AID.Trim();
+                        list.AppendChild(AID);
+
+                        XmlElement AText = xmlDoc.CreateElement("AText");
+                        AText.InnerText = annotation.AText.Trim();
+                        list.AppendChild(AText);
+
+                        XmlElement AnnotationID = xmlDoc.CreateElement("AnnotationID");
+                        AnnotationID.InnerText = annotation.AnnotationID.Trim();
+                        list.AppendChild(AnnotationID);
+
+                        XmlElement Reference = xmlDoc.CreateElement("Reference");
+                        Reference.InnerText = annotation.Reference.Trim();
+                        list.AppendChild(Reference);
+                    }
+                }
+                catch (Exception) { }
+                #endregion
+
+                XmlElement rootACost = xmlDoc.CreateElement("ActivityCost");
+                root.AppendChild(rootACost);
+                #region ActivityCost
+                try
+                {
+                    var dataACost = from s in bfAdmin.ActivityCosts select s;
+                    foreach (ActivityCost activityCost in dataACost)
+                    {
+                        XmlElement list = xmlDoc.CreateElement("DATA");
+                        rootACost.AppendChild(list);
+
+                        XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
+                        ACTCode.InnerText = activityCost.ACTCode.Trim();
+                        list.AppendChild(ACTCode);
+
+                        XmlElement Unit = xmlDoc.CreateElement("Unit");
+                        Unit.InnerText = activityCost.Unit.Trim();
+                        list.AppendChild(Unit);
+
+                        XmlElement LabourCost = xmlDoc.CreateElement("LabourCost");
+                        LabourCost.InnerText = activityCost.LabourCost.Trim();
+                        list.AppendChild(LabourCost);
+
+                        XmlElement MaterialCost = xmlDoc.CreateElement("MaterialCost");
+                        MaterialCost.InnerText = activityCost.MaterialCost.Trim();
+                        list.AppendChild(MaterialCost);
+
+                        XmlElement CC_Equipment = xmlDoc.CreateElement("CC_Equipment");
+                        CC_Equipment.InnerText = activityCost.CC_Equipment.Trim();
+                        list.AppendChild(CC_Equipment);
+
+                        XmlElement CC_Building = xmlDoc.CreateElement("CC_Building");
+                        CC_Building.InnerText = activityCost.CC_Building.Trim();
+                        list.AppendChild(CC_Building);
+
+                        XmlElement IndirectCost = xmlDoc.CreateElement("IndirectCost");
+                        IndirectCost.InnerText = activityCost.IndirectCost.Trim();
+                        list.AppendChild(IndirectCost);
+
+                        XmlElement ProposedCost = xmlDoc.CreateElement("ProposedCost");
+                        ProposedCost.InnerText = activityCost.ProposedCost.Trim();
+                        list.AppendChild(ProposedCost);
+
+                        XmlElement CurrentCost = xmlDoc.CreateElement("CurrentCost");
+                        CurrentCost.InnerText = activityCost.CurrentCost.Trim();
+                        list.AppendChild(CurrentCost);
+
+                        XmlElement UnitCost = xmlDoc.CreateElement("UnitCost");
+                        UnitCost.InnerText = activityCost.UnitCost.Trim();
+                        list.AppendChild(UnitCost);
+
+                        XmlElement ReferencedCostOrg = xmlDoc.CreateElement("ReferencedCostOrg");
+                        ReferencedCostOrg.InnerText = activityCost.ReferencedCostOrg.Trim();
+                        list.AppendChild(ReferencedCostOrg);
+
+                        XmlElement TimsStamp = xmlDoc.CreateElement("TimsStamp");
+                        TimsStamp.InnerText = activityCost.TimsStamp.ToString();
+                        list.AppendChild(TimsStamp);
+
+                        XmlElement AID = xmlDoc.CreateElement("AID");
+                        AID.InnerText = activityCost.AID.Trim();
+                        list.AppendChild(AID);
+
+                    }
+                }
+                catch (Exception) { }
+                #endregion
+                            
+            }
+            return xmlDoc;
         }
 
         private List<string> queryPK(string table)
@@ -68,6 +313,7 @@ namespace Spreadsheet
 
         public XmlElement getXMLSheet(string select, string pk, string fk)
         {
+            bfAdmin = new BenefitAdminDataContext();
             XmlDocument xmlDoc = new XmlDocument();
             XmlElement dataElm = xmlDoc.CreateElement("DATA");
             xmlDoc.AppendChild(dataElm);
@@ -184,8 +430,7 @@ namespace Spreadsheet
         }
 
         /* getXMLSheet : returen specific XmlElement of sheet
-         * input : name of organization and name of sheet(can use "All" or "List" instead sheet name)
-         *       : name of organization and name of sheet
+         * input : name of organization and name of sheet
          *       : name of organization and string "All"
          *       : name of organization and string "List"
          * output : XmlElement specific by input
@@ -193,60 +438,36 @@ namespace Spreadsheet
          * */
         public XmlElement getXMLSheet(string group, string sheet)
         {
+            bfAdmin = new BenefitAdminDataContext();
             XmlDocument xmlDoc = new XmlDocument();
-            string pathSheets = "";
             //init filepath and read xml document
             #region
-            if (group.Equals("Code"))
+            if (group.ToUpper().Equals("CODE"))
             {
-                if (sheet.Equals("All"))
+                if (sheet.ToUpper().Equals("ALL"))
                 {
-                    return getCodeXML();
+                    return getXmlDocumentFromDB(xmlCode).DocumentElement;
                 }
                 else
                 {
-                    pathSheets = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + @"sheets\code.xml";
-                    xmlDoc.Load(pathSheets);
+                    xmlDoc = getXmlDocumentFromDB(xmlCode);
                 }
             }
-            else if (group.Equals("Cost"))
+            else if (group.ToUpper().Equals("COST"))
             {
-                if (sheet.Equals("All"))
+                if (sheet.ToUpper().Equals("ALL"))
                 {
-                    return getCostXML();
+                    return getXmlDocumentFromDB(xmlCost).DocumentElement;
                 }
                 else
                 {
-                    pathSheets = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + @"sheets\cost.xml";
-                    xmlDoc.Load(pathSheets);
-                }
-            }
-            else if (group.Equals("Provider"))
-            {
-                if (sheet.Equals("All"))
-                {
-                    return getProviderXML();
-                }
-                else
-                {
-                    pathSheets = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + @"sheets\provider.xml";
-                    xmlDoc.Load(pathSheets);
+                    xmlDoc = getXmlDocumentFromDB(xmlCost);
                 }
             }
             #endregion
 
-            if (group.ToUpper().Equals("COST"))
-            {
-                XmlDocument doc = new XmlDocument();
-                XmlElement root = doc.CreateElement("Lists");
-                doc.AppendChild(root);
-                XmlElement list = doc.CreateElement("SheetName");
-                list.InnerText = "ActivityCost";
-                root.AppendChild(list);
-                return doc.DocumentElement;
-            }
             XmlNodeList nodes = xmlDoc.GetElementsByTagName(group.ToUpper());
-            if (!sheet.Equals("List"))
+            if (!sheet.ToUpper().Equals("LIST"))
             {
                 foreach (XmlNode node in nodes.Item(0).ChildNodes)
                 {
@@ -259,17 +480,40 @@ namespace Spreadsheet
             }
             else
             {
-                XmlDocument doc = new XmlDocument();
-                XmlElement root = doc.CreateElement("Lists");
-                doc.AppendChild(root);
-                foreach (XmlNode node in nodes.Item(0).ChildNodes)
+                if (group.ToUpper().Equals("COST"))
                 {
+                    XmlDocument doc = new XmlDocument();
+                    XmlElement root = doc.CreateElement("Lists");
+                    doc.AppendChild(root);
                     XmlElement list = doc.CreateElement("SheetName");
-                    list.InnerText = node.Name;
+                    list.InnerText = "Annotation";
                     root.AppendChild(list);
+                    list = doc.CreateElement("SheetName");
+                    list.InnerText = "ActivityCost";
+                    root.AppendChild(list);
+                    return doc.DocumentElement;
                 }
-                return doc.DocumentElement;
+                else if (group.ToUpper().Equals("CODE"))
+                {
+                    XmlDocument doc = new XmlDocument();
+                    XmlElement root = doc.CreateElement("Lists");
+                    doc.AppendChild(root);
+                    XmlElement list = doc.CreateElement("SheetName");
+                    list.InnerText = "Service";
+                    root.AppendChild(list);
+                    list = doc.CreateElement("SheetName");
+                    list.InnerText = "Activity";
+                    root.AppendChild(list);
+                    list = doc.CreateElement("SheetName");
+                    list.InnerText = "SubActivity";
+                    root.AppendChild(list);
+                    list = doc.CreateElement("SheetName");
+                    list.InnerText = "Material";
+                    root.AppendChild(list);
+                    return doc.DocumentElement;
+                }
             }
+            return null;
         }
     }
 }
