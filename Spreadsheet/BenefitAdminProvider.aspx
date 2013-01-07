@@ -76,7 +76,7 @@
             </tr>
         </table>
         <div 
-            id="jQuerySheet0" class="jQuerySheet" style="height: 500px; width: 97%; left: 5px;">
+            id="jQuerySheet0" class="jQuerySheet" style="height: 520px; width: 97%; left: 5px;">
         </div>
         
         <span id="inlineMenu" style="display: none;">
