@@ -3360,8 +3360,12 @@ jQuery.sheet = {
                     dataType: "json",
                     success: function (msg) {
                         $('#saving').hide();
-                        if(msg.d != null)
+                        if (msg.d != null) {
                             alert('Sheet not contains special character!!!');
+                        }
+                        else {
+                            alert('Save complete.');
+                        }
                     },
                     error: function (request, status, error) {
                         $('#saving').hide();
@@ -3385,8 +3389,12 @@ jQuery.sheet = {
                     dataType: "json",
                     success: function (msg) {
                         $('#saving').hide();
-                        if (msg.d != null)
+                        if (msg.d != null) {
                             alert('Sheet not contains special character!!!');
+                        }
+                        else {
+                            alert('Save complete.');
+                        }
                     },
                     error: function (request, status, error) {
                         $('#saving').hide();
@@ -3406,8 +3414,12 @@ jQuery.sheet = {
                     dataType: "json",
                     success: function (msg) {
                         $('#saving').hide();
-                        if (msg.d != null)
+                        if (msg.d != null) {
                             alert('Sheet not contains special character!!!');
+                        }
+                        else {
+                            alert('Save complete.');
+                        }
                     },
                     error: function (request, status, error) {
                         $('#saving').hide();
