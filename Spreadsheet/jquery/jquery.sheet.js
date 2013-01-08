@@ -1552,7 +1552,7 @@ jQuery.sheet = {
                                         //even when cell edited and primary is same value
                                         if (jS.cellLast.col == 1) {
                                             for (var j = 1; j < jS.cellLast.row; j++) {
-                                                if (v.trim() == jS.spreadsheets[jS.i][j][1].value.trim()) {
+                                                if (v.trim() != "" && v.trim() == jS.spreadsheets[jS.i][j][1].value.trim()) {
                                                     v = prevVal;
                                                     alert('New primary key has been used!');
                                                 }
