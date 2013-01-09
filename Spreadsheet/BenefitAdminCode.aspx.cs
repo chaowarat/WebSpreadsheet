@@ -37,6 +37,7 @@ namespace Spreadsheet
         [System.Web.Services.WebMethod]
         public static string getHTML()
         {
+            HtmlManager.Clean();
             return HtmlManager.createHtml(fileName);
         }
 
