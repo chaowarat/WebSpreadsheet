@@ -104,6 +104,10 @@ namespace Spreadsheet
                                 XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
                                 SVCCode.InnerText = activity.SVCCode.Trim();
                                 list.AppendChild(SVCCode);
+
+                                XmlElement ICF_Code = xmlDoc.CreateElement("ICF_Code");
+                                ICF_Code.InnerText = activity.ICF_Code.Trim();
+                                list.AppendChild(ICF_Code);
                          }
                         
                     #endregion
@@ -359,6 +363,10 @@ namespace Spreadsheet
                         XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
                         SVCCode.InnerXml = s.SVCCode.Trim();
                         act.AppendChild(SVCCode);
+
+                        XmlElement ICF_Code = xmlDoc.CreateElement("ICF_Code");
+                        ICF_Code.InnerXml = s.ICF_Code.Trim();
+                        act.AppendChild(ICF_Code);
                     }
                 }
                 #endregion

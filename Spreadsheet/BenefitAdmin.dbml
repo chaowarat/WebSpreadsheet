@@ -1,10 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="spreadsheet" Class="BenefitAdminDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=rjhk5cc9ao.database.windows.net;Initial Catalog=spreadsheet;User ID=adminTest" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="spreadsheetConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Spreadsheet" Class="BenefitAdminDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=kaurep59lr.database.windows.net;Initial Catalog=Spreadsheet;User ID=adminCase" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="SpreadsheetConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Activity" Member="Activities">
     <Type Name="Activity">
       <Column Name="ACTCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ACTDesc" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="SVCCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="ICF_Code" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Association Name="Activity_SubActivity" Member="SubActivities" ThisKey="ACTCode" OtherKey="ACTCode" Type="SubActivity" />
       <Association Name="Activity_ConditionActivity" Member="ConditionActivities" ThisKey="ACTCode" OtherKey="ACTCode" Type="ConditionActivity" />
       <Association Name="Service_Activity" Member="Service" ThisKey="SVCCode" OtherKey="SVCCode" Type="Service" IsForeignKey="true" DeleteRule="CASCADE" />

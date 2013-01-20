@@ -169,7 +169,7 @@ namespace Spreadsheet
                 else if (title.Equals("Activity"))
                 {
                     #region
-                    string col0 = "", col1 = "", col2 = "";
+                    string col0 = "", col1 = "", col2 = "", col3 = "";
                     XPathNodeIterator countRowString = allDocs.Current.Select("METADATA/ROWS");
                     countRowString.MoveNext();
                     int countRow = Convert.ToInt32(countRowString.Current.Value);
@@ -188,6 +188,10 @@ namespace Spreadsheet
                             XPathNodeIterator getCol2 = rows.Current.Select("R" + i + "/C2");
                             getCol2.MoveNext();
                             col2 = getCol2.Current.Value;
+
+                            XPathNodeIterator getCol3 = rows.Current.Select("R" + i + "/C3");
+                            getCol3.MoveNext();
+                            col3 = getCol3.Current.Value;
                             //insert to DB
                             if (!col0.Equals("") && !col2.Equals(""))
                             {
@@ -195,6 +199,7 @@ namespace Spreadsheet
                                 act.ACTCode = col0;
                                 act.ACTDesc = col1;
                                 act.SVCCode = col2;
+                                act.ICF_Code = col3;
                                 bfAdmin.Activities.InsertOnSubmit(act);
                                 try
                                 {

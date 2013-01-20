@@ -7,10 +7,6 @@ using System.Xml.Linq;
 using System.Web;
 using System.Xml.XPath;
 using System.Text;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Auth;
-using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.WindowsAzure.StorageClient;
 using System.Configuration;
 
 namespace Spreadsheet
@@ -29,71 +25,6 @@ namespace Spreadsheet
         static string classsheet = "jSheet ui-widget-content";
         static int count = 0;
         static XElement TBody, td, countrow;
-        static CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["TmpDir"].ConnectionString);
-
-        public static void createBlob()
-        {
-            // Create the blob client.
-            var blobClient = storageAccount.CreateCloudBlobClient();
-
-            // Retrieve a reference to a container. 
-            var container = blobClient.GetContainerReference("tmp");
-
-            // Create the container if it doesn't already exist.
-            container.CreateIfNotExists();
-        }
-
-        public static MemoryStream downloadFromBlob(string fileName)
-        {
-            createBlob();
-            // Create the blob client.
-            var blobClient = storageAccount.CreateCloudBlobClient();
-
-            // Retrieve reference to a previously created container.
-            var container = blobClient.GetContainerReference("tmp");
-
-            // Retrieve reference to a blob named "myblob.txt"
-            var blockBlob2 = container.GetBlockBlobReference(fileName);
-
-            var memoryStream = new MemoryStream();
-            blockBlob2.DownloadToStream(memoryStream);
-
-            return memoryStream;
-        }
-
-        public static void uploadToBlob(string fileName, MemoryStream data)
-        {
-            data.Position = 0;
-            createBlob();
-            // Create the blob client.
-            var blobClient = storageAccount.CreateCloudBlobClient();
-
-            // Retrieve reference to a previously created container.
-            var container = blobClient.GetContainerReference("tmp");
-
-            // Retrieve reference to a blob named "myblob".
-            var blockBlob = container.GetBlockBlobReference(fileName);
-            blockBlob.UploadFromStream(data); 
-        }
-
-        public static bool blobFileExists(string fileName)
-        {
-            // Create the blob client.
-            var blobClient = storageAccount.CreateCloudBlobClient();
-
-            // Retrieve reference to a previously created container.
-            var container = blobClient.GetContainerReference("tmp");
-            var blockBlob2 = container.GetBlockBlobReference(fileName);
-            try
-            {
-                blockBlob2.FetchAttributes();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
 
         public static string createHtml(string fileName)
         {
@@ -524,18 +455,6 @@ namespace Spreadsheet
                     }
                     xmlDoc.Save(sw);
                     byte[] tmp = Encoding.UTF8.GetBytes(sw.ToString());
-                    uploadToBlob(fileName, new MemoryStream(tmp));
-                }
-                catch (Exception)
-                {
-                }
-            }
-            else
-            {
-                try
-                {
-                    byte[] tmp = Encoding.UTF8.GetBytes(data);
-                    uploadToBlob(fileName, new MemoryStream(tmp));
                 }
                 catch (Exception)
                 {
@@ -546,7 +465,6 @@ namespace Spreadsheet
         public static void Clean()
         {
             bfAdmin = new BenefitAdminDataContext();
-            storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["TmpDir"].ConnectionString);
         }
         /// <summary>
         /// create database from sql server
@@ -942,7 +860,7 @@ namespace Spreadsheet
 
         public static XElement createActivityFromDB()
         {
-            countCol = 3;
+            countCol = 4;
             var act = from a in bfAdmin.Activities select a;
             XElement herdtable2 = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
@@ -966,21 +884,26 @@ namespace Spreadsheet
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
                               "ACTCode"),
-                           new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
                               "ACTDes"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "SVCCode"));
+                              "SVCCode"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "ICF_Code"));
             TBody.Add(td);
             foreach (var a in act)
             {
                 td = new XElement("TR", new XAttribute("style", "height: 25px;"),
                      new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count), a.ACTCode),
                      new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + count), a.ACTDesc),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), a.SVCCode));
+                     new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), a.SVCCode),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), a.ICF_Code));
                 TBody.Add(td);
                 count++;
             }

@@ -12,7 +12,7 @@ namespace Spreadsheet
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            Application["fileName"] = "";
+
         }
 
         protected void Session_Start(object sender, EventArgs e)

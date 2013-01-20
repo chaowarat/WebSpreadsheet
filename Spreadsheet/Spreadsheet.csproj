@@ -47,28 +47,6 @@
     <Reference Include="Excel">
       <HintPath>.\Excel.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>.\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\2012-10\ref\Microsoft.WindowsAzure.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Diagnostics, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\2012-10\ref\Microsoft.WindowsAzure.Diagnostics.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Storage, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\2012-10\ref\Microsoft.WindowsAzure.Storage.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\2012-10\ref\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -247,6 +225,8 @@
     <Content Include="parser\parser.jison" />
     <None Include="Properties\PublishProfiles\spreadsheet - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\spreadsheet - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\spreadsheetTest - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\spreadsheetTest - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
