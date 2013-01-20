@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Spreadsheet" Class="BenefitAdminDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=kaurep59lr.database.windows.net;Initial Catalog=Spreadsheet;User ID=adminCase" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="SpreadsheetConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=kaurep59lr.database.windows.net;Initial Catalog=Spreadsheet;User ID=adminCase" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="SpreadsheetConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Activity" Member="Activities">
     <Type Name="Activity">
       <Column Name="ACTCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -16,6 +16,7 @@
       <Column Name="SACTCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="SACTDesc" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="ACTCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="ICF_Code" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Association Name="Activity_SubActivity" Member="Activity" ThisKey="ACTCode" OtherKey="ACTCode" Type="Activity" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
   </Table>
@@ -112,6 +113,7 @@
       <Column Name="SVCCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="SVCName" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="SVCDesc" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="ICF_Code" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="HostCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="StaffRole" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="SVCType" Type="System.String" DbType="Char(255)" CanBeNull="true" />

@@ -69,7 +69,7 @@ namespace Spreadsheet
     #endregion
 		
 		public BenefitAdminDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["SpreadsheetConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["SpreadsheetConnectionString1"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -438,6 +438,8 @@ namespace Spreadsheet
 		
 		private string _ACTCode;
 		
+		private string _ICF_Code;
+		
 		private EntityRef<Activity> _Activity;
 		
     #region Extensibility Method Definitions
@@ -450,6 +452,8 @@ namespace Spreadsheet
     partial void OnSACTDescChanged();
     partial void OnACTCodeChanging(string value);
     partial void OnACTCodeChanged();
+    partial void OnICF_CodeChanging(string value);
+    partial void OnICF_CodeChanged();
     #endregion
 		
 		public SubActivity()
@@ -518,6 +522,26 @@ namespace Spreadsheet
 					this._ACTCode = value;
 					this.SendPropertyChanged("ACTCode");
 					this.OnACTCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ICF_Code", DbType="Char(255)")]
+		public string ICF_Code
+		{
+			get
+			{
+				return this._ICF_Code;
+			}
+			set
+			{
+				if ((this._ICF_Code != value))
+				{
+					this.OnICF_CodeChanging(value);
+					this.SendPropertyChanging();
+					this._ICF_Code = value;
+					this.SendPropertyChanged("ICF_Code");
+					this.OnICF_CodeChanged();
 				}
 			}
 		}
@@ -2343,6 +2367,8 @@ namespace Spreadsheet
 		
 		private string _SVCDesc;
 		
+		private string _ICF_Code;
+		
 		private string _HostCode;
 		
 		private string _StaffRole;
@@ -2375,6 +2401,8 @@ namespace Spreadsheet
     partial void OnSVCNameChanged();
     partial void OnSVCDescChanging(string value);
     partial void OnSVCDescChanged();
+    partial void OnICF_CodeChanging(string value);
+    partial void OnICF_CodeChanged();
     partial void OnHostCodeChanging(string value);
     partial void OnHostCodeChanged();
     partial void OnStaffRoleChanging(string value);
@@ -2457,6 +2485,26 @@ namespace Spreadsheet
 					this._SVCDesc = value;
 					this.SendPropertyChanged("SVCDesc");
 					this.OnSVCDescChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ICF_Code", DbType="Char(255)")]
+		public string ICF_Code
+		{
+			get
+			{
+				return this._ICF_Code;
+			}
+			set
+			{
+				if ((this._ICF_Code != value))
+				{
+					this.OnICF_CodeChanging(value);
+					this.SendPropertyChanging();
+					this._ICF_Code = value;
+					this.SendPropertyChanged("ICF_Code");
+					this.OnICF_CodeChanged();
 				}
 			}
 		}

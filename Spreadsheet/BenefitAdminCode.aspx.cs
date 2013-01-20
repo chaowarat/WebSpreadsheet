@@ -97,7 +97,7 @@ namespace Spreadsheet
                 {
                     #region
                     string col0 = "", col1 = "", col2 = "", col3 = "", col4 = "", col5 = "";
-                    string col6 = "", col7 = "", col8 = "", col9 = "", col10 = "";
+                    string col6 = "", col7 = "", col8 = "", col9 = "", col10 = "", col11 = "";
                     XPathNodeIterator countRowString = allDocs.Current.Select("METADATA/ROWS");
                     countRowString.MoveNext();
                     int countRow = Convert.ToInt32(countRowString.Current.Value);
@@ -140,6 +140,9 @@ namespace Spreadsheet
                             XPathNodeIterator getCol10 = rows.Current.Select("R" + i + "/C10");
                             getCol10.MoveNext();
                             col10 = getCol10.Current.Value;
+                            XPathNodeIterator getCol11 = rows.Current.Select("R" + i + "/C11");
+                            getCol11.MoveNext();
+                            col11 = getCol11.Current.Value;
                             //insert to DB
                             if (!col0.Equals(""))
                             {
@@ -147,14 +150,15 @@ namespace Spreadsheet
                                 svr.SVCCode = col0;
                                 svr.SVCName = col1;
                                 svr.SVCDesc = col2;
-                                svr.HostCode = col3;
-                                svr.StaffRole = col4;
-                                svr.SVCType = col5;
-                                svr.SVCObjective = col6;
-                                svr.SVCSupport = col7;
-                                svr.SVCCoverage = col8;
-                                svr.SVCStart = col9;
-                                svr.SVCEnd = col10;
+                                svr.ICF_Code = col3;
+                                svr.HostCode = col4;
+                                svr.StaffRole = col5;
+                                svr.SVCType = col6;
+                                svr.SVCObjective = col7;
+                                svr.SVCSupport = col8;
+                                svr.SVCCoverage = col9;
+                                svr.SVCStart = col10;
+                                svr.SVCEnd = col11;
                                 bfAdmin.Services.InsertOnSubmit(svr);
                                 try
                                 {
@@ -214,7 +218,7 @@ namespace Spreadsheet
                 else if (title.Equals("SubActivity"))
                 {
                     #region
-                    string col0 = "", col1 = "", col2 = "";
+                    string col0 = "", col1 = "", col2 = "", col3 = "";
                     XPathNodeIterator countRowString = allDocs.Current.Select("METADATA/ROWS");
                     countRowString.MoveNext();
                     int countRow = Convert.ToInt32(countRowString.Current.Value);
@@ -233,6 +237,9 @@ namespace Spreadsheet
                             XPathNodeIterator getCol2 = rows.Current.Select("R" + i + "/C2");
                             getCol2.MoveNext();
                             col2 = getCol2.Current.Value;
+                            XPathNodeIterator getCol3 = rows.Current.Select("R" + i + "/C3");
+                            getCol3.MoveNext();
+                            col3 = getCol3.Current.Value;
                             //insert to DB
                             if (!col0.Equals("") && !col2.Equals(""))
                             {
@@ -240,6 +247,7 @@ namespace Spreadsheet
                                 sact.SACTCode = col0;
                                 sact.SACTDesc = col1;
                                 sact.ACTCode = col2;
+                                sact.ICF_Code = col3;
                                 bfAdmin.SubActivities.InsertOnSubmit(sact);
                                 try
                                 {

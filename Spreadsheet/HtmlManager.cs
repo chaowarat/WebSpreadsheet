@@ -770,7 +770,7 @@ namespace Spreadsheet
 
         public static XElement createServiceFromDB()
         {
-            countCol = 11;
+            countCol = 12;
             var ser = from s in bfAdmin.Services select s;
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
@@ -803,6 +803,10 @@ namespace Spreadsheet
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
                               "SVCDesc"),
+                        new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "ICF_Code"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
@@ -842,14 +846,15 @@ namespace Spreadsheet
                      new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count), s.SVCCode),
                      new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + count), s.SVCName),
                      new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), s.SVCDesc),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), s.HostCode),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c4_r" + count), s.StaffRole),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + count), s.SVCType),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + count), s.SVCObjective),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c7_r" + count), s.SVCSupport),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), s.SVCCoverage),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c9_r" + count), s.SVCStart),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), s.SVCEnd));
+                     new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), s.ICF_Code),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c4_r" + count), s.HostCode),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + count), s.StaffRole),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + count), s.SVCType),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c7_r" + count), s.SVCObjective),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), s.SVCSupport),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c9_r" + count), s.SVCCoverage),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), s.SVCStart),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c11_r" + count), s.SVCEnd));
                 TBody.Add(td);
                 count++;
             }
@@ -914,7 +919,7 @@ namespace Spreadsheet
 
         public static XElement createSubActivityFromDB()
         {
-            countCol = 3;
+            countCol = 4;
             var sact = from s in bfAdmin.SubActivities select s;
             XElement herdtable3 = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
@@ -945,14 +950,19 @@ namespace Spreadsheet
                           new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "ACTCode"));
+                              "ACTCode"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "ICF_Code"));
             TBody.Add(td);
             foreach (var s in sact)
             {
                 td = new XElement("TR", new XAttribute("style", "height: 25px;"),
                      new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count), s.SACTCode),
                      new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + count), s.SACTDesc),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), s.ACTCode));
+                     new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), s.ACTCode),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), s.ICF_Code));
                 TBody.Add(td);
                 count++;
             }

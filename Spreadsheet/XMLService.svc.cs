@@ -48,6 +48,10 @@ namespace Spreadsheet
                         SVCDesc.InnerText = service.SVCDesc.Trim();
                         list.AppendChild(SVCDesc);
 
+                        XmlElement ICF_Code = xmlDoc.CreateElement("ICF_Code");
+                        ICF_Code.InnerText = service.ICF_Code.Trim();
+                        list.AppendChild(ICF_Code);
+
                         XmlElement HostCode = xmlDoc.CreateElement("HostCode");
                         HostCode.InnerText = service.HostCode.Trim();
                         list.AppendChild(HostCode);
@@ -134,6 +138,10 @@ namespace Spreadsheet
                         XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
                         ACTCode.InnerText = sactivity.ACTCode.Trim();
                         list.AppendChild(ACTCode);
+
+                        XmlElement ICF_Code = xmlDoc.CreateElement("ICF_Code");
+                        ICF_Code.InnerText = sactivity.ICF_Code.Trim();
+                        list.AppendChild(ICF_Code);
                     }
                 }
                 catch (Exception) { }
@@ -390,6 +398,10 @@ namespace Spreadsheet
                         XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
                         ACTCode.InnerXml = s.ACTCode.Trim();
                         sact.AppendChild(ACTCode);
+
+                        XmlElement ICF_Code = xmlDoc.CreateElement("ICF_Code");
+                        ICF_Code.InnerXml = s.ICF_Code.Trim();
+                        sact.AppendChild(ICF_Code);
                     }
                 }
                 #endregion
