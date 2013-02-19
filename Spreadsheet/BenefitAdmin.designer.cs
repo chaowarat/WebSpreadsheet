@@ -2385,6 +2385,16 @@ namespace Spreadsheet
 		
 		private string _SVCEnd;
 		
+		private System.Nullable<char> _ChildType1;
+		
+		private System.Nullable<char> _ChildType2;
+		
+		private System.Nullable<char> _ChildType3;
+		
+		private System.Nullable<char> _ChildType4;
+		
+		private System.Nullable<char> _ChildTypeOther;
+		
 		private EntitySet<Activity> _Activities;
 		
 		private EntitySet<ConditionService> _ConditionServices;
@@ -2419,6 +2429,16 @@ namespace Spreadsheet
     partial void OnSVCStartChanged();
     partial void OnSVCEndChanging(string value);
     partial void OnSVCEndChanged();
+    partial void OnChildType1Changing(System.Nullable<char> value);
+    partial void OnChildType1Changed();
+    partial void OnChildType2Changing(System.Nullable<char> value);
+    partial void OnChildType2Changed();
+    partial void OnChildType3Changing(System.Nullable<char> value);
+    partial void OnChildType3Changed();
+    partial void OnChildType4Changing(System.Nullable<char> value);
+    partial void OnChildType4Changed();
+    partial void OnChildTypeOtherChanging(System.Nullable<char> value);
+    partial void OnChildTypeOtherChanged();
     #endregion
 		
 		public Service()
@@ -2665,6 +2685,106 @@ namespace Spreadsheet
 					this._SVCEnd = value;
 					this.SendPropertyChanged("SVCEnd");
 					this.OnSVCEndChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChildType1", DbType="Char(1)")]
+		public System.Nullable<char> ChildType1
+		{
+			get
+			{
+				return this._ChildType1;
+			}
+			set
+			{
+				if ((this._ChildType1 != value))
+				{
+					this.OnChildType1Changing(value);
+					this.SendPropertyChanging();
+					this._ChildType1 = value;
+					this.SendPropertyChanged("ChildType1");
+					this.OnChildType1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChildType2", DbType="Char(1)")]
+		public System.Nullable<char> ChildType2
+		{
+			get
+			{
+				return this._ChildType2;
+			}
+			set
+			{
+				if ((this._ChildType2 != value))
+				{
+					this.OnChildType2Changing(value);
+					this.SendPropertyChanging();
+					this._ChildType2 = value;
+					this.SendPropertyChanged("ChildType2");
+					this.OnChildType2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChildType3", DbType="Char(1)")]
+		public System.Nullable<char> ChildType3
+		{
+			get
+			{
+				return this._ChildType3;
+			}
+			set
+			{
+				if ((this._ChildType3 != value))
+				{
+					this.OnChildType3Changing(value);
+					this.SendPropertyChanging();
+					this._ChildType3 = value;
+					this.SendPropertyChanged("ChildType3");
+					this.OnChildType3Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChildType4", DbType="Char(1)")]
+		public System.Nullable<char> ChildType4
+		{
+			get
+			{
+				return this._ChildType4;
+			}
+			set
+			{
+				if ((this._ChildType4 != value))
+				{
+					this.OnChildType4Changing(value);
+					this.SendPropertyChanging();
+					this._ChildType4 = value;
+					this.SendPropertyChanged("ChildType4");
+					this.OnChildType4Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChildTypeOther", DbType="Char(1)")]
+		public System.Nullable<char> ChildTypeOther
+		{
+			get
+			{
+				return this._ChildTypeOther;
+			}
+			set
+			{
+				if ((this._ChildTypeOther != value))
+				{
+					this.OnChildTypeOtherChanging(value);
+					this.SendPropertyChanging();
+					this._ChildTypeOther = value;
+					this.SendPropertyChanged("ChildTypeOther");
+					this.OnChildTypeOtherChanged();
 				}
 			}
 		}
