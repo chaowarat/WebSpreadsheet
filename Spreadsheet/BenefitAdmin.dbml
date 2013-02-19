@@ -122,11 +122,7 @@
       <Column Name="SVCCoverage" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="SVCStart" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="SVCEnd" Type="System.String" DbType="Char(255)" CanBeNull="true" />
-      <Column Name="ChildType1" Type="System.Char" DbType="Char(1)" CanBeNull="true" />
-      <Column Name="ChildType2" Type="System.Char" DbType="Char(1)" CanBeNull="true" />
-      <Column Name="ChildType3" Type="System.Char" DbType="Char(1)" CanBeNull="true" />
-      <Column Name="ChildType4" Type="System.Char" DbType="Char(1)" CanBeNull="true" />
-      <Column Name="ChildTypeOther" Type="System.Char" DbType="Char(1)" CanBeNull="true" />
+      <Column Name="ChildType" Type="System.String" DbType="Char(14)" CanBeNull="true" />
       <Association Name="Service_Activity" Member="Activities" ThisKey="SVCCode" OtherKey="SVCCode" Type="Activity" />
       <Association Name="Service_ConditionService" Member="ConditionServices" ThisKey="SVCCode" OtherKey="SVCCODE" Type="ConditionService" />
       <Association Name="Service_Material" Member="Materials" ThisKey="SVCCode" OtherKey="SVCCode" Type="Material" />

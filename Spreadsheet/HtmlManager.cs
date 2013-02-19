@@ -842,23 +842,7 @@ namespace Spreadsheet
                           new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "ChildType1"),
-                          new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
-                              new XAttribute("class", "styleBold styleCenter"),
-                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "ChildType2"),
-                          new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
-                              new XAttribute("class", "styleBold styleCenter"),
-                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "ChildType3"),
-                          new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
-                              new XAttribute("class", "styleBold styleCenter"),
-                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "ChildType4"),
-                          new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
-                              new XAttribute("class", "styleBold styleCenter"),
-                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "ChildTypeOther"));
+                              "ChildType"));
             TBody.Add(td);
             foreach (var s in ser)
             {
@@ -875,11 +859,7 @@ namespace Spreadsheet
                      new XElement("TD", new XAttribute("id", "table0_cell_c9_r" + count), s.SVCCoverage),
                      new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), s.SVCStart),
                      new XElement("TD", new XAttribute("id", "table0_cell_c11_r" + count), s.SVCEnd),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c12_r" + count), s.ChildType1),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c13_r" + count), s.ChildType2),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c14_r" + count), s.ChildType3),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c15_r" + count), s.ChildType4),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c16_r" + count), s.ChildTypeOther));
+                     new XElement("TD", new XAttribute("id", "table0_cell_c12_r" + count), s.ChildType));
                 TBody.Add(td);
                 count++;
             }

@@ -98,7 +98,7 @@ namespace Spreadsheet
                     #region
                     string col0 = "", col1 = "", col2 = "", col3 = "", col4 = "", col5 = "";
                     string col6 = "", col7 = "", col8 = "", col9 = "", col10 = "", col11 = "";
-                    string col12 = "", col13 = "", col14 = "", col15 = "", col16 = "";
+                    string col12 = "";
                     XPathNodeIterator countRowString = allDocs.Current.Select("METADATA/ROWS");
                     countRowString.MoveNext();
                     int countRow = Convert.ToInt32(countRowString.Current.Value);
@@ -147,18 +147,6 @@ namespace Spreadsheet
                             XPathNodeIterator getCol12 = rows.Current.Select("R" + i + "/C12");
                             getCol12.MoveNext();
                             col12 = getCol12.Current.Value;
-                            XPathNodeIterator getCol13 = rows.Current.Select("R" + i + "/C13");
-                            getCol13.MoveNext();
-                            col13 = getCol13.Current.Value;
-                            XPathNodeIterator getCol14 = rows.Current.Select("R" + i + "/C14");
-                            getCol14.MoveNext();
-                            col14 = getCol14.Current.Value;
-                            XPathNodeIterator getCol15 = rows.Current.Select("R" + i + "/C15");
-                            getCol15.MoveNext();
-                            col15 = getCol15.Current.Value;
-                            XPathNodeIterator getCol16 = rows.Current.Select("R" + i + "/C16");
-                            getCol16.MoveNext();
-                            col16 = getCol16.Current.Value;
 
                             getCol11.MoveNext();
                             col11 = getCol11.Current.Value;
@@ -178,11 +166,7 @@ namespace Spreadsheet
                                 svr.SVCCoverage = col9;
                                 svr.SVCStart = col10;
                                 svr.SVCEnd = col11;
-                                svr.ChildType1 = col12.Trim()[0];
-                                svr.ChildType2 = col13.Trim()[0];
-                                svr.ChildType3 = col14.Trim()[0];
-                                svr.ChildType4 = col15.Trim()[0];
-                                svr.ChildTypeOther = col16.Trim()[0];
+                                svr.ChildType = col12.Trim();
                                 bfAdmin.Services.InsertOnSubmit(svr);
                                 try
                                 {
@@ -453,11 +437,7 @@ namespace Spreadsheet
                             svr.SVCCoverage = row[9].ToString() == null ? "" : row[9].ToString();
                             svr.SVCStart = row[10].ToString() == null ? "" : row[10].ToString();
                             svr.SVCEnd = row[11].ToString() == null ? "" : row[11].ToString();
-                            svr.ChildType1 = row[12].ToString().Trim() == null ? ' ' : row[12].ToString().Trim()[0];
-                            svr.ChildType2 = row[13].ToString().Trim() == null ? ' ' : row[13].ToString().Trim()[0];
-                            svr.ChildType3 = row[14].ToString().Trim() == null ? ' ' : row[14].ToString().Trim()[0];
-                            svr.ChildType4 = row[15].ToString().Trim() == null ? ' ' : row[15].ToString().Trim()[0];
-                            svr.ChildTypeOther = row[16].ToString().Trim() == null ? ' ' : row[16].ToString().Trim()[0];
+                            svr.ChildType = row[12].ToString() == null ? "" : row[12].ToString().Trim();
                         }
                         catch { }
 
