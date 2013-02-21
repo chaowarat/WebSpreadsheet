@@ -74,16 +74,16 @@
                 </td>
                 <td class="style2">
 
-        <asp:FileUpload ID="FileUpload1" runat="server" style="right" BorderStyle="Groove" 
+        <asp:FileUpload ID="FileUpload1" runat="server" BorderStyle="Groove" 
                         Height="21px" Width="220px"/>
 
         <asp:Button ID="btnUpload" runat="server" Height="21px" 
             onclick="btnUpload_Click" Text="Upload" Width="86px" />
-                    &nbsp;<asp:Label ID="LabelFile" runat="server" Text="File sheet"></asp:Label>
+                    &nbsp;<asp:Label ID="LabelFile" runat="server" Text="Input sheet"></asp:Label>
                     &nbsp;<asp:DropDownList ID="DropDownListFrom" runat="server" Height="18px" 
                         Width="132px">
                     </asp:DropDownList>
-&nbsp;To sheet
+&nbsp;To server sheet
                     <asp:DropDownList ID="DropDownListTo" runat="server" Height="18px" 
                         Width="132px">
                         <asp:ListItem>Service</asp:ListItem>
@@ -104,7 +104,7 @@
                 </td>
             </tr>
         </table>
-        &nbsp;<div 
+        <div 
             id="jQuerySheet0" class="jQuerySheet" style="height: 520px; width: 97%; left: 5px;">
         </div>
 

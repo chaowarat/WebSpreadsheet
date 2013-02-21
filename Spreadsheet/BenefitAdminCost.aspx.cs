@@ -125,7 +125,10 @@ namespace Spreadsheet
                 }
                 else if (title.Equals("ActivityCost"))
                 {
-                    string col0 = "", col1 = "", col2 = "", col3 = "", col4 = "", col5 = "", col6 = "", col7 = "", col8 = "", col9 = "";
+                    #region
+                    string col0 = "", col1 = "", col2 = "", col3 = "", col4 = "";
+                    string col5 = "", col6 = "", col7 = "", col8 = "", col9 = "";
+                    string col10 = "", col11 = "", col12 = "", col13 = "";
                     XPathNodeIterator countRowString = allDocs.Current.Select("METADATA/ROWS");
                     countRowString.MoveNext();
                     int countRow = Convert.ToInt32(countRowString.Current.Value);
@@ -165,20 +168,39 @@ namespace Spreadsheet
                             XPathNodeIterator getCol9 = rows.Current.Select("R" + i + "/C9");
                             getCol9.MoveNext();
                             col9 = getCol9.Current.Value;
+                            XPathNodeIterator getCol10 = rows.Current.Select("R" + i + "/C10");
+                            getCol10.MoveNext();
+                            col10 = getCol10.Current.Value;
+                            XPathNodeIterator getCol11 = rows.Current.Select("R" + i + "/C11");
+                            getCol11.MoveNext();
+                            col11 = getCol11.Current.Value;
+                            XPathNodeIterator getCol12 = rows.Current.Select("R" + i + "/C12");
+                            getCol12.MoveNext();
+                            col12 = getCol12.Current.Value;
+                            XPathNodeIterator getCol13 = rows.Current.Select("R" + i + "/C13");
+                            getCol13.MoveNext();
+                            col13 = getCol13.Current.Value;
                             //insert to DB
                             if (!col0.Equals(""))
                             {
                                 ActivityCost acost = new ActivityCost();
                                 acost.ACTCode = col0;
-                                acost.Unit = col1;
-                                acost.LabourCost = col2;
-                                acost.MaterialCost = col3;
-                                acost.CC_Equipment = col4;
-                                acost.CC_Building = col5;
-                                acost.IndirectCost = col6;
-                                acost.ProposedCost = col7;
-                                acost.CurrentCost = col8;
-                                acost.ReferencedCostOrg = col9;
+                                acost.Unit = col2;
+                                acost.LabourCost = col3;
+                                acost.MaterialCost = col4;
+                                acost.CC_Equipment = col5;
+                                acost.CC_Building = col6;
+                                acost.IndirectCost = col7;
+                                acost.ProposedCost = col8;
+                                acost.CurrentCost = col9;
+                                acost.UnitCost = col10;
+                                acost.ReferencedCostOrg = col11;
+                                try
+                                {
+                                    acost.TimsStamp = DateTime.Parse(col12.Trim());
+                                }
+                                catch { }
+                                acost.AID = col13;
                                 bfAdmin.ActivityCosts.InsertOnSubmit(acost);
                                 try
                                 {
@@ -188,6 +210,7 @@ namespace Spreadsheet
                             }
                         }
                     }
+                    #endregion
                 }
 
             }
@@ -218,9 +241,6 @@ namespace Spreadsheet
                     {
                         excelReader = ExcelReaderFactory.CreateOpenXmlReader(spreadsheet);
                     }
-
-                    //first row is column name not parse
-                    //excelReader.IsFirstRowAsColumnNames = true;
 
                     resultFromUpload = excelReader.AsDataSet();
                     for (int i = 0; i < resultFromUpload.Tables.Count; i++)

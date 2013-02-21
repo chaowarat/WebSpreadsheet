@@ -19,7 +19,7 @@
         <asp:LinkButton ID="LinkButton2" runat="server" onclick="LinkButton2_Click">Cost Admin</asp:LinkButton>
         <br />
         <br />
-        <asp:LinkButton ID="LinkButton3" runat="server" onclick="LinkButton3_Click">Provider</asp:LinkButton>
+        <asp:LinkButton ID="LinkButton3" runat="server" onclick="LinkButton3_Click">System Admin</asp:LinkButton>
         <br />
         <br />
         <br />

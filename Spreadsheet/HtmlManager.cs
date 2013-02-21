@@ -40,6 +40,7 @@ namespace Spreadsheet
             {
                 tmp += createAnnotationFromDB().ToString();
                 tmp += createActivityCostFromDB().ToString();
+                tmp += createActivityFromDB().ToString();
             }
             else if (fileName.Equals("code.html"))
             {
@@ -613,7 +614,7 @@ namespace Spreadsheet
 
         public static XElement createActivityCostFromDB()
         {
-            countCol = 13;
+            countCol = 14;
             var acost = from m in bfAdmin.ActivityCosts select m;
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
@@ -638,6 +639,10 @@ namespace Spreadsheet
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
                               "ACTCode"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "ACTDesc"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
@@ -692,18 +697,22 @@ namespace Spreadsheet
             {
                 td = new XElement("TR", new XAttribute("style", "height: 25px;"),
                      new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count), a.ACTCode),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + count), a.Unit),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), a.LabourCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), a.MaterialCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c4_r" + count), a.CC_Equipment),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + count), a.CC_Building),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + count), a.IndirectCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c7_r" + count), a.ProposedCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), a.CurrentCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c9_r" + count), a.UnitCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), a.ReferencedCostOrg),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c11_r" + count), a.TimsStamp),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c12_r" + count), a.AID));
+                     new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + count), 
+                        "" + (from d in bfAdmin.Activities
+                              where d.ACTCode.Trim().Equals(a.ACTCode.Trim())
+                              select d.ACTDesc.Trim()).FirstOrDefault()),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), a.Unit),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), a.LabourCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c4_r" + count), a.MaterialCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + count), a.CC_Equipment),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + count), a.CC_Building),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c7_r" + count), a.IndirectCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), a.ProposedCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c9_r" + count), a.CurrentCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), a.UnitCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c11_r" + count), a.ReferencedCostOrg),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c12_r" + count), a.TimsStamp),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c13_r" + count), a.AID));
                 TBody.Add(td);
                 count++;
             }

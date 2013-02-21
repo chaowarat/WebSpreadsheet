@@ -60,7 +60,7 @@
     <form id="form1" runat="server">
         <h1 id="header" class="ui-state-default">
         	<a>
-        		Benefit Admin Provider Spreadsheet</a>
+        		System Admin Spreadsheet</a>
         </h1>
         
         <table bgcolor="White" style="width: 100%; height: 0px;" width="100%">

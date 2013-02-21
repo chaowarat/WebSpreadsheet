@@ -60,7 +60,7 @@
     <form id="form1" runat="server">
         <h1 id="header" class="ui-state-default">
         	<a>
-        		Benefit Admin Provider Spreadsheet
+        		Benefit Admin Cost Spreadsheet
         	</a>
         </h1>
         
@@ -76,16 +76,16 @@
                 </td>
                 <td class="style2">
 
-        <asp:FileUpload ID="FileUpload1" runat="server" style="right" BorderStyle="Groove" 
+        <asp:FileUpload ID="FileUpload1" runat="server" BorderStyle="Groove" 
                         Height="21px" Width="220px"/>
 
         <asp:Button ID="btnUpload" runat="server" Height="21px" 
             onclick="btnUpload_Click" Text="Upload" Width="86px" />
-                    <asp:Label ID="LabelFile" runat="server" Text="File sheet"></asp:Label>
+                    <asp:Label ID="LabelFile" runat="server" Text="Input sheet"></asp:Label>
                     <asp:DropDownList ID="DropDownListFrom" runat="server" Height="18px" 
                         Width="132px">
                     </asp:DropDownList>
-&nbsp;To sheet
+&nbsp;To server sheet
                     <asp:DropDownList ID="DropDownListTo" runat="server" Height="18px" 
                         Width="132px">
                         <asp:ListItem>Annotation</asp:ListItem>
