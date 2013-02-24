@@ -779,7 +779,7 @@ namespace Spreadsheet
 
         public static XElement createServiceFromDB()
         {
-            countCol = 10;
+            countCol = 12;
             var ser = from s in bfAdmin.Services select s;
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
@@ -843,7 +843,15 @@ namespace Spreadsheet
                           new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "SVCEnd"));
+                              "SVCEnd"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "ProblemToSolve"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "OrgAssignedCode"));
             TBody.Add(td);
             foreach (var s in ser)
             {
@@ -858,7 +866,9 @@ namespace Spreadsheet
                      new XElement("TD", new XAttribute("id", "table0_cell_c7_r" + count), s.SVCObjective),
                      new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), s.SVCSupport),
                      new XElement("TD", new XAttribute("id", "table0_cell_c9_r" + count), s.SVCStart),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), s.SVCEnd));
+                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), s.SVCEnd),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), s.ProblemToSolve),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), s.OrgAssignedCode));
                 TBody.Add(td);
                 count++;
             }
@@ -1020,7 +1030,7 @@ namespace Spreadsheet
                           new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "SVCCode"),
+                              "ACTCode"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
@@ -1034,7 +1044,7 @@ namespace Spreadsheet
                      new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), m.Unit),
                      new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), m.EstimatedPrice),
                      new XElement("TD", new XAttribute("id", "table0_cell_c4_r" + count), m.RealPrice),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + count), m.SVCCode),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + count), m.ACTCode),
                      new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + count), m.Note));
                 TBody.Add(td);
                 count++;

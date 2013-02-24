@@ -178,8 +178,8 @@ namespace Spreadsheet
                         RealPrice.InnerText = material.RealPrice.Trim();
                         list.AppendChild(RealPrice);
 
-                        XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
-                        SVCCode.InnerText = material.SVCCode.Trim();
+                        XmlElement SVCCode = xmlDoc.CreateElement("ACTCode");
+                        SVCCode.InnerText = material.ACTCode.Trim();
                         list.AppendChild(SVCCode);
 
                         XmlElement Note = xmlDoc.CreateElement("Note");
@@ -408,7 +408,7 @@ namespace Spreadsheet
                 else if (fk.Equals("Material") && pk.Equals("Service"))
                 #region
                 {
-                    var data = from m in bfAdmin.Materials where stringPK.Trim().Equals(m.SVCCode.Trim()) select m;
+                    var data = from m in bfAdmin.Materials where stringPK.Trim().Equals(m.ACTCode.Trim()) select m;
                     foreach (var s in data)
                     {
                         XmlElement mat = xmlDoc.CreateElement("Material");
@@ -435,7 +435,7 @@ namespace Spreadsheet
                         mat.AppendChild(RealPrice);
 
                         XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
-                        SVCCode.InnerXml = s.SVCCode.Trim();
+                        SVCCode.InnerXml = s.ACTCode.Trim();
                         mat.AppendChild(SVCCode);
 
                         XmlElement Note = xmlDoc.CreateElement("Note");

@@ -255,6 +255,8 @@ namespace Spreadsheet
 		
 		private EntitySet<ConditionActivity> _ConditionActivities;
 		
+		private EntitySet<Material> _Materials;
+		
 		private EntitySet<SubActivity> _SubActivities;
 		
 		private EntityRef<Service> _Service;
@@ -276,6 +278,7 @@ namespace Spreadsheet
 		public Activity()
 		{
 			this._ConditionActivities = new EntitySet<ConditionActivity>(new Action<ConditionActivity>(this.attach_ConditionActivities), new Action<ConditionActivity>(this.detach_ConditionActivities));
+			this._Materials = new EntitySet<Material>(new Action<Material>(this.attach_Materials), new Action<Material>(this.detach_Materials));
 			this._SubActivities = new EntitySet<SubActivity>(new Action<SubActivity>(this.attach_SubActivities), new Action<SubActivity>(this.detach_SubActivities));
 			this._Service = default(EntityRef<Service>);
 			OnCreated();
@@ -378,6 +381,19 @@ namespace Spreadsheet
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Activity_Material", Storage="_Materials", ThisKey="ACTCode", OtherKey="ACTCode")]
+		public EntitySet<Material> Materials
+		{
+			get
+			{
+				return this._Materials;
+			}
+			set
+			{
+				this._Materials.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Activity_SubActivity", Storage="_SubActivities", ThisKey="ACTCode", OtherKey="ACTCode")]
 		public EntitySet<SubActivity> SubActivities
 		{
@@ -452,6 +468,18 @@ namespace Spreadsheet
 		}
 		
 		private void detach_ConditionActivities(ConditionActivity entity)
+		{
+			this.SendPropertyChanging();
+			entity.Activity = null;
+		}
+		
+		private void attach_Materials(Material entity)
+		{
+			this.SendPropertyChanging();
+			entity.Activity = this;
+		}
+		
+		private void detach_Materials(Material entity)
 		{
 			this.SendPropertyChanging();
 			entity.Activity = null;
@@ -1635,11 +1663,11 @@ namespace Spreadsheet
 		
 		private string _RealPrice;
 		
-		private string _SVCCode;
+		private string _ACTCode;
 		
 		private string _Note;
 		
-		private EntityRef<Service> _Service;
+		private EntityRef<Activity> _Activity;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1655,15 +1683,15 @@ namespace Spreadsheet
     partial void OnEstimatedPriceChanged();
     partial void OnRealPriceChanging(string value);
     partial void OnRealPriceChanged();
-    partial void OnSVCCodeChanging(string value);
-    partial void OnSVCCodeChanged();
+    partial void OnACTCodeChanging(string value);
+    partial void OnACTCodeChanged();
     partial void OnNoteChanging(string value);
     partial void OnNoteChanged();
     #endregion
 		
 		public Material()
 		{
-			this._Service = default(EntityRef<Service>);
+			this._Activity = default(EntityRef<Activity>);
 			OnCreated();
 		}
 		
@@ -1767,26 +1795,26 @@ namespace Spreadsheet
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SVCCode", DbType="Char(255)")]
-		public string SVCCode
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ACTCode", DbType="Char(255)")]
+		public string ACTCode
 		{
 			get
 			{
-				return this._SVCCode;
+				return this._ACTCode;
 			}
 			set
 			{
-				if ((this._SVCCode != value))
+				if ((this._ACTCode != value))
 				{
-					if (this._Service.HasLoadedOrAssignedValue)
+					if (this._Activity.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.OnSVCCodeChanging(value);
+					this.OnACTCodeChanging(value);
 					this.SendPropertyChanging();
-					this._SVCCode = value;
-					this.SendPropertyChanged("SVCCode");
-					this.OnSVCCodeChanged();
+					this._ACTCode = value;
+					this.SendPropertyChanged("ACTCode");
+					this.OnACTCodeChanged();
 				}
 			}
 		}
@@ -1811,36 +1839,36 @@ namespace Spreadsheet
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_Material", Storage="_Service", ThisKey="SVCCode", OtherKey="SVCCode", IsForeignKey=true, DeleteRule="CASCADE")]
-		public Service Service
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Activity_Material", Storage="_Activity", ThisKey="ACTCode", OtherKey="ACTCode", IsForeignKey=true, DeleteRule="CASCADE")]
+		public Activity Activity
 		{
 			get
 			{
-				return this._Service.Entity;
+				return this._Activity.Entity;
 			}
 			set
 			{
-				Service previousValue = this._Service.Entity;
+				Activity previousValue = this._Activity.Entity;
 				if (((previousValue != value) 
-							|| (this._Service.HasLoadedOrAssignedValue == false)))
+							|| (this._Activity.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._Service.Entity = null;
+						this._Activity.Entity = null;
 						previousValue.Materials.Remove(this);
 					}
-					this._Service.Entity = value;
+					this._Activity.Entity = value;
 					if ((value != null))
 					{
 						value.Materials.Add(this);
-						this._SVCCode = value.SVCCode;
+						this._ACTCode = value.ACTCode;
 					}
 					else
 					{
-						this._SVCCode = default(string);
+						this._ACTCode = default(string);
 					}
-					this.SendPropertyChanged("Service");
+					this.SendPropertyChanged("Activity");
 				}
 			}
 		}
@@ -2342,11 +2370,13 @@ namespace Spreadsheet
 		
 		private string _ChildType;
 		
+		private string _ProblemToSolve;
+		
+		private string _OrgAssignedCode;
+		
 		private EntitySet<Activity> _Activities;
 		
 		private EntitySet<ConditionService> _ConditionServices;
-		
-		private EntitySet<Material> _Materials;
 		
 		private EntitySet<ServiceChildTypeMapping> _ServiceChildTypeMappings;
 		
@@ -2380,13 +2410,16 @@ namespace Spreadsheet
     partial void OnSVCEndChanged();
     partial void OnChildTypeChanging(string value);
     partial void OnChildTypeChanged();
+    partial void OnProblemToSolveChanging(string value);
+    partial void OnProblemToSolveChanged();
+    partial void OnOrgAssignedCodeChanging(string value);
+    partial void OnOrgAssignedCodeChanged();
     #endregion
 		
 		public Service()
 		{
 			this._Activities = new EntitySet<Activity>(new Action<Activity>(this.attach_Activities), new Action<Activity>(this.detach_Activities));
 			this._ConditionServices = new EntitySet<ConditionService>(new Action<ConditionService>(this.attach_ConditionServices), new Action<ConditionService>(this.detach_ConditionServices));
-			this._Materials = new EntitySet<Material>(new Action<Material>(this.attach_Materials), new Action<Material>(this.detach_Materials));
 			this._ServiceChildTypeMappings = new EntitySet<ServiceChildTypeMapping>(new Action<ServiceChildTypeMapping>(this.attach_ServiceChildTypeMappings), new Action<ServiceChildTypeMapping>(this.detach_ServiceChildTypeMappings));
 			OnCreated();
 		}
@@ -2651,6 +2684,46 @@ namespace Spreadsheet
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProblemToSolve", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string ProblemToSolve
+		{
+			get
+			{
+				return this._ProblemToSolve;
+			}
+			set
+			{
+				if ((this._ProblemToSolve != value))
+				{
+					this.OnProblemToSolveChanging(value);
+					this.SendPropertyChanging();
+					this._ProblemToSolve = value;
+					this.SendPropertyChanged("ProblemToSolve");
+					this.OnProblemToSolveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrgAssignedCode", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string OrgAssignedCode
+		{
+			get
+			{
+				return this._OrgAssignedCode;
+			}
+			set
+			{
+				if ((this._OrgAssignedCode != value))
+				{
+					this.OnOrgAssignedCodeChanging(value);
+					this.SendPropertyChanging();
+					this._OrgAssignedCode = value;
+					this.SendPropertyChanged("OrgAssignedCode");
+					this.OnOrgAssignedCodeChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_Activity", Storage="_Activities", ThisKey="SVCCode", OtherKey="SVCCode")]
 		public EntitySet<Activity> Activities
 		{
@@ -2674,19 +2747,6 @@ namespace Spreadsheet
 			set
 			{
 				this._ConditionServices.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_Material", Storage="_Materials", ThisKey="SVCCode", OtherKey="SVCCode")]
-		public EntitySet<Material> Materials
-		{
-			get
-			{
-				return this._Materials;
-			}
-			set
-			{
-				this._Materials.Assign(value);
 			}
 		}
 		
@@ -2742,18 +2802,6 @@ namespace Spreadsheet
 		}
 		
 		private void detach_ConditionServices(ConditionService entity)
-		{
-			this.SendPropertyChanging();
-			entity.Service = null;
-		}
-		
-		private void attach_Materials(Material entity)
-		{
-			this.SendPropertyChanging();
-			entity.Service = this;
-		}
-		
-		private void detach_Materials(Material entity)
 		{
 			this.SendPropertyChanging();
 			entity.Service = null;

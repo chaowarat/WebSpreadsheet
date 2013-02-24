@@ -7,6 +7,7 @@
       <Column Name="SVCCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="ICF_Code" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Association Name="Activity_ConditionActivity" Member="ConditionActivities" ThisKey="ACTCode" OtherKey="ACTCode" Type="ConditionActivity" />
+      <Association Name="Activity_Material" Member="Materials" ThisKey="ACTCode" OtherKey="ACTCode" Type="Material" />
       <Association Name="Activity_SubActivity" Member="SubActivities" ThisKey="ACTCode" OtherKey="ACTCode" Type="SubActivity" />
       <Association Name="Service_Activity" Member="Service" ThisKey="SVCCode" OtherKey="SVCCode" Type="Service" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
@@ -76,9 +77,9 @@
       <Column Name="Unit" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="EstimatedPrice" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="RealPrice" Type="System.String" DbType="Char(255)" CanBeNull="true" />
-      <Column Name="SVCCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
+      <Column Name="ACTCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="Note" Type="System.String" DbType="Char(255)" CanBeNull="true" />
-      <Association Name="Service_Material" Member="Service" ThisKey="SVCCode" OtherKey="SVCCode" Type="Service" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="Activity_Material" Member="Activity" ThisKey="ACTCode" OtherKey="ACTCode" Type="Activity" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>
   </Table>
   <Table Name="dbo.Ministry" Member="Ministries">
@@ -120,9 +121,10 @@
       <Column Name="SVCStart" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="SVCEnd" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="ChildType" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="ProblemToSolve" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="OrgAssignedCode" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
       <Association Name="Service_Activity" Member="Activities" ThisKey="SVCCode" OtherKey="SVCCode" Type="Activity" />
       <Association Name="Service_ConditionService" Member="ConditionServices" ThisKey="SVCCode" OtherKey="SVCCODE" Type="ConditionService" />
-      <Association Name="Service_Material" Member="Materials" ThisKey="SVCCode" OtherKey="SVCCode" Type="Material" />
       <Association Name="Service_ServiceChildTypeMapping" Member="ServiceChildTypeMappings" ThisKey="SVCCode" OtherKey="SVCCode" Type="ServiceChildTypeMapping" />
     </Type>
   </Table>

@@ -97,7 +97,7 @@ namespace Spreadsheet
                 {
                     #region
                     string col0 = "", col1 = "", col2 = "", col3 = "", col4 = "", col5 = "";
-                    string col6 = "", col7 = "", col8 = "", col9 = "", col10 = "";
+                    string col6 = "", col7 = "", col8 = "", col9 = "", col10 = "", col11 = "", col12 = "";
                     XPathNodeIterator countRowString = allDocs.Current.Select("METADATA/ROWS");
                     countRowString.MoveNext();
                     int countRow = Convert.ToInt32(countRowString.Current.Value);
@@ -140,6 +140,12 @@ namespace Spreadsheet
                             XPathNodeIterator getCol10 = rows.Current.Select("R" + i + "/C10");
                             getCol10.MoveNext();
                             col10 = getCol10.Current.Value;
+                            XPathNodeIterator getCol11 = rows.Current.Select("R" + i + "/C11");
+                            getCol11.MoveNext();
+                            col11 = getCol11.Current.Value;
+                            XPathNodeIterator getCol12 = rows.Current.Select("R" + i + "/C12");
+                            getCol12.MoveNext();
+                            col12 = getCol12.Current.Value;
                             //insert to DB
                             if (!col0.Equals(""))
                             {
@@ -155,6 +161,8 @@ namespace Spreadsheet
                                 svr.SVCSupport = col8;
                                 svr.SVCStart = col9;
                                 svr.SVCEnd = col10;
+                                svr.ProblemToSolve = col11;
+                                svr.OrgAssignedCode = col12;
                                 bfAdmin.Services.InsertOnSubmit(svr);
                                 try
                                 {
@@ -298,7 +306,7 @@ namespace Spreadsheet
                                 mt.Unit = col2;
                                 mt.EstimatedPrice = col3;
                                 mt.RealPrice = col4;
-                                mt.SVCCode = col5;
+                                mt.ACTCode = col5;
                                 mt.Note = col6;
                                 bfAdmin.Materials.InsertOnSubmit(mt);
                                 try
@@ -422,10 +430,10 @@ namespace Spreadsheet
                             svr.SVCType = row[6].ToString() == null ? "" : row[6].ToString();
                             svr.SVCObjective = row[7].ToString() == null ? "" : row[7].ToString();
                             svr.SVCSupport = row[8].ToString() == null ? "" : row[8].ToString();
-                            svr.SVCCoverage = row[9].ToString() == null ? "" : row[9].ToString();
-                            svr.SVCStart = row[10].ToString() == null ? "" : row[10].ToString();
-                            svr.SVCEnd = row[11].ToString() == null ? "" : row[11].ToString();
-                            svr.ChildType = row[12].ToString() == null ? "" : row[12].ToString().Trim();
+                            svr.SVCStart = row[9].ToString() == null ? "" : row[9].ToString();
+                            svr.SVCEnd = row[10].ToString() == null ? "" : row[10].ToString();
+                            svr.ProblemToSolve = row[11].ToString() == null ? "" : row[11].ToString().Trim();
+                            svr.OrgAssignedCode = row[12].ToString() == null ? "" : row[12].ToString().Trim();
                         }
                         catch { }
 
@@ -530,7 +538,7 @@ namespace Spreadsheet
                             mat.Unit = row[2].ToString() == null ? "" : row[2].ToString();
                             mat.EstimatedPrice = row[3].ToString() == null ? "" : row[3].ToString();
                             mat.RealPrice = row[4].ToString() == null ? "" : row[4].ToString();
-                            mat.SVCCode = row[5].ToString() == null ? "" : row[5].ToString();
+                            mat.ACTCode = row[5].ToString() == null ? "" : row[5].ToString();
                         }
                         catch { }
 
