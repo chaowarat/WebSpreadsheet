@@ -18,6 +18,8 @@ namespace Spreadsheet
 
     public class HtmlManager
     {
+        public static IQueryable<Service> ser;
+        public static IQueryable<Activity> act;
         static BenefitAdminDataContext bfAdmin = new BenefitAdminDataContext();
         static int countCol = 2;
         static string border = "1px";
@@ -44,11 +46,21 @@ namespace Spreadsheet
             }
             else if (fileName.Equals("code.html"))
             {
-                tmp += createServiceFromDB().ToString();
+                //tmp += createServiceFromDB().ToString();
                 tmp += createActivityFromDB().ToString();
                 tmp += createSubActivityFromDB().ToString();
                 tmp += createMaterialFromDB().ToString();
             }
+            return tmp;
+        }
+
+        public static string createServiceHtml(string childType)
+        {
+            string tmp = "";
+            tmp += createServiceFromDB(childType).ToString();
+            tmp += createActivityFromDB().ToString();
+            tmp += createSubActivityFromDB().ToString();
+            tmp += createMaterialFromDB().ToString();
             return tmp;
         }
 
@@ -466,6 +478,8 @@ namespace Spreadsheet
         public static void Clean()
         {
             bfAdmin = new BenefitAdminDataContext();
+            ser = null;
+            act = null;
         }
         /// <summary>
         /// create database from sql server
@@ -777,10 +791,10 @@ namespace Spreadsheet
             return herdtable;
         }
 
-        public static XElement createServiceFromDB()
+        public static XElement createServiceFromDB(string childType)
         {
             countCol = 12;
-            var ser = from s in bfAdmin.Services select s;
+            ser = from s in bfAdmin.Services where s.ChildType.Trim().Equals(childType.Trim()) select s;
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
                       new XAttribute("cellpadding", 0),
@@ -819,7 +833,7 @@ namespace Spreadsheet
                           new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "HostCode"),
+                              "ProviderCode"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
@@ -860,7 +874,7 @@ namespace Spreadsheet
                      new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + count), s.SVCName),
                      new XElement("TD", new XAttribute("id", "table0_cell_c2_r" + count), s.SVCDesc),
                      new XElement("TD", new XAttribute("id", "table0_cell_c3_r" + count), s.ICF_Code),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c4_r" + count), s.HostCode),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c4_r" + count), s.ProviderCode),
                      new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + count), s.StaffRole),
                      new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + count), s.SVCType),
                      new XElement("TD", new XAttribute("id", "table0_cell_c7_r" + count), s.SVCObjective),
@@ -880,7 +894,16 @@ namespace Spreadsheet
         public static XElement createActivityFromDB()
         {
             countCol = 4;
-            var act = from a in bfAdmin.Activities select a;
+            if (ser != null)
+            {
+                act = from a in bfAdmin.Activities
+                      join b in ser on a.SVCCode.Trim() equals b.SVCCode.Trim()
+                      select a;
+            }
+            else
+            {
+                act = from a in bfAdmin.Activities  select a;
+            }
             XElement herdtable2 = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
                       new XAttribute("cellpadding", 0),
@@ -934,7 +957,9 @@ namespace Spreadsheet
         public static XElement createSubActivityFromDB()
         {
             countCol = 4;
-            var sact = from s in bfAdmin.SubActivities select s;
+            var sact = from s in bfAdmin.SubActivities
+                       join b in act on s.ACTCode.Trim() equals b.ACTCode.Trim()
+                       select s;
             XElement herdtable3 = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
                       new XAttribute("cellpadding", 0),

@@ -52,8 +52,8 @@ namespace Spreadsheet
                         ICF_Code.InnerText = service.ICF_Code.Trim();
                         list.AppendChild(ICF_Code);
 
-                        XmlElement HostCode = xmlDoc.CreateElement("HostCode");
-                        HostCode.InnerText = service.HostCode.Trim();
+                        XmlElement HostCode = xmlDoc.CreateElement("ProviderCode");
+                        HostCode.InnerText = service.ProviderCode.Trim();
                         list.AppendChild(HostCode);
 
                         XmlElement StaffRole = xmlDoc.CreateElement("StaffRole");
@@ -83,6 +83,18 @@ namespace Spreadsheet
                         XmlElement SVCEnd = xmlDoc.CreateElement("SVCEnd");
                         SVCEnd.InnerText = service.SVCEnd.Trim();
                         list.AppendChild(SVCEnd);
+
+                        XmlElement ChildType = xmlDoc.CreateElement("ChildType");
+                        ChildType.InnerText = service.ChildType.Trim();
+                        list.AppendChild(ChildType);
+
+                        XmlElement ProblemToSolve = xmlDoc.CreateElement("ProblemToSolve");
+                        ProblemToSolve.InnerText = service.ProblemToSolve.Trim();
+                        list.AppendChild(ProblemToSolve);
+
+                        XmlElement OrgAssignedCode = xmlDoc.CreateElement("OrgAssignedCode");
+                        OrgAssignedCode.InnerText = service.OrgAssignedCode.Trim();
+                        list.AppendChild(OrgAssignedCode);
                     }
                 }
                 catch(Exception){ }

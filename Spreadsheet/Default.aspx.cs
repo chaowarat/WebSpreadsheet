@@ -16,7 +16,7 @@ namespace Spreadsheet
 
         protected void LinkButton1_Click(object sender, EventArgs e)
         {
-            Response.Redirect("BenefitAdminCode.aspx");
+            Response.Redirect("PreBenefitAdminCode.aspx");
         }
 
         protected void LinkButton2_Click(object sender, EventArgs e)

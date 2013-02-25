@@ -33,9 +33,9 @@ namespace Spreadsheet
     partial void InsertActivity(Activity instance);
     partial void UpdateActivity(Activity instance);
     partial void DeleteActivity(Activity instance);
-    partial void InsertSVCTypeDesc(SVCTypeDesc instance);
-    partial void UpdateSVCTypeDesc(SVCTypeDesc instance);
-    partial void DeleteSVCTypeDesc(SVCTypeDesc instance);
+    partial void InsertWelfareCategory(WelfareCategory instance);
+    partial void UpdateWelfareCategory(WelfareCategory instance);
+    partial void DeleteWelfareCategory(WelfareCategory instance);
     partial void InsertActivityCost(ActivityCost instance);
     partial void UpdateActivityCost(ActivityCost instance);
     partial void DeleteActivityCost(ActivityCost instance);
@@ -51,9 +51,15 @@ namespace Spreadsheet
     partial void InsertConditionService(ConditionService instance);
     partial void UpdateConditionService(ConditionService instance);
     partial void DeleteConditionService(ConditionService instance);
+    partial void InsertDisabilityType(DisabilityType instance);
+    partial void UpdateDisabilityType(DisabilityType instance);
+    partial void DeleteDisabilityType(DisabilityType instance);
     partial void InsertMaterial(Material instance);
     partial void UpdateMaterial(Material instance);
     partial void DeleteMaterial(Material instance);
+    partial void InsertMaterial_ACT(Material_ACT instance);
+    partial void UpdateMaterial_ACT(Material_ACT instance);
+    partial void DeleteMaterial_ACT(Material_ACT instance);
     partial void InsertMinistry(Ministry instance);
     partial void UpdateMinistry(Ministry instance);
     partial void DeleteMinistry(Ministry instance);
@@ -78,6 +84,9 @@ namespace Spreadsheet
     partial void InsertSVCSupportDesc(SVCSupportDesc instance);
     partial void UpdateSVCSupportDesc(SVCSupportDesc instance);
     partial void DeleteSVCSupportDesc(SVCSupportDesc instance);
+    partial void InsertSVCTypeDesc(SVCTypeDesc instance);
+    partial void UpdateSVCTypeDesc(SVCTypeDesc instance);
+    partial void DeleteSVCTypeDesc(SVCTypeDesc instance);
     #endregion
 		
 		public BenefitAdminDataContext() : 
@@ -118,11 +127,11 @@ namespace Spreadsheet
 			}
 		}
 		
-		public System.Data.Linq.Table<SVCTypeDesc> SVCTypeDescs
+		public System.Data.Linq.Table<WelfareCategory> WelfareCategories
 		{
 			get
 			{
-				return this.GetTable<SVCTypeDesc>();
+				return this.GetTable<WelfareCategory>();
 			}
 		}
 		
@@ -166,11 +175,27 @@ namespace Spreadsheet
 			}
 		}
 		
+		public System.Data.Linq.Table<DisabilityType> DisabilityTypes
+		{
+			get
+			{
+				return this.GetTable<DisabilityType>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Material> Materials
 		{
 			get
 			{
 				return this.GetTable<Material>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Material_ACT> Material_ACTs
+		{
+			get
+			{
+				return this.GetTable<Material_ACT>();
 			}
 		}
 		
@@ -235,6 +260,14 @@ namespace Spreadsheet
 			get
 			{
 				return this.GetTable<SVCSupportDesc>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SVCTypeDesc> SVCTypeDescs
+		{
+			get
+			{
+				return this.GetTable<SVCTypeDesc>();
 			}
 		}
 	}
@@ -498,67 +531,67 @@ namespace Spreadsheet
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SVCTypeDesc")]
-	public partial class SVCTypeDesc : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.WelfareCategory")]
+	public partial class WelfareCategory : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private string _SVCTypeCode;
+		private string _WelfareID;
 		
-		private string _SVCTypeDescription;
+		private string _WelfareDescription;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnSVCTypeCodeChanging(string value);
-    partial void OnSVCTypeCodeChanged();
-    partial void OnSVCTypeDescriptionChanging(string value);
-    partial void OnSVCTypeDescriptionChanged();
+    partial void OnWelfareIDChanging(string value);
+    partial void OnWelfareIDChanged();
+    partial void OnWelfareDescriptionChanging(string value);
+    partial void OnWelfareDescriptionChanged();
     #endregion
 		
-		public SVCTypeDesc()
+		public WelfareCategory()
 		{
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SVCTypeCode", DbType="VarChar(5) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string SVCTypeCode
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WelfareID", DbType="VarChar(2) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string WelfareID
 		{
 			get
 			{
-				return this._SVCTypeCode;
+				return this._WelfareID;
 			}
 			set
 			{
-				if ((this._SVCTypeCode != value))
+				if ((this._WelfareID != value))
 				{
-					this.OnSVCTypeCodeChanging(value);
+					this.OnWelfareIDChanging(value);
 					this.SendPropertyChanging();
-					this._SVCTypeCode = value;
-					this.SendPropertyChanged("SVCTypeCode");
-					this.OnSVCTypeCodeChanged();
+					this._WelfareID = value;
+					this.SendPropertyChanged("WelfareID");
+					this.OnWelfareIDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SVCTypeDescription", DbType="VarChar(255)")]
-		public string SVCTypeDescription
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WelfareDescription", DbType="VarChar(MAX)")]
+		public string WelfareDescription
 		{
 			get
 			{
-				return this._SVCTypeDescription;
+				return this._WelfareDescription;
 			}
 			set
 			{
-				if ((this._SVCTypeDescription != value))
+				if ((this._WelfareDescription != value))
 				{
-					this.OnSVCTypeDescriptionChanging(value);
+					this.OnWelfareDescriptionChanging(value);
 					this.SendPropertyChanging();
-					this._SVCTypeDescription = value;
-					this.SendPropertyChanged("SVCTypeDescription");
-					this.OnSVCTypeDescriptionChanged();
+					this._WelfareDescription = value;
+					this.SendPropertyChanged("WelfareDescription");
+					this.OnWelfareDescriptionChanged();
 				}
 			}
 		}
@@ -1647,6 +1680,92 @@ namespace Spreadsheet
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.DisabilityType")]
+	public partial class DisabilityType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _DisabilityCode;
+		
+		private string _Name;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnDisabilityCodeChanging(string value);
+    partial void OnDisabilityCodeChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    #endregion
+		
+		public DisabilityType()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisabilityCode", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string DisabilityCode
+		{
+			get
+			{
+				return this._DisabilityCode;
+			}
+			set
+			{
+				if ((this._DisabilityCode != value))
+				{
+					this.OnDisabilityCodeChanging(value);
+					this.SendPropertyChanging();
+					this._DisabilityCode = value;
+					this.SendPropertyChanged("DisabilityCode");
+					this.OnDisabilityCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(50)")]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Material")]
 	public partial class Material : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1869,6 +1988,92 @@ namespace Spreadsheet
 						this._ACTCode = default(string);
 					}
 					this.SendPropertyChanged("Activity");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Material_ACT")]
+	public partial class Material_ACT : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _MaterialCode;
+		
+		private string _ACTCode;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMaterialCodeChanging(string value);
+    partial void OnMaterialCodeChanged();
+    partial void OnACTCodeChanging(string value);
+    partial void OnACTCodeChanged();
+    #endregion
+		
+		public Material_ACT()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaterialCode", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string MaterialCode
+		{
+			get
+			{
+				return this._MaterialCode;
+			}
+			set
+			{
+				if ((this._MaterialCode != value))
+				{
+					this.OnMaterialCodeChanging(value);
+					this.SendPropertyChanging();
+					this._MaterialCode = value;
+					this.SendPropertyChanged("MaterialCode");
+					this.OnMaterialCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ACTCode", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string ACTCode
+		{
+			get
+			{
+				return this._ACTCode;
+			}
+			set
+			{
+				if ((this._ACTCode != value))
+				{
+					this.OnACTCodeChanging(value);
+					this.SendPropertyChanging();
+					this._ACTCode = value;
+					this.SendPropertyChanged("ACTCode");
+					this.OnACTCodeChanged();
 				}
 			}
 		}
@@ -2352,7 +2557,7 @@ namespace Spreadsheet
 		
 		private string _ICF_Code;
 		
-		private string _HostCode;
+		private string _ProviderCode;
 		
 		private string _StaffRole;
 		
@@ -2392,8 +2597,8 @@ namespace Spreadsheet
     partial void OnSVCDescChanged();
     partial void OnICF_CodeChanging(string value);
     partial void OnICF_CodeChanged();
-    partial void OnHostCodeChanging(string value);
-    partial void OnHostCodeChanged();
+    partial void OnProviderCodeChanging(string value);
+    partial void OnProviderCodeChanged();
     partial void OnStaffRoleChanging(string value);
     partial void OnStaffRoleChanged();
     partial void OnSVCTypeChanging(string value);
@@ -2504,22 +2709,22 @@ namespace Spreadsheet
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HostCode", DbType="Char(255)")]
-		public string HostCode
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProviderCode", DbType="Char(255)")]
+		public string ProviderCode
 		{
 			get
 			{
-				return this._HostCode;
+				return this._ProviderCode;
 			}
 			set
 			{
-				if ((this._HostCode != value))
+				if ((this._ProviderCode != value))
 				{
-					this.OnHostCodeChanging(value);
+					this.OnProviderCodeChanging(value);
 					this.SendPropertyChanging();
-					this._HostCode = value;
-					this.SendPropertyChanged("HostCode");
-					this.OnHostCodeChanged();
+					this._ProviderCode = value;
+					this.SendPropertyChanged("ProviderCode");
+					this.OnProviderCodeChanged();
 				}
 			}
 		}
@@ -2852,7 +3057,7 @@ namespace Spreadsheet
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
 		public int ID
 		{
 			get
@@ -2872,7 +3077,7 @@ namespace Spreadsheet
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SVCCode", DbType="Char(255)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SVCCode", DbType="Char(255) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
 		public string SVCCode
 		{
 			get
@@ -2896,7 +3101,7 @@ namespace Spreadsheet
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubWelfareID", DbType="Char(255)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubWelfareID", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
 		public string SubWelfareID
 		{
 			get
@@ -2916,7 +3121,7 @@ namespace Spreadsheet
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_ServiceChildTypeMapping", Storage="_Service", ThisKey="SVCCode", OtherKey="SVCCode", IsForeignKey=true, DeleteRule="CASCADE")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_ServiceChildTypeMapping", Storage="_Service", ThisKey="SVCCode", OtherKey="SVCCode", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public Service Service
 		{
 			get
@@ -3293,6 +3498,92 @@ namespace Spreadsheet
 					this._SVCSupportDescription = value;
 					this.SendPropertyChanged("SVCSupportDescription");
 					this.OnSVCSupportDescriptionChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SVCTypeDesc")]
+	public partial class SVCTypeDesc : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _SVCTypeCode;
+		
+		private string _SVCTypeDescription;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSVCTypeCodeChanging(string value);
+    partial void OnSVCTypeCodeChanged();
+    partial void OnSVCTypeDescriptionChanging(string value);
+    partial void OnSVCTypeDescriptionChanged();
+    #endregion
+		
+		public SVCTypeDesc()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SVCTypeCode", DbType="VarChar(5) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string SVCTypeCode
+		{
+			get
+			{
+				return this._SVCTypeCode;
+			}
+			set
+			{
+				if ((this._SVCTypeCode != value))
+				{
+					this.OnSVCTypeCodeChanging(value);
+					this.SendPropertyChanging();
+					this._SVCTypeCode = value;
+					this.SendPropertyChanged("SVCTypeCode");
+					this.OnSVCTypeCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SVCTypeDescription", DbType="VarChar(255)")]
+		public string SVCTypeDescription
+		{
+			get
+			{
+				return this._SVCTypeDescription;
+			}
+			set
+			{
+				if ((this._SVCTypeDescription != value))
+				{
+					this.OnSVCTypeDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._SVCTypeDescription = value;
+					this.SendPropertyChanged("SVCTypeDescription");
+					this.OnSVCTypeDescriptionChanged();
 				}
 			}
 		}

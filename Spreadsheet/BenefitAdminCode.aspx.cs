@@ -20,6 +20,7 @@ namespace Spreadsheet
         BenefitAdminDataContext bfAdmin = new BenefitAdminDataContext();
         private static string fileName = "code.html";
         private static DataSet resultFromUpload = null;
+        private static string childType = null;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,6 +31,7 @@ namespace Spreadsheet
             //else
             //{
                 Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            BenefitAdminCode.childType = Session["childtype"].ToString();
                 //Label_user.Text = "Welcome " + Session["user"];
             //}
         }
@@ -38,7 +40,7 @@ namespace Spreadsheet
         public static string getHTML()
         {
             HtmlManager.Clean();
-            return HtmlManager.createHtml(fileName);
+            return HtmlManager.createServiceHtml(childType);
         }
 
         [System.Web.Services.WebMethod]
@@ -154,7 +156,7 @@ namespace Spreadsheet
                                 svr.SVCName = col1;
                                 svr.SVCDesc = col2;
                                 svr.ICF_Code = col3;
-                                svr.HostCode = col4;
+                                svr.ProviderCode = col4;
                                 svr.StaffRole = col5;
                                 svr.SVCType = col6;
                                 svr.SVCObjective = col7;
@@ -425,7 +427,7 @@ namespace Spreadsheet
                             svr.SVCName = row[1].ToString() == null ? "" : row[1].ToString();
                             svr.SVCDesc = row[2].ToString() == null ? "" : row[2].ToString();
                             svr.ICF_Code = row[3].ToString() == null ? "" : row[3].ToString();
-                            svr.HostCode = row[4].ToString() == null ? "" : row[4].ToString();
+                            svr.ProviderCode = row[4].ToString() == null ? "" : row[4].ToString();
                             svr.StaffRole = row[5].ToString() == null ? "" : row[5].ToString();
                             svr.SVCType = row[6].ToString() == null ? "" : row[6].ToString();
                             svr.SVCObjective = row[7].ToString() == null ? "" : row[7].ToString();
