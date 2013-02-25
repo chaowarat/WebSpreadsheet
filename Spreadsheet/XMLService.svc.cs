@@ -37,63 +37,63 @@ namespace Spreadsheet
                         root2.AppendChild(list);
 
                         XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
-                        SVCCode.InnerText = service.SVCCode.Trim();
+                        SVCCode.InnerText = service.SVCCode == null ? "" : service.SVCCode.Trim();
                         list.AppendChild(SVCCode);
 
                         XmlElement SVCName = xmlDoc.CreateElement("SVCName");
-                        SVCName.InnerText = service.SVCName.Trim();
+                        SVCName.InnerText = service.SVCName == null ? "" : service.SVCName.Trim();
                         list.AppendChild(SVCName);
 
                         XmlElement SVCDesc = xmlDoc.CreateElement("SVCDesc");
-                        SVCDesc.InnerText = service.SVCDesc.Trim();
+                        SVCDesc.InnerText = service.SVCDesc == null ? "" : service.SVCDesc.Trim();
                         list.AppendChild(SVCDesc);
 
                         XmlElement ICF_Code = xmlDoc.CreateElement("ICF_Code");
-                        ICF_Code.InnerText = service.ICF_Code.Trim();
+                        ICF_Code.InnerText = service.ICF_Code == null ? "" : service.ICF_Code.Trim();
                         list.AppendChild(ICF_Code);
 
                         XmlElement HostCode = xmlDoc.CreateElement("ProviderCode");
-                        HostCode.InnerText = service.ProviderCode.Trim();
+                        HostCode.InnerText = service.ProviderCode == null ? "" : service.ProviderCode.Trim();
                         list.AppendChild(HostCode);
 
                         XmlElement StaffRole = xmlDoc.CreateElement("StaffRole");
-                        StaffRole.InnerText = service.StaffRole.Trim();
+                        StaffRole.InnerText = service.StaffRole == null ? "" : service.StaffRole.Trim();
                         list.AppendChild(StaffRole);
 
                         XmlElement SVCType = xmlDoc.CreateElement("SVCType");
-                        SVCType.InnerText = service.SVCType.Trim();
+                        SVCType.InnerText = service.SVCType == null ? "" : service.SVCType.Trim();
                         list.AppendChild(SVCType);
 
                         XmlElement SVCObjective = xmlDoc.CreateElement("SVCObjective");
-                        SVCObjective.InnerText = service.SVCObjective.Trim();
+                        SVCObjective.InnerText = service.SVCObjective == null ? "" : service.SVCObjective.Trim();
                         list.AppendChild(SVCObjective);
 
                         XmlElement SVCSupport = xmlDoc.CreateElement("SVCSupport");
-                        SVCSupport.InnerText = service.SVCSupport.Trim();
+                        SVCSupport.InnerText = service.SVCSupport == null ? "" : service.SVCSupport.Trim();
                         list.AppendChild(SVCSupport);
 
                         XmlElement SVCCoverage = xmlDoc.CreateElement("SVCCoverage");
-                        SVCCoverage.InnerText = service.SVCCoverage.Trim();
+                        SVCCoverage.InnerText = service.SVCCoverage == null ? "" : service.SVCCoverage.Trim();
                         list.AppendChild(SVCCoverage);
 
                         XmlElement SVCStart = xmlDoc.CreateElement("SVCStart");
-                        SVCStart.InnerText = service.SVCStart.Trim();
+                        SVCStart.InnerText = service.SVCStart == null ? "" : service.SVCStart.Trim();
                         list.AppendChild(SVCStart);
 
                         XmlElement SVCEnd = xmlDoc.CreateElement("SVCEnd");
-                        SVCEnd.InnerText = service.SVCEnd.Trim();
+                        SVCEnd.InnerText = service.SVCEnd == null ? "" : service.SVCEnd.Trim();
                         list.AppendChild(SVCEnd);
 
                         XmlElement ChildType = xmlDoc.CreateElement("ChildType");
-                        ChildType.InnerText = service.ChildType.Trim();
+                        ChildType.InnerText = service.ChildType == null ? "" : service.ChildType.Trim();
                         list.AppendChild(ChildType);
 
                         XmlElement ProblemToSolve = xmlDoc.CreateElement("ProblemToSolve");
-                        ProblemToSolve.InnerText = service.ProblemToSolve.Trim();
+                        ProblemToSolve.InnerText = service.ProblemToSolve == null ? "" : service.ProblemToSolve.Trim();
                         list.AppendChild(ProblemToSolve);
 
                         XmlElement OrgAssignedCode = xmlDoc.CreateElement("OrgAssignedCode");
-                        OrgAssignedCode.InnerText = service.OrgAssignedCode.Trim();
+                        OrgAssignedCode.InnerText = service.OrgAssignedCode == null ? "" : service.OrgAssignedCode.Trim();
                         list.AppendChild(OrgAssignedCode);
                     }
                 }
@@ -110,19 +110,19 @@ namespace Spreadsheet
                                 rootAct.AppendChild(list);
 
                                 XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
-                                ACTCode.InnerText = activity.ACTCode.Trim();
+                                ACTCode.InnerText = activity.ACTCode == null ? "" : activity.ACTCode.Trim();
                                 list.AppendChild(ACTCode);
 
                                 XmlElement ACTDes = xmlDoc.CreateElement("ACTDest");
-                                ACTDes.InnerText = activity.ACTDesc.Trim();
+                                ACTDes.InnerText = activity.ACTDesc == null ? "" : activity.ACTDesc.Trim();
                                 list.AppendChild(ACTDes);
 
                                 XmlElement SVCCode = xmlDoc.CreateElement("SVCCode");
-                                SVCCode.InnerText = activity.SVCCode.Trim();
+                                SVCCode.InnerText = activity.SVCCode == null ? "" : activity.SVCCode.Trim();
                                 list.AppendChild(SVCCode);
 
                                 XmlElement ICF_Code = xmlDoc.CreateElement("ICF_Code");
-                                ICF_Code.InnerText = activity.ICF_Code.Trim();
+                                ICF_Code.InnerText = activity.ICF_Code == null ? "" : activity.ICF_Code.Trim();
                                 list.AppendChild(ICF_Code);
                          }
                         
@@ -140,19 +140,19 @@ namespace Spreadsheet
                         rootSAct.AppendChild(list);
 
                         XmlElement SACTCode = xmlDoc.CreateElement("SACTCode");
-                        SACTCode.InnerText = sactivity.SACTCode.Trim();
+                        SACTCode.InnerText = sactivity.SACTCode == null ? "" : sactivity.SACTCode.Trim();
                         list.AppendChild(SACTCode);
 
                         XmlElement SACTDes = xmlDoc.CreateElement("SACTDest");
-                        SACTDes.InnerText = sactivity.SACTDesc.Trim();
+                        SACTDes.InnerText = sactivity.SACTDesc == null ? "" : sactivity.SACTDesc.Trim();
                         list.AppendChild(SACTDes);
 
                         XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
-                        ACTCode.InnerText = sactivity.ACTCode.Trim();
+                        ACTCode.InnerText = sactivity.ACTCode == null ? "" : sactivity.ACTCode.Trim();
                         list.AppendChild(ACTCode);
 
                         XmlElement ICF_Code = xmlDoc.CreateElement("ICF_Code");
-                        ICF_Code.InnerText = sactivity.ICF_Code.Trim();
+                        ICF_Code.InnerText = sactivity.ICF_Code == null ? "" : sactivity.ICF_Code.Trim();
                         list.AppendChild(ICF_Code);
                     }
                 }
@@ -171,31 +171,31 @@ namespace Spreadsheet
                         rootMat.AppendChild(list);
 
                         XmlElement MaterialCode = xmlDoc.CreateElement("MaterialCode");
-                        MaterialCode.InnerText = material.MaterialCode.Trim();
+                        MaterialCode.InnerText = material.MaterialCode == null ? "" : material.MaterialCode.Trim();
                         list.AppendChild(MaterialCode);
 
                         XmlElement MaterialDesc = xmlDoc.CreateElement("MaterialDesc");
-                        MaterialDesc.InnerText = material.MaterialDesc.Trim();
+                        MaterialDesc.InnerText = material.MaterialDesc == null ? "" : material.MaterialDesc.Trim();
                         list.AppendChild(MaterialDesc);
 
                         XmlElement Unit = xmlDoc.CreateElement("Unit");
-                        Unit.InnerText = material.Unit.Trim();
+                        Unit.InnerText = material.Unit == null ? "" : material.Unit.Trim();
                         list.AppendChild(Unit);
 
                         XmlElement EstimatedPrice = xmlDoc.CreateElement("EstimatedPrice");
-                        EstimatedPrice.InnerText = material.EstimatedPrice.Trim();
+                        EstimatedPrice.InnerText = material.EstimatedPrice == null ? "" : material.EstimatedPrice.Trim();
                         list.AppendChild(EstimatedPrice);
 
                         XmlElement RealPrice = xmlDoc.CreateElement("RealPrice");
-                        RealPrice.InnerText = material.RealPrice.Trim();
+                        RealPrice.InnerText = material.RealPrice == null ? "" : material.RealPrice.Trim();
                         list.AppendChild(RealPrice);
 
                         XmlElement SVCCode = xmlDoc.CreateElement("ACTCode");
-                        SVCCode.InnerText = material.ACTCode.Trim();
+                        SVCCode.InnerText = material.ACTCode == null ? "" : material.ACTCode.Trim();
                         list.AppendChild(SVCCode);
 
                         XmlElement Note = xmlDoc.CreateElement("Note");
-                        Note.InnerText = material.Note.Trim();
+                        Note.InnerText = material.Note == null ? "" : material.Note.Trim();
                         list.AppendChild(Note);
                     }
                 }
@@ -219,19 +219,19 @@ namespace Spreadsheet
                         rootAnno.AppendChild(list);
 
                         XmlElement AID = xmlDoc.CreateElement("AID");
-                        AID.InnerText = annotation.AID.Trim();
+                        AID.InnerText = annotation.AID == null ? "" : annotation.AID.Trim();
                         list.AppendChild(AID);
 
                         XmlElement AText = xmlDoc.CreateElement("AText");
-                        AText.InnerText = annotation.AText.Trim();
+                        AText.InnerText = annotation.AText == null ? "" : annotation.AText.Trim();
                         list.AppendChild(AText);
 
                         XmlElement AnnotationID = xmlDoc.CreateElement("AnnotationID");
-                        AnnotationID.InnerText = annotation.AnnotationID.Trim();
+                        AnnotationID.InnerText = annotation.AnnotationID == null ? "" : annotation.AnnotationID.Trim();
                         list.AppendChild(AnnotationID);
 
                         XmlElement Reference = xmlDoc.CreateElement("Reference");
-                        Reference.InnerText = annotation.Reference.Trim();
+                        Reference.InnerText = annotation.Reference == null ? "" : annotation.Reference.Trim();
                         list.AppendChild(Reference);
                     }
                 }
@@ -250,55 +250,55 @@ namespace Spreadsheet
                         rootACost.AppendChild(list);
 
                         XmlElement ACTCode = xmlDoc.CreateElement("ACTCode");
-                        ACTCode.InnerText = activityCost.ACTCode.Trim();
+                        ACTCode.InnerText = activityCost.ACTCode == null ? "" : activityCost.ACTCode.Trim();
                         list.AppendChild(ACTCode);
 
                         XmlElement Unit = xmlDoc.CreateElement("Unit");
-                        Unit.InnerText = activityCost.Unit.Trim();
+                        Unit.InnerText = activityCost.Unit == null ? "" : activityCost.Unit.Trim();
                         list.AppendChild(Unit);
 
                         XmlElement LabourCost = xmlDoc.CreateElement("LabourCost");
-                        LabourCost.InnerText = activityCost.LabourCost.Trim();
+                        LabourCost.InnerText = activityCost.LabourCost == null ? "" : activityCost.LabourCost.Trim();
                         list.AppendChild(LabourCost);
 
                         XmlElement MaterialCost = xmlDoc.CreateElement("MaterialCost");
-                        MaterialCost.InnerText = activityCost.MaterialCost.Trim();
+                        MaterialCost.InnerText = activityCost.MaterialCost == null ? "" : activityCost.MaterialCost.Trim();
                         list.AppendChild(MaterialCost);
 
                         XmlElement CC_Equipment = xmlDoc.CreateElement("CC_Equipment");
-                        CC_Equipment.InnerText = activityCost.CC_Equipment.Trim();
+                        CC_Equipment.InnerText = activityCost.CC_Equipment == null ? "" : activityCost.CC_Equipment.Trim();
                         list.AppendChild(CC_Equipment);
 
                         XmlElement CC_Building = xmlDoc.CreateElement("CC_Building");
-                        CC_Building.InnerText = activityCost.CC_Building.Trim();
+                        CC_Building.InnerText = activityCost.CC_Building == null ? "" : activityCost.CC_Building.Trim();
                         list.AppendChild(CC_Building);
 
                         XmlElement IndirectCost = xmlDoc.CreateElement("IndirectCost");
-                        IndirectCost.InnerText = activityCost.IndirectCost.Trim();
+                        IndirectCost.InnerText = activityCost.IndirectCost == null ? "" : activityCost.IndirectCost.Trim();
                         list.AppendChild(IndirectCost);
 
                         XmlElement ProposedCost = xmlDoc.CreateElement("ProposedCost");
-                        ProposedCost.InnerText = activityCost.ProposedCost.Trim();
+                        ProposedCost.InnerText = activityCost.ProposedCost == null ? "" : activityCost.ProposedCost.Trim();
                         list.AppendChild(ProposedCost);
 
                         XmlElement CurrentCost = xmlDoc.CreateElement("CurrentCost");
-                        CurrentCost.InnerText = activityCost.CurrentCost.Trim();
+                        CurrentCost.InnerText = activityCost.CurrentCost == null ? "" : activityCost.CurrentCost.Trim();
                         list.AppendChild(CurrentCost);
 
                         XmlElement UnitCost = xmlDoc.CreateElement("UnitCost");
-                        UnitCost.InnerText = activityCost.UnitCost.Trim();
+                        UnitCost.InnerText = activityCost.UnitCost == null ? "" : activityCost.UnitCost.Trim();
                         list.AppendChild(UnitCost);
 
                         XmlElement ReferencedCostOrg = xmlDoc.CreateElement("ReferencedCostOrg");
-                        ReferencedCostOrg.InnerText = activityCost.ReferencedCostOrg.Trim();
+                        ReferencedCostOrg.InnerText = activityCost.ReferencedCostOrg == null ? "" : activityCost.ReferencedCostOrg.Trim();
                         list.AppendChild(ReferencedCostOrg);
 
                         XmlElement TimsStamp = xmlDoc.CreateElement("TimsStamp");
-                        TimsStamp.InnerText = activityCost.TimsStamp.ToString();
+                        TimsStamp.InnerText = activityCost.TimsStamp == null ? "" : activityCost.TimsStamp.ToString();
                         list.AppendChild(TimsStamp);
 
                         XmlElement AID = xmlDoc.CreateElement("AID");
-                        AID.InnerText = activityCost.AID.Trim();
+                        AID.InnerText = activityCost.AID == null ? "" : activityCost.AID.Trim();
                         list.AppendChild(AID);
 
                     }
