@@ -34,6 +34,11 @@ namespace Spreadsheet
         {
             GridView_mapping.DataSource = disType;
             GridView_mapping.DataBind();
+
+            List<Service> tmp = new List<Service>();
+            tmp.Add(serviceList[index]);
+            GridView_service.DataSource = tmp;
+            GridView_service.DataBind();
         }
 
         protected void Button_ok_Click(object sender, EventArgs e)
@@ -45,7 +50,7 @@ namespace Spreadsheet
                     CheckBox chk = (CheckBox)row.FindControl("CheckBox_select");
                     if (chk.Checked)
                     {
-                        string disCode = Session["childtype"].ToString().Trim() + row.Cells[2].Text.Trim();
+                        string disCode = Session["childtype"].ToString().Trim() + row.Cells[1].Text.Trim();
                         ServiceChildTypeMapping scm = new ServiceChildTypeMapping();
                         scm.SVCCode = serviceList[index].SVCCode.Trim();
                         scm.SubWelfareID = disCode;
@@ -58,7 +63,14 @@ namespace Spreadsheet
                     }
                 }
                 index++;
-                bindData();
+                if (index < serviceList.Count)
+                {
+                    bindData();
+                }
+                else
+                {
+                    // redirect
+                }
             }
         }
 

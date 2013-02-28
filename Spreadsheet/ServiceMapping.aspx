@@ -6,61 +6,47 @@
 <head runat="server">
     <title></title>
     <style type="text/css">
-        .auto-style1 {
-            width: 166px;
+        #content{
+            height:auto;
+            width:85%;
+            margin:80px;
         }
-        .auto-style5 {
-            width: 810px;
+        #left{
+            float:left;
+        }
+        #right{
+            float:right;
         }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-    
-        <table style="width:100%;">
-            <tr>
-                <td class="auto-style1">&nbsp;</td>
-                <td style="text-align: center" class="auto-style5">Service Mapping</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td class="auto-style1">&nbsp;</td>
-                <td class="auto-style5">
-                    <asp:GridView ID="GridView_mapping" runat="server" AutoGenerateColumns="False" OnRowDataBound="GridView_mapping_RowDataBound">
-                        <Columns>
-                            <asp:TemplateField HeaderText="Service Code">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" Text="" ID="Label_service_id"></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Service Name">
-                                <ItemTemplate>
-                                    <asp:Label runat="server" Text="" ID="Label_service_name"></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:BoundField DataField="DisabilityCode" HeaderText="DisabilityCode" />
-                            <asp:BoundField DataField="Name" HeaderText="DisabilityName" />
-                            <asp:TemplateField HeaderText="Select">
-                            <ItemTemplate>
-                                <asp:CheckBox ID="CheckBox_select" runat="server" />
-                            </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                    </asp:GridView>
-                    <br />
-                </td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td class="auto-style1">&nbsp;</td>
-                <td class="auto-style5" style="text-align: center">
-                    <asp:Button ID="Button_ok" runat="server" OnClick="Button_ok_Click" Text="OK" Width="92px" />
-                </td>
-                <td>&nbsp;</td>
-            </tr>
-        </table>
-    
+    <div id="content">
+        <h1 style="text-align: center; margin-top: -50px;">Service mapping page</h1>
+        <div id="left">
+            <asp:GridView ID="GridView_service" runat="server" AutoGenerateColumns="False">
+                <Columns>
+                    <asp:BoundField DataField="SVCCode" HeaderText="SVCCode" ItemStyle-Width="180px" />
+                    <asp:BoundField DataField="SVCName" HeaderText="SVCName" ItemStyle-Width="350px" />
+                </Columns>
+            </asp:GridView>
+        </div>
+        <div id="right">
+            <asp:GridView ID="GridView_mapping" runat="server" AutoGenerateColumns="False">
+                <Columns>
+                    <asp:TemplateField HeaderText="Select">
+                    <ItemTemplate>
+                        <asp:CheckBox ID="CheckBox_select" runat="server" />
+                    </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:BoundField DataField="DisabilityCode" HeaderText="DisabilityCode" ItemStyle-Width="180px" />
+                    <asp:BoundField DataField="Name" HeaderText="DisabilityName" ItemStyle-Width="350px" />
+                </Columns>
+            </asp:GridView>
+            <div style="text-align: left; position: relative; margin-top: 20px;">
+                <asp:Button ID="Button_ok" runat="server" OnClick="Button_ok_Click" Text="OK" Width="92px" />
+            </div>
+        </div>
     </div>
     </form>
 </body>

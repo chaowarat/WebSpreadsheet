@@ -34,6 +34,12 @@ namespace Spreadsheet
         {
             GridView_mapping.DataSource = mat;
             GridView_mapping.DataBind();
+
+            List<Activity> tmp = new List<Activity>();
+            tmp.Add(activityList[index]);
+            GridView_activity.DataSource = tmp;
+            GridView_activity.DataBind();
+
         }
 
         protected void Button_ok_Click(object sender, EventArgs e)
@@ -46,7 +52,7 @@ namespace Spreadsheet
                     if (chk.Checked)
                     {
                         Material_ACT mact = new Material_ACT();
-                        mact.MaterialCode = row.Cells[2].Text.Trim();
+                        mact.MaterialCode = row.Cells[1].Text.Trim();
                         mact.ACTCode = activityList[index].ACTCode.Trim();
 
                         db.Material_ACTs.InsertOnSubmit(mact);
@@ -58,18 +64,14 @@ namespace Spreadsheet
                     }
                 }
                 index++;
-                bindData();
-            }
-        }
-
-        protected void GridView_mapping_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowIndex == 0 && index < activityList.Count)
-            {
-                Label lblActivityId = (Label)e.Row.FindControl("Label_Activity_id");
-                lblActivityId.Text = activityList[index].ACTCode.Trim();
-                Label lblActivityName = (Label)e.Row.FindControl("Label_Activity_name");
-                lblActivityName.Text = activityList[index].ACTDesc.Trim();
+                if (index < activityList.Count)
+                {
+                    bindData();
+                }
+                else
+                {
+                    // redirect
+                }
             }
         }
     }
