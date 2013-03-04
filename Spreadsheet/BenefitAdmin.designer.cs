@@ -440,7 +440,7 @@ namespace Spreadsheet
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_Activity", Storage="_Service", ThisKey="SVCCode", OtherKey="SVCCode", IsForeignKey=true, DeleteRule="CASCADE")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_Activity", Storage="_Service", ThisKey="SVCCode", OtherKey="SVCCode", IsForeignKey=true)]
 		public Service Service
 		{
 			get
@@ -649,6 +649,8 @@ namespace Spreadsheet
 		
 		private string _AID;
 		
+		private string _FutureCost;
+		
 		private EntityRef<Annotation> _Annotation;
 		
     #region Extensibility Method Definitions
@@ -681,6 +683,8 @@ namespace Spreadsheet
     partial void OnTimsStampChanged();
     partial void OnAIDChanging(string value);
     partial void OnAIDChanged();
+    partial void OnFutureCostChanging(string value);
+    partial void OnFutureCostChanged();
     #endregion
 		
 		public ActivityCost()
@@ -949,6 +953,26 @@ namespace Spreadsheet
 					this._AID = value;
 					this.SendPropertyChanged("AID");
 					this.OnAIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FutureCost", DbType="VarChar(255)")]
+		public string FutureCost
+		{
+			get
+			{
+				return this._FutureCost;
+			}
+			set
+			{
+				if ((this._FutureCost != value))
+				{
+					this.OnFutureCostChanging(value);
+					this.SendPropertyChanging();
+					this._FutureCost = value;
+					this.SendPropertyChanged("FutureCost");
+					this.OnFutureCostChanged();
 				}
 			}
 		}
@@ -1625,7 +1649,7 @@ namespace Spreadsheet
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_ConditionService", Storage="_Service", ThisKey="SVCCODE", OtherKey="SVCCode", IsForeignKey=true, DeleteRule="CASCADE")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_ConditionService", Storage="_Service", ThisKey="SVCCODE", OtherKey="SVCCode", IsForeignKey=true)]
 		public Service Service
 		{
 			get
@@ -2567,8 +2591,6 @@ namespace Spreadsheet
 		
 		private string _SVCSupport;
 		
-		private string _SVCCoverage;
-		
 		private string _SVCStart;
 		
 		private string _SVCEnd;
@@ -2581,9 +2603,9 @@ namespace Spreadsheet
 		
 		private EntitySet<Activity> _Activities;
 		
-		private EntitySet<ConditionService> _ConditionServices;
-		
 		private EntitySet<ServiceChildTypeMapping> _ServiceChildTypeMappings;
+		
+		private EntitySet<ConditionService> _ConditionServices;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2607,8 +2629,6 @@ namespace Spreadsheet
     partial void OnSVCObjectiveChanged();
     partial void OnSVCSupportChanging(string value);
     partial void OnSVCSupportChanged();
-    partial void OnSVCCoverageChanging(string value);
-    partial void OnSVCCoverageChanged();
     partial void OnSVCStartChanging(string value);
     partial void OnSVCStartChanged();
     partial void OnSVCEndChanging(string value);
@@ -2624,8 +2644,8 @@ namespace Spreadsheet
 		public Service()
 		{
 			this._Activities = new EntitySet<Activity>(new Action<Activity>(this.attach_Activities), new Action<Activity>(this.detach_Activities));
-			this._ConditionServices = new EntitySet<ConditionService>(new Action<ConditionService>(this.attach_ConditionServices), new Action<ConditionService>(this.detach_ConditionServices));
 			this._ServiceChildTypeMappings = new EntitySet<ServiceChildTypeMapping>(new Action<ServiceChildTypeMapping>(this.attach_ServiceChildTypeMappings), new Action<ServiceChildTypeMapping>(this.detach_ServiceChildTypeMappings));
+			this._ConditionServices = new EntitySet<ConditionService>(new Action<ConditionService>(this.attach_ConditionServices), new Action<ConditionService>(this.detach_ConditionServices));
 			OnCreated();
 		}
 		
@@ -2709,7 +2729,7 @@ namespace Spreadsheet
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProviderCode", DbType="Char(255)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProviderCode", DbType="Char(255) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
 		public string ProviderCode
 		{
 			get
@@ -2809,26 +2829,6 @@ namespace Spreadsheet
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SVCCoverage", DbType="Char(255)")]
-		public string SVCCoverage
-		{
-			get
-			{
-				return this._SVCCoverage;
-			}
-			set
-			{
-				if ((this._SVCCoverage != value))
-				{
-					this.OnSVCCoverageChanging(value);
-					this.SendPropertyChanging();
-					this._SVCCoverage = value;
-					this.SendPropertyChanged("SVCCoverage");
-					this.OnSVCCoverageChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SVCStart", DbType="Char(255)")]
 		public string SVCStart
 		{
@@ -2869,7 +2869,7 @@ namespace Spreadsheet
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChildType", DbType="VarChar(14)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChildType", DbType="VarChar(15)")]
 		public string ChildType
 		{
 			get
@@ -2942,19 +2942,6 @@ namespace Spreadsheet
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_ConditionService", Storage="_ConditionServices", ThisKey="SVCCode", OtherKey="SVCCODE")]
-		public EntitySet<ConditionService> ConditionServices
-		{
-			get
-			{
-				return this._ConditionServices;
-			}
-			set
-			{
-				this._ConditionServices.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_ServiceChildTypeMapping", Storage="_ServiceChildTypeMappings", ThisKey="SVCCode", OtherKey="SVCCode")]
 		public EntitySet<ServiceChildTypeMapping> ServiceChildTypeMappings
 		{
@@ -2965,6 +2952,19 @@ namespace Spreadsheet
 			set
 			{
 				this._ServiceChildTypeMappings.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_ConditionService", Storage="_ConditionServices", ThisKey="SVCCode", OtherKey="SVCCODE")]
+		public EntitySet<ConditionService> ConditionServices
+		{
+			get
+			{
+				return this._ConditionServices;
+			}
+			set
+			{
+				this._ConditionServices.Assign(value);
 			}
 		}
 		
@@ -3000,18 +3000,6 @@ namespace Spreadsheet
 			entity.Service = null;
 		}
 		
-		private void attach_ConditionServices(ConditionService entity)
-		{
-			this.SendPropertyChanging();
-			entity.Service = this;
-		}
-		
-		private void detach_ConditionServices(ConditionService entity)
-		{
-			this.SendPropertyChanging();
-			entity.Service = null;
-		}
-		
 		private void attach_ServiceChildTypeMappings(ServiceChildTypeMapping entity)
 		{
 			this.SendPropertyChanging();
@@ -3019,6 +3007,18 @@ namespace Spreadsheet
 		}
 		
 		private void detach_ServiceChildTypeMappings(ServiceChildTypeMapping entity)
+		{
+			this.SendPropertyChanging();
+			entity.Service = null;
+		}
+		
+		private void attach_ConditionServices(ConditionService entity)
+		{
+			this.SendPropertyChanging();
+			entity.Service = this;
+		}
+		
+		private void detach_ConditionServices(ConditionService entity)
 		{
 			this.SendPropertyChanging();
 			entity.Service = null;
@@ -3121,7 +3121,7 @@ namespace Spreadsheet
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_ServiceChildTypeMapping", Storage="_Service", ThisKey="SVCCode", OtherKey="SVCCode", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Service_ServiceChildTypeMapping", Storage="_Service", ThisKey="SVCCode", OtherKey="SVCCode", IsForeignKey=true)]
 		public Service Service
 		{
 			get

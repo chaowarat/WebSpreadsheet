@@ -128,7 +128,7 @@ namespace Spreadsheet
                     #region
                     string col0 = "", col1 = "", col2 = "", col3 = "", col4 = "";
                     string col5 = "", col6 = "", col7 = "", col8 = "", col9 = "";
-                    string col10 = "", col11 = "", col12 = "", col13 = "";
+                    string col10 = "", col11 = "", col12 = "", col13 = "", col14 = "";
                     XPathNodeIterator countRowString = allDocs.Current.Select("METADATA/ROWS");
                     countRowString.MoveNext();
                     int countRow = Convert.ToInt32(countRowString.Current.Value);
@@ -180,6 +180,9 @@ namespace Spreadsheet
                             XPathNodeIterator getCol13 = rows.Current.Select("R" + i + "/C13");
                             getCol13.MoveNext();
                             col13 = getCol13.Current.Value;
+                            XPathNodeIterator getCol14 = rows.Current.Select("R" + i + "/C14");
+                            getCol14.MoveNext();
+                            col14 = getCol14.Current.Value;
                             //insert to DB
                             if (!col0.Equals(""))
                             {
@@ -191,16 +194,17 @@ namespace Spreadsheet
                                 acost.CC_Equipment = col5;
                                 acost.CC_Building = col6;
                                 acost.IndirectCost = col7;
-                                acost.ProposedCost = col8;
-                                acost.CurrentCost = col9;
-                                acost.UnitCost = col10;
-                                acost.ReferencedCostOrg = col11;
+                                acost.FutureCost = col8;
+                                acost.UnitCost = col9;
+                                acost.ProposedCost = col10;
+                                acost.CurrentCost = col11;
+                                acost.ReferencedCostOrg = col12;
                                 try
                                 {
-                                    acost.TimsStamp = DateTime.Parse(col12.Trim());
+                                    acost.TimsStamp = DateTime.Parse(col13.Trim());
                                 }
                                 catch { }
-                                acost.AID = col13;
+                                acost.AID = col14;
                                 bfAdmin.ActivityCosts.InsertOnSubmit(acost);
                                 try
                                 {

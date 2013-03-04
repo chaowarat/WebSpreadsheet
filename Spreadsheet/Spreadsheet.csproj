@@ -250,8 +250,10 @@
     <None Include="Properties\PublishProfiles\spreadsheet - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\spreadsheet - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\spreadsheettest - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\spreadsheettest - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\spreadsheetTest - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\spreadsheettest - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\spreadsheettest - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\spreadsheetTest - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>

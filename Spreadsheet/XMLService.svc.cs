@@ -72,10 +72,6 @@ namespace Spreadsheet
                         SVCSupport.InnerText = service.SVCSupport == null ? "" : service.SVCSupport.Trim();
                         list.AppendChild(SVCSupport);
 
-                        XmlElement SVCCoverage = xmlDoc.CreateElement("SVCCoverage");
-                        SVCCoverage.InnerText = service.SVCCoverage == null ? "" : service.SVCCoverage.Trim();
-                        list.AppendChild(SVCCoverage);
-
                         XmlElement SVCStart = xmlDoc.CreateElement("SVCStart");
                         SVCStart.InnerText = service.SVCStart == null ? "" : service.SVCStart.Trim();
                         list.AppendChild(SVCStart);
@@ -300,6 +296,10 @@ namespace Spreadsheet
                         XmlElement AID = xmlDoc.CreateElement("AID");
                         AID.InnerText = activityCost.AID == null ? "" : activityCost.AID.Trim();
                         list.AppendChild(AID);
+
+                        XmlElement FutureCost = xmlDoc.CreateElement("FutureCost");
+                        FutureCost.InnerText = activityCost.FutureCost == null ? "" : activityCost.FutureCost.Trim();
+                        list.AppendChild(FutureCost);
 
                     }
                 }

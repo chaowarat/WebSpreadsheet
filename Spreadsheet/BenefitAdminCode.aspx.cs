@@ -163,6 +163,7 @@ namespace Spreadsheet
                                 svr.SVCSupport = col8;
                                 svr.SVCStart = col9;
                                 svr.SVCEnd = col10;
+                                svr.ChildType = childType.Trim();
                                 svr.ProblemToSolve = col11;
                                 svr.OrgAssignedCode = col12;
                                 bfAdmin.Services.InsertOnSubmit(svr);
@@ -434,6 +435,7 @@ namespace Spreadsheet
                             svr.SVCSupport = row[8].ToString() == null ? "" : row[8].ToString();
                             svr.SVCStart = row[9].ToString() == null ? "" : row[9].ToString();
                             svr.SVCEnd = row[10].ToString() == null ? "" : row[10].ToString();
+                            svr.ChildType = childType.Trim();
                             svr.ProblemToSolve = row[11].ToString() == null ? "" : row[11].ToString().Trim();
                             svr.OrgAssignedCode = row[12].ToString() == null ? "" : row[12].ToString().Trim();
                         }

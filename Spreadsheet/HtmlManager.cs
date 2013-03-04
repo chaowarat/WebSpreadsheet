@@ -628,7 +628,7 @@ namespace Spreadsheet
 
         public static XElement createActivityCostFromDB()
         {
-            countCol = 14;
+            countCol = 15;
             var acost = from m in bfAdmin.ActivityCosts select m;
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
@@ -684,15 +684,19 @@ namespace Spreadsheet
                           new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "Future"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "UnitCost"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
                               "ProposedCost"),
                           new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
                               "CurrentCost"),
-                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
-                              new XAttribute("class", "styleBold styleCenter"),
-                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "UnitCost"),
                          new XElement("TD", new XAttribute("id", "table0_cell_c0_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
@@ -721,12 +725,13 @@ namespace Spreadsheet
                      new XElement("TD", new XAttribute("id", "table0_cell_c5_r" + count), a.CC_Equipment),
                      new XElement("TD", new XAttribute("id", "table0_cell_c6_r" + count), a.CC_Building),
                      new XElement("TD", new XAttribute("id", "table0_cell_c7_r" + count), a.IndirectCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), a.ProposedCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c9_r" + count), a.CurrentCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), a.UnitCost),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c11_r" + count), a.ReferencedCostOrg),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c12_r" + count), a.TimsStamp),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c13_r" + count), a.AID));
+                     new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), a.FutureCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c9_r" + count), a.UnitCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), a.ProposedCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c11_r" + count), a.CurrentCost),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c12_r" + count), a.ReferencedCostOrg),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c13_r" + count), a.TimsStamp),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c14_r" + count), a.AID));
                 TBody.Add(td);
                 count++;
             }
@@ -794,7 +799,8 @@ namespace Spreadsheet
         public static XElement createServiceFromDB(string childType)
         {
             countCol = 12;
-            ser = from s in bfAdmin.Services where s.ChildType.Trim().Equals(childType.Trim()) select s;
+            //ser = from s in bfAdmin.Services where s.ChildType.Trim().Equals(childType.Trim()) select s;
+            ser = from s in bfAdmin.Services select s;
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
                       new XAttribute("cellspacing", 0),
                       new XAttribute("cellpadding", 0),
