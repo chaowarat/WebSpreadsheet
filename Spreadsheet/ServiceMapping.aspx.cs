@@ -70,6 +70,7 @@ namespace Spreadsheet
                 else
                 {
                     // redirect
+                    Response.Redirect("BenefitAdminCode.aspx");
                 }
             }
         }
