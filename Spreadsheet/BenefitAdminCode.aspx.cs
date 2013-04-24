@@ -55,8 +55,10 @@ namespace Spreadsheet
             }
             catch (Exception)
             {
-                return "error";
+                return "can not parse to XPathDocument";
             }
+
+            #region clean data
             BenefitAdminDataContext bfAdmin = new BenefitAdminDataContext();
             var allInSvr = from c in bfAdmin.Services select c;
             bfAdmin.Services.DeleteAllOnSubmit(allInSvr);
@@ -89,7 +91,9 @@ namespace Spreadsheet
                 bfAdmin.SubmitChanges();
             }
             catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+            #endregion
 
+            string outputString = null;
             XPathNavigator navigator = document.CreateNavigator();
             XPathNodeIterator allDocs = navigator.Select("DOCUMENTS/DOCUMENT");
             while (allDocs.MoveNext())
@@ -171,7 +175,10 @@ namespace Spreadsheet
                                 {
                                     bfAdmin.SubmitChanges();
                                 }
-                                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                                catch (Exception) { 
+                                    bfAdmin = new BenefitAdminDataContext();
+                                    outputString = "can not save to service";
+                                }
                             }
                         }
                     }
@@ -216,7 +223,10 @@ namespace Spreadsheet
                                 {
                                     bfAdmin.SubmitChanges();
                                 }
-                                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                                catch (Exception) { 
+                                    bfAdmin = new BenefitAdminDataContext();
+                                    outputString = "can not save to activity";
+                                }
                             }
                         }
                     }
@@ -260,7 +270,10 @@ namespace Spreadsheet
                                 {
                                     bfAdmin.SubmitChanges();
                                 }
-                                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                                catch (Exception) { 
+                                    bfAdmin = new BenefitAdminDataContext();
+                                    outputString = "can not save to subActivity";
+                                }
                             }
                         }
                     }
@@ -316,14 +329,24 @@ namespace Spreadsheet
                                 {
                                     bfAdmin.SubmitChanges();
                                 }
-                                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                                catch (Exception) { 
+                                    bfAdmin = new BenefitAdminDataContext();
+                                    outputString = "can not save to material";
+                                }
                             }
                         }
                     }
                     #endregion
                 }
             }
-            return null;
+            if (outputString != null)
+            {
+                return outputString;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         protected void btnUpload_Click(object sender, EventArgs e)

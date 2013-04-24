@@ -3361,7 +3361,7 @@ jQuery.sheet = {
                     success: function (msg) {
                         $('#saving').hide();
                         if (msg.d != null) {
-                            alert('Sheet not contains special character!!!');
+                            alert('save error !!!' + msg.d);
                         }
                         else {
                             alert('Save complete.');
@@ -3390,7 +3390,7 @@ jQuery.sheet = {
                     success: function (msg) {
                         $('#saving').hide();
                         if (msg.d != null) {
-                            alert('Sheet not contains special character!!!');
+                            alert('save error !!!' + msg.d);
                         }
                         else {
                             alert('Save complete.');
@@ -3415,7 +3415,7 @@ jQuery.sheet = {
                     success: function (msg) {
                         $('#saving').hide();
                         if (msg.d != null) {
-                            alert('Sheet not contains special character!!!');
+                            alert('save error !!!' + msg.d);
                         }
                         else {
                             alert('Save complete.');

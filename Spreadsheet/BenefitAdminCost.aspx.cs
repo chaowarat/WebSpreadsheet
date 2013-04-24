@@ -53,9 +53,10 @@ namespace Spreadsheet
             }
             catch (Exception)
             {
-                return "error";
+                return "can not parse to XPathDocument";
             }
 
+            #region clean data
             BenefitAdminDataContext bfAdmin = new BenefitAdminDataContext();
             var allInAcost = from c in bfAdmin.ActivityCosts select c;
             bfAdmin.ActivityCosts.DeleteAllOnSubmit(allInAcost);
@@ -72,7 +73,9 @@ namespace Spreadsheet
                 bfAdmin.SubmitChanges();
             }
             catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+            #endregion
 
+            string outputString = null;
             XPathNavigator navigator = document.CreateNavigator();
             XPathNodeIterator allDocs = navigator.Select("DOCUMENTS/DOCUMENT");
             while (allDocs.MoveNext())
@@ -117,7 +120,10 @@ namespace Spreadsheet
                                 {
                                     bfAdmin.SubmitChanges();
                                 }
-                                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                                catch (Exception) { 
+                                    bfAdmin = new BenefitAdminDataContext();
+                                    outputString = "can not save to annotation";
+                                }
                             }
                         }
                     }
@@ -210,7 +216,10 @@ namespace Spreadsheet
                                 {
                                     bfAdmin.SubmitChanges();
                                 }
-                                catch (Exception) { bfAdmin = new BenefitAdminDataContext(); }
+                                catch (Exception) { 
+                                    bfAdmin = new BenefitAdminDataContext();
+                                    outputString = "can not save to activityCost";
+                                }
                             }
                         }
                     }
@@ -218,7 +227,14 @@ namespace Spreadsheet
                 }
 
             }
-            return null;
+            if (outputString != null)
+            {
+                return outputString;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         protected void btnUpload_Click(object sender, EventArgs e)
