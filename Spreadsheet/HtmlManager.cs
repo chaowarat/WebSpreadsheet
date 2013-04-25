@@ -798,7 +798,7 @@ namespace Spreadsheet
 
         public static XElement createServiceFromDB(string childType)
         {
-            countCol = 12;
+            countCol = 15;
             //ser = from s in bfAdmin.Services where s.ChildType.Trim().Equals(childType.Trim()) select s;
             ser = from s in bfAdmin.Services select s;
             XElement herdtable = new XElement("TABLE", new XAttribute("style", 100),
@@ -871,7 +871,15 @@ namespace Spreadsheet
                           new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
                               new XAttribute("class", "styleBold styleCenter"),
                               new XAttribute("style", "background-color: rgb(192, 192, 192)"),
-                              "OrgAssignedCode"));
+                              "OrgAssignedCode"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "Year"),
+                          new XElement("TD", new XAttribute("id", "table0_cell_c1_r" + ++count),
+                              new XAttribute("class", "styleBold styleCenter"),
+                              new XAttribute("style", "background-color: rgb(192, 192, 192)"),
+                              "TimeStamp"));
             TBody.Add(td);
             foreach (var s in ser)
             {
@@ -887,8 +895,10 @@ namespace Spreadsheet
                      new XElement("TD", new XAttribute("id", "table0_cell_c8_r" + count), s.SVCSupport),
                      new XElement("TD", new XAttribute("id", "table0_cell_c9_r" + count), s.SVCStart),
                      new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), s.SVCEnd),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), s.ProblemToSolve),
-                     new XElement("TD", new XAttribute("id", "table0_cell_c10_r" + count), s.OrgAssignedCode));
+                     new XElement("TD", new XAttribute("id", "table0_cell_c11_r" + count), s.ProblemToSolve),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c12_r" + count), s.OrgAssignedCode),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c13_r" + count), s.Year.ToString()),
+                     new XElement("TD", new XAttribute("id", "table0_cell_c14_r" + count), s.TimeStamp.ToString()));
                 TBody.Add(td);
                 count++;
             }

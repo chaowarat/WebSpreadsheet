@@ -9,7 +9,6 @@
       <Association Name="Activity_ConditionActivity" Member="ConditionActivities" ThisKey="ACTCode" OtherKey="ACTCode" Type="ConditionActivity" />
       <Association Name="Activity_Material" Member="Materials" ThisKey="ACTCode" OtherKey="ACTCode" Type="Material" />
       <Association Name="Activity_SubActivity" Member="SubActivities" ThisKey="ACTCode" OtherKey="ACTCode" Type="SubActivity" />
-      <Association Name="Service_Activity" Member="Service" ThisKey="SVCCode" OtherKey="SVCCode" Type="Service" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.WelfareCategory" Member="WelfareCategories">
@@ -68,7 +67,6 @@
       <Column Name="ConditionCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="SVCCODE" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Association Name="Condition_ConditionService" Member="Condition" ThisKey="ConditionCode" OtherKey="ConditionCode" Type="Condition" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="Service_ConditionService" Member="Service" ThisKey="SVCCODE" OtherKey="SVCCode" Type="Service" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.DisabilityType" Member="DisabilityTypes">
@@ -125,7 +123,7 @@
       <Column Name="SVCName" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="SVCDesc" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="ICF_Code" Type="System.String" DbType="Char(255)" CanBeNull="true" />
-      <Column Name="ProviderCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProviderCode" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="StaffRole" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="SVCType" Type="System.String" DbType="Char(255)" CanBeNull="true" />
       <Column Name="SVCObjective" Type="System.String" DbType="Char(255)" CanBeNull="true" />
@@ -135,9 +133,8 @@
       <Column Name="ChildType" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
       <Column Name="ProblemToSolve" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="OrgAssignedCode" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Association Name="Service_Activity" Member="Activities" ThisKey="SVCCode" OtherKey="SVCCode" Type="Activity" />
-      <Association Name="Service_ServiceChildTypeMapping" Member="ServiceChildTypeMappings" ThisKey="SVCCode" OtherKey="SVCCode" Type="ServiceChildTypeMapping" />
-      <Association Name="Service_ConditionService" Member="ConditionServices" ThisKey="SVCCode" OtherKey="SVCCODE" Type="ConditionService" />
+      <Column Name="Year" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TimeStamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.ServiceChildTypeMapping" Member="ServiceChildTypeMappings">
@@ -145,7 +142,6 @@
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="SVCCode" Type="System.String" DbType="Char(255) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="SubWelfareID" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Association Name="Service_ServiceChildTypeMapping" Member="Service" ThisKey="SVCCode" OtherKey="SVCCode" Type="Service" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.SubActivity" Member="SubActivities">

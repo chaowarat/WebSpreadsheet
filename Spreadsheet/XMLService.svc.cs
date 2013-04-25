@@ -91,6 +91,14 @@ namespace Spreadsheet
                         XmlElement OrgAssignedCode = xmlDoc.CreateElement("OrgAssignedCode");
                         OrgAssignedCode.InnerText = service.OrgAssignedCode == null ? "" : service.OrgAssignedCode.Trim();
                         list.AppendChild(OrgAssignedCode);
+
+                        XmlElement Year = xmlDoc.CreateElement("Year");
+                        Year.InnerText = service.Year == null ? "" : service.Year.ToString().Trim();
+                        list.AppendChild(Year);
+
+                        XmlElement TimeStamp = xmlDoc.CreateElement("TimeStamp");
+                        TimeStamp.InnerText = service.TimeStamp == null ? "" : service.TimeStamp.ToString();
+                        list.AppendChild(TimeStamp);
                     }
                 }
                 catch(Exception){ }

@@ -103,7 +103,8 @@ namespace Spreadsheet
                 {
                     #region
                     string col0 = "", col1 = "", col2 = "", col3 = "", col4 = "", col5 = "";
-                    string col6 = "", col7 = "", col8 = "", col9 = "", col10 = "", col11 = "", col12 = "";
+                    string col6 = "", col7 = "", col8 = "", col9 = "", col10 = "", col11 = "";
+                    string col12 = "", col13 = "", col14 = "";
                     XPathNodeIterator countRowString = allDocs.Current.Select("METADATA/ROWS");
                     countRowString.MoveNext();
                     int countRow = Convert.ToInt32(countRowString.Current.Value);
@@ -152,6 +153,12 @@ namespace Spreadsheet
                             XPathNodeIterator getCol12 = rows.Current.Select("R" + i + "/C12");
                             getCol12.MoveNext();
                             col12 = getCol12.Current.Value;
+                            XPathNodeIterator getCol13 = rows.Current.Select("R" + i + "/C13");
+                            getCol13.MoveNext();
+                            col13 = getCol13.Current.Value;
+                            XPathNodeIterator getCol14 = rows.Current.Select("R" + i + "/C14");
+                            getCol14.MoveNext();
+                            col14 = getCol14.Current.Value;
                             //insert to DB
                             if (!col0.Equals(""))
                             {
@@ -170,6 +177,27 @@ namespace Spreadsheet
                                 svr.ChildType = childType.Trim();
                                 svr.ProblemToSolve = col11;
                                 svr.OrgAssignedCode = col12;
+                                try
+                                {
+                                    if (col13.Trim().Length > 0)
+                                    {
+                                        svr.Year = Convert.ToInt32(col13.Trim());
+                                    }
+                                }
+                                catch { 
+                                    outputString += "can not convert year to int32"; 
+                                }
+                                try
+                                {
+                                    if (col14.Trim().Length > 0)
+                                    {
+                                        svr.TimeStamp = Convert.ToDateTime(col14.Trim());
+                                    }
+                                }
+                                catch
+                                {
+                                    outputString += "can not convert timestamp to datetime";
+                                }
                                 bfAdmin.Services.InsertOnSubmit(svr);
                                 try
                                 {
@@ -177,7 +205,7 @@ namespace Spreadsheet
                                 }
                                 catch (Exception) { 
                                     bfAdmin = new BenefitAdminDataContext();
-                                    outputString = "can not save to service";
+                                    outputString += "can not save to service";
                                 }
                             }
                         }
